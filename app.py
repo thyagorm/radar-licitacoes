@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 from io import BytesIO
 from pydantic import BaseModel, Field
 from google import genai
@@ -87,10 +88,10 @@ else:
 
 arquivo_pdf = st.file_uploader("Arraste o PDF do Edital aqui", type=["pdf"])
 
-# 4. Execução da IA
+# 4. Execução da IA com Fallback contra 503
 if arquivo_pdf and api_key:
     if st.button("🚀 Processar Edital", type="primary"):
-        with st.spinner("Varrendo minuciosamente o edital e cruzando com o portfólio farmacêutico..."):
+        with st.spinner("Analisando o edital e cruzando com o portfólio farmacêutico..."):
             try:
                 client = genai.Client(api_key=api_key)
                 bytes_data = arquivo_pdf.read()
@@ -131,17 +132,32 @@ if arquivo_pdf and api_key:
                     Estruture no JSON solicitado com quantidades e valores unitários numéricos.
                     """
 
-                resposta = client.models.generate_content(
-                    model="gemini-3.6-flash",
-                    contents=[
-                        types.Part.from_bytes(data=bytes_data, mime_type="application/pdf"),
-                        prompt
-                    ],
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        response_schema=ListaItens,
-                    )
-                )
+                # Lista de modelos estáveis em ordem de preferência
+                modelos_tentativa = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3.6-flash"]
+                resposta = None
+                erro_detalhado = None
+
+                for nome_modelo in modelos_tentativa:
+                    try:
+                        resposta = client.models.generate_content(
+                            model=nome_modelo,
+                            contents=[
+                                types.Part.from_bytes(data=bytes_data, mime_type="application/pdf"),
+                                prompt
+                            ],
+                            config=types.GenerateContentConfig(
+                                response_mime_type="application/json",
+                                response_schema=ListaItens,
+                            )
+                        )
+                        if resposta:
+                            break
+                    except Exception as err:
+                        erro_detalhado = err
+                        time.sleep(2)  # Pausa breve antes de tentar o próximo modelo
+
+                if not resposta:
+                    raise erro_detalhado
 
                 dados = ListaItens.model_validate_json(resposta.text)
 
@@ -159,7 +175,6 @@ if arquivo_pdf and api_key:
                         "Aderência"
                     ]
 
-                    # Filtro visual de sensibilidade se for Medicamentos
                     if segmento == "Medicamentos" and sensibilidade == "Apenas Itens Compatíveis (Alta/Média)":
                         df = df[df["Aderência"].isin(["Alta", "Média"])]
 
