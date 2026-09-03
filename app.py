@@ -5,24 +5,25 @@ from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
 
-# 1. Estrutura de Dados da Extração
+# 1. Estrutura de Extração Abrangente
 class ItemLicitacao(BaseModel):
     numero_item: str = Field(description="Número ou identificador do item/lote no edital (ex: '01', 'Lote 1 - Item 2')")
-    descricao: str = Field(description="Descrição técnica detalhada, princípio ativo, dosagem e forma farmacêutica")
-    unidade: str = Field(description="Unidade de fornecimento (ex: AMP, FA, COMP, TB, FR)")
-    quantidade: float = Field(description="Quantidade licitada em formato numérico decimal")
-    valor_referencia_unitario: float = Field(description="Valor unitário máximo ou estimado de referência no edital")
-    laboratorio_prioritario: str = Field(description="Laboratório parceiro indicado para cotação, respeitando as regras de prioridade")
+    descricao: str = Field(description="Descrição técnica completa do medicamento (princípio ativo, dosagem, forma farmacêutica)")
+    unidade: str = Field(description="Unidade de fornecimento (ex: AMP, FA, COMP, TB, FR, UN)")
+    quantidade: float = Field(description="Quantidade licitada em formato numérico")
+    valor_referencia_unitario: float = Field(description="Valor unitário máximo ou de referência do edital")
+    laboratorio_sugerido: str = Field(description="Laboratório parceiro prioritário compatível ou 'Outro / Não Mapeado'")
+    status_aderencia: str = Field(description="'Alta' se pertence diretamente ao portfólio parceiro, 'Média' se for da mesma classe/similar, ou 'Baixa'")
 
 class ListaItens(BaseModel):
     itens: list[ItemLicitacao]
 
-# 2. Configuração da Página e Cabeçalho Principal
+# 2. Configurações da Página
 st.set_page_config(page_title="Radar de Licitações", layout="wide")
 st.title("🎯 Analisador de Editais & Mapa de Preços")
 st.caption("Faça upload do Termo de Referência ou Edital em PDF para extrair os itens automaticamente.")
 
-# Leitura segura da API Key
+# Leitura de segredos / API Key
 if "GEMINI_API_KEY" in st.secrets and st.secrets["GEMINI_API_KEY"]:
     api_key = st.secrets["GEMINI_API_KEY"]
 else:
@@ -38,8 +39,6 @@ segmento = st.sidebar.selectbox(
 
 if segmento == "Medicamentos":
     st.sidebar.subheader("💊 Portfólio de Laboratórios")
-    
-    # Sua lista de laboratórios parceiros
     labs_base = [
         "Blau",
         "Eurofarma",
@@ -50,137 +49,141 @@ if segmento == "Medicamentos":
         "United Medical",
         "GSK",
         "Aspen",
-        "Sanofi"
+        "Sanofi",
+        "Pint Pharma"
     ]
     
     labs_selecionados = st.sidebar.multiselect(
-        "Laboratórios para filtrar:",
+        "Laboratórios parceiros:",
         options=labs_base,
-        default=labs_base,
-        help="Laboratórios parceiros habilitados para análise do edital."
+        default=labs_base
     )
     
-    outro_lab = st.sidebar.text_input(
-        "Adicionar outro laboratório (opcional):",
-        placeholder="Ex: Cristália, Fresenius..."
-    )
-    
+    outro_lab = st.sidebar.text_input("Adicionar outro laboratório (opcional):")
     todos_labs = list(labs_selecionados)
     if outro_lab.strip():
         todos_labs.append(outro_lab.strip())
         
+    sensibilidade = st.sidebar.radio(
+        "Filtro de Extração:",
+        ["Apenas Itens Compatíveis (Alta/Média)", "Extrair Todos os Medicamentos do Edital"],
+        index=0,
+        help="Escolha se deseja ver somente os itens com match de portfólio ou a listagem total do edital classificada."
+    )
+
     st.sidebar.info(
-        "**Regras de Negócio Ativas:**\n"
-        "- 🥇 **Blau** tem prioridade sobre a **Eurofarma** em caso de sobreposição.\n"
+        "**Regras Comerciais:**\n"
+        "- 🥇 **Blau** tem prioridade sobre a **Eurofarma** em sobreposição.\n"
         "- 🚫 **Sanofi:** exclui linha Medley (sem genéricos)."
     )
 
 elif segmento == "Material Elétrico / Engenharia":
-    st.sidebar.subheader("⚡ Portfólio Elétrico")
     portfolio_texto = st.sidebar.text_area(
         "Itens de interesse:",
-        value="Material elétrico, cabeamento estruturado, iluminação LED, quadros de distribuição",
-        help="Especifique materiais e serviços que sua empresa atende."
+        value="Material elétrico, cabeamento estruturado, iluminação LED, quadros de distribuição"
     )
-
 else:
-    st.sidebar.subheader("📋 Portfólio Geral")
-    portfolio_texto = st.sidebar.text_area(
-        "Itens de interesse:",
-        value="",
-        placeholder="Digite os tipos de produtos, serviços ou palavras-chave...",
-        help="Informe os produtos ou serviços que deseja filtrar."
-    )
+    portfolio_texto = st.sidebar.text_area("Itens de interesse:", value="")
 
 arquivo_pdf = st.file_uploader("Arraste o PDF do Edital aqui", type=["pdf"])
 
-# 4. Execução da IA com Regras Específicas
+# 4. Execução da IA
 if arquivo_pdf and api_key:
-    # Verificação de segurança
-    if segmento == "Medicamentos" and not todos_labs:
-        st.warning("⚠️ Selecione pelo menos um laboratório na barra lateral para prosseguir.")
-    elif segmento != "Medicamentos" and not portfolio_texto.strip():
-        st.warning("⚠️ Preencha os itens de interesse na barra lateral.")
-    else:
-        if st.button("🚀 Processar Edital", type="primary"):
-            with st.spinner("Analisando o documento e aplicando regras de portfólio..."):
-                try:
-                    client = genai.Client(api_key=api_key)
-                    bytes_data = arquivo_pdf.read()
+    if st.button("🚀 Processar Edital", type="primary"):
+        with st.spinner("Varrendo minuciosamente o edital e cruzando com o portfólio farmacêutico..."):
+            try:
+                client = genai.Client(api_key=api_key)
+                bytes_data = arquivo_pdf.read()
 
-                    # Construção dinâmica do prompt com as regras do laboratório
-                    if segmento == "Medicamentos":
-                        prompt = f"""
-                        Você é um analista sênior de licitações hospitalares especializado em medicamentos.
-                        Analise minuciosamente todo o documento fornecido (Termo de Referência, Relação de Itens ou Edital).
+                if segmento == "Medicamentos":
+                    prompt = f"""
+                    Você é um analista sênior de licitações farmacêuticas e compras hospitalares.
+                    Analise todo o documento fornecido (com ênfase no Termo de Referência, Relação de Itens ou Planilhas).
 
-                        Laboratórios parceiros habilitados:
-                        [{", ".join(todos_labs)}]
+                    Laboratórios parceiros do fornecedor:
+                    [{", ".join(todos_labs)}]
 
-                        REGRAS MANDATÓRIAS DE FILTRAGEM:
-                        1. Extraia APENAS os itens de medicamentos compatíveis com o portfólio dos laboratórios habilitados selecionados.
-                        2. REGRA DE PRIORIDADE: Se um princípio ativo/medicamento for produzido por BLAU e por EUROFARMA, priorize sempre a BLAU como o 'laboratorio_prioritario'.
-                        3. REGRA SANOFI: Em relação à Sanofi, considere apenas a linha de referência e especialidades da Sanofi. NUNCA extraia genéricos ou produtos da MEDLEY (Medley está terminantemente proibida).
-                        4. Converta quantidades e valores unitários de referência para números decimais (float).
-                        5. Preencha rigorosamente a estrutura JSON solicitada.
-                        """
-                    else:
-                        prompt = f"""
-                        Você é um analista sênior de licitações.
-                        Analise o documento fornecido e extraia APENAS os itens correspondentes a:
-                        "{portfolio_texto}"
-                        Converta quantidades e valores unitários para formato numérico float.
-                        Preencha o schema JSON solicitado.
-                        """
+                    DIRETRIZES DE ANÁLISE:
+                    1. Localize TODOS os itens de medicamentos cotados no documento. NÃO pule itens da tabela.
+                    2. Para cada medicamento, avalie a compatibilidade com a linha dos laboratórios parceiros:
+                       - BLAU: oncologia, biológicos/eritropoetina/filgrastim, anestésicos, antibióticos injetáveis, heparinas.
+                       - EUROFARMA: antibióticos hospitalares, anestésicos, injetáveis gerais, oncologia.
+                       - BAXTER: soluções parenterais, anestesia inalatória (sevoflurano, desflurano), oncologia, nutrição clínica.
+                       - BIOCON: biossimilares, insulinas, oncologia.
+                       - ACCORD: oncologia hospitalar e injetáveis de alta complexidade.
+                       - HALEX ISTAR: soluções injetáveis parenterais (eletrólitos, soros, ampolas plásticas).
+                       - UNITED MEDICAL: medicamentos para cuidados críticos, oncologia e doenças raras.
+                       - GSK: vacinas, biológicos, respiratórios e hospitalares de referência.
+                       - ASPEN: anestésicos hospitalares, heparinas, cardiologia e oncologia.
+                       - SANOFI: produtos de REFERÊNCIA e especialidades (NÃO incluir Medley, NÃO incluir genéricos).
+                       - PINT PHARMA: oncologia, hematologia, imunologia e medicamentos para doenças raras/alta complexidade.
+                    3. REGRA DE PRIORIDADE: Caso o item possa ser atendido por Blau e Eurofarma, defina a BLAU como o 'laboratorio_sugerido'.
+                    4. Preencha 'status_aderencia' como:
+                       - 'Alta': medicamento conhecido dessa linha.
+                       - 'Média': medicamento de mesma classe terapêutica passível de cotação.
+                       - 'Baixa': fora da linha desses laboratórios.
+                    5. Converta quantidades e valores unitários para formato numérico (float).
+                    6. Preencha rigorosamente a estrutura JSON solicitada.
+                    """
+                else:
+                    prompt = f"""
+                    Você é um analista de licitações. Extraia os itens correspondentes a: "{portfolio_texto}".
+                    Estruture no JSON solicitado com quantidades e valores unitários numéricos.
+                    """
 
-                    resposta = client.models.generate_content(
-                        model="gemini-3.6-flash",
-                        contents=[
-                            types.Part.from_bytes(data=bytes_data, mime_type="application/pdf"),
-                            prompt
-                        ],
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            response_schema=ListaItens,
-                        )
+                resposta = client.models.generate_content(
+                    model="gemini-3.6-flash",
+                    contents=[
+                        types.Part.from_bytes(data=bytes_data, mime_type="application/pdf"),
+                        prompt
+                    ],
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=ListaItens,
+                    )
+                )
+
+                dados = ListaItens.model_validate_json(resposta.text)
+
+                if not dados.itens:
+                    st.warning("Nenhum item foi identificado no edital.")
+                else:
+                    df = pd.DataFrame([item.model_dump() for item in dados.itens])
+                    df.columns = [
+                        "Item", 
+                        "Descrição / Princípio Ativo", 
+                        "Unidade", 
+                        "Qtd", 
+                        "Valor Ref. Unit. (R$)", 
+                        "Laboratório Sugerido", 
+                        "Aderência"
+                    ]
+
+                    # Filtro visual de sensibilidade se for Medicamentos
+                    if segmento == "Medicamentos" and sensibilidade == "Apenas Itens Compatíveis (Alta/Média)":
+                        df = df[df["Aderência"].isin(["Alta", "Média"])]
+
+                    # Colunas comerciais complementares
+                    df["Custo Aquisição (R$)"] = 0.0
+                    df["Margem Alvo (%)"] = 15.0
+                    df["Preço Proposta Unit. (R$)"] = df["Custo Aquisição (R$)"] * (1 + df["Margem Alvo (%)"] / 100)
+
+                    st.success(f"Foram mapeados {len(df)} itens no edital!")
+                    st.dataframe(df, use_container_width=True)
+
+                    buffer = BytesIO()
+                    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+                        df.to_excel(writer, index=False, sheet_name="Mapa_Medicamentos")
+
+                    st.download_button(
+                        label="📥 Baixar Mapa de Preços (.xlsx)",
+                        data=buffer.getvalue(),
+                        file_name=f"Mapa_Precos_{arquivo_pdf.name.replace('.pdf', '')}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
 
-                    dados = ListaItens.model_validate_json(resposta.text)
-
-                    if not dados.itens:
-                        st.warning("Nenhum item compatível com as diretrizes e laboratórios foi encontrado neste edital.")
-                    else:
-                        df = pd.DataFrame([item.model_dump() for item in dados.itens])
-                        df.columns = [
-                            "Item", 
-                            "Descrição / Princípio Ativo", 
-                            "Unidade", 
-                            "Qtd", 
-                            "Valor Ref. Unit. (R$)", 
-                            "Laboratório Alvo"
-                        ]
-
-                        # Colunas comerciais para cotação e composição de preço
-                        df["Custo Aquisição (R$)"] = 0.0
-                        df["Margem Alvo (%)"] = 15.0
-                        df["Preço Proposta (R$)"] = df["Custo Aquisição (R$)"] * (1 + df["Margem Alvo (%)"] / 100)
-
-                        st.success(f"Encontrados {len(df)} itens compatíveis com o seu portfólio de laboratórios!")
-                        st.dataframe(df, use_container_width=True)
-
-                        buffer = BytesIO()
-                        with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
-                            df.to_excel(writer, index=False, sheet_name="Mapa_de_Precos")
-
-                        st.download_button(
-                            label="📥 Baixar Mapa de Preços (.xlsx)",
-                            data=buffer.getvalue(),
-                            file_name=f"Mapa_Precos_{arquivo_pdf.name.replace('.pdf', '')}.xlsx",
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        )
-
-                except Exception as e:
-                    st.error(f"Erro no processamento: {str(e)}")
+            except Exception as e:
+                st.error(f"Erro no processamento: {str(e)}")
 
 elif not api_key:
-    st.info("Insira a chave da API na barra lateral ou configure nos secrets do Streamlit Cloud.")
+    st.info("Insira a sua chave de API na barra lateral para iniciar a análise.")
