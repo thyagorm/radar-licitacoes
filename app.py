@@ -98,6 +98,14 @@ if segmento == "Medicamentos":
     else:
         st.sidebar.warning("Arquivo 'portfolio_laboratorios.xlsx' não encontrado na raiz.")
 
+    # Opção de visualização restaurada
+    filtro_exibicao = st.sidebar.radio(
+        "Visualização dos Resultados:",
+        ["Apenas Itens com Match nos Laboratórios", "Todos os Medicamentos do Edital"],
+        index=0,
+        help="Escolha se deseja filtrar a tabela final para exibir somente os itens correspondentes aos laboratórios ou todo o edital mapeado."
+    )
+
     st.sidebar.info(
         "**Regras Comerciais Fixadas:**\n"
         "- 🥇 **Blau** tem prioridade sobre **Eurofarma** em itens concorrentes.\n"
@@ -232,6 +240,7 @@ if arquivo_pdf and api_key:
                     \"\"\"
                     """
 
+                # 3.6 prioritário com fallbacks estáveis
                 modelos_tentativa = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash-latest"]
                 resposta = None
                 ultimo_erro = None
@@ -272,6 +281,10 @@ if arquivo_pdf and api_key:
 
                     if segmento == "Medicamentos":
                         df = enriquecer_com_portfolio(df, df_portfolio, labs_selecionados)
+                        
+                        # Aplica o filtro de visualização escolhido na barra lateral
+                        if filtro_exibicao == "Apenas Itens com Match nos Laboratórios":
+                            df = df[df["Laboratório Sugerido"] != "Não mapeado / Verificar"]
 
                     # Colunas comerciais adicionais
                     df["Custo Aquisição (R$)"] = 0.0
