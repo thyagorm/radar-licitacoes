@@ -8,6 +8,8 @@ from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
 from pypdf import PdfReader
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 
 # 1. Estrutura de Extração
 class ItemLicitacao(BaseModel):
@@ -26,13 +28,13 @@ st.set_page_config(page_title="Radar Farma - Licitações", layout="wide", page_
 st.title("🎯 Analisador de Editais & Mapa de Preços")
 st.caption("Varredura inteligente de editais cruzada diretamente com o banco de dados oficial de portfólio.")
 
-# Leitura segura da Chave de API
+# Chave de API
 if "GEMINI_API_KEY" in st.secrets and st.secrets["GEMINI_API_KEY"]:
     api_key = st.secrets["GEMINI_API_KEY"]
 else:
     api_key = st.sidebar.text_input("Chave Gemini API", type="password")
 
-# 3. Normalização e Tratamento da Base de Dados
+# 3. Base de Dados e Normalização
 ARQUIVO_PORTFOLIO = "portfolio_laboratorios.xlsx"
 
 def normalizar_texto(texto):
@@ -72,7 +74,7 @@ def carregar_base_portfolio(caminho):
 
 df_portfolio = carregar_base_portfolio(ARQUIVO_PORTFOLIO)
 
-# 4. Barra Lateral de Configurações
+# 4. Barra Lateral
 st.sidebar.header("⚙️ Configurações de Busca")
 
 segmento = st.sidebar.selectbox(
@@ -98,12 +100,10 @@ if segmento == "Medicamentos":
     else:
         st.sidebar.warning("Arquivo 'portfolio_laboratorios.xlsx' não encontrado na raiz.")
 
-    # Opção de visualização restaurada
     filtro_exibicao = st.sidebar.radio(
         "Visualização dos Resultados:",
         ["Apenas Itens com Match nos Laboratórios", "Todos os Medicamentos do Edital"],
-        index=0,
-        help="Escolha se deseja filtrar a tabela final para exibir somente os itens correspondentes aos laboratórios ou todo o edital mapeado."
+        index=0
     )
 
     st.sidebar.info(
@@ -146,7 +146,6 @@ def enriquecer_com_portfolio(df_extraido, df_port, labs_escolhidos):
     for lab in labs_escolhidos:
         termos_busca_labs.extend(MAPEAMENTO_LABS.get(lab, [normalizar_texto(lab)]))
 
-    # Regra Sanofi: Bloqueio de Medley / Genéricos
     mascara_medley = base["PRODUTO_NORM"].str.contains("MEDLEY") | \
                      base["LABORATORIO_NORM"].str.contains("MEDLEY")
     base_valida = base[~mascara_medley]
@@ -158,21 +157,17 @@ def enriquecer_com_portfolio(df_extraido, df_port, labs_escolhidos):
         substancia_edital = normalizar_texto(row["Princípio Ativo"])
         primeira_palavra = substancia_edital.split()[0] if substancia_edital else ""
 
-        # Busca por semelhança da substância
         matches = base_valida[
             base_valida["SUBSTANCIA_NORM"].str.contains(substancia_edital, regex=False, na=False) |
             base_valida["SUBSTANCIA_NORM"].apply(lambda s: primeira_palavra in s if len(primeira_palavra) > 4 else False)
         ]
 
-        # Filtra pelos laboratórios selecionados
         matches = matches[matches["LABORATORIO_NORM"].apply(
             lambda lab_nome: any(termo in lab_nome for termo in termos_busca_labs)
         )]
 
         if not matches.empty:
             labs_encontrados = matches["LABORATORIO_NORM"].unique().tolist()
-
-            # Prioridade Blau sobre Eurofarma
             tem_blau = any("BLAU" in l for l in labs_encontrados)
             tem_euro = any("EUROFARMA" in l for l in labs_encontrados)
 
@@ -192,10 +187,94 @@ def enriquecer_com_portfolio(df_extraido, df_port, labs_escolhidos):
     df_extraido["Produto / Marca Ref."] = produtos_atribuidos
     return df_extraido
 
+# Função geradora do Excel estilizado
+def gerar_excel_estilizado(df_dados):
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        df_dados.to_excel(writer, index=False, sheet_name="Mapa_de_Precos")
+        ws = writer.sheets["Mapa_de_Precos"]
+        ws.views.sheetView[0].showGridLines = True
+
+        # Estilos
+        fonte_cabecalho = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+        fill_cabecalho = PatternFill(start_color="1F4E78", end_color="1F4E78", fill_type="solid")
+        
+        fonte_corpo = Font(name="Calibri", size=10)
+        fill_editavel = PatternFill(start_color="FFF2CC", end_color="FFF2CC", fill_type="solid")
+        
+        alinhamento_centro = Alignment(horizontal="center", vertical="center")
+        alinhamento_esquerda = Alignment(horizontal="left", vertical="center")
+        alinhamento_direita = Alignment(horizontal="right", vertical="center")
+        
+        borda_fina = Border(
+            left=Side(style="thin", color="D9D9D9"),
+            right=Side(style="thin", color="D9D9D9"),
+            top=Side(style="thin", color="D9D9D9"),
+            bottom=Side(style="thin", color="D9D9D9")
+        )
+
+        num_linhas = len(df_dados)
+        num_cols = len(df_dados.columns)
+
+        # 1. Estilização do cabeçalho
+        for col_num in range(1, num_cols + 1):
+            celula = ws.cell(row=1, column=col_num)
+            celula.font = fonte_cabecalho
+            celula.fill = fill_cabecalho
+            celula.alignment = alinhamento_centro
+            ws.row_dimensions[1].height = 28
+
+        # 2. Formatação dos dados e fórmulas
+        for row_idx in range(2, num_linhas + 2):
+            ws.row_dimensions[row_idx].height = 20
+            for col_idx in range(1, num_cols + 1):
+                cell = ws.cell(row=row_idx, column=col_idx)
+                cell.font = fonte_corpo
+                cell.border = borda_fina
+
+                # Alinhamentos e Formatos
+                if col_idx in [1, 4]:  # Item e Unidade
+                    cell.alignment = alinhamento_centro
+                elif col_idx in [2, 3, 6, 7]:  # Textos
+                    cell.alignment = alinhamento_esquerda
+                elif col_idx == 5:  # Quantidade
+                    cell.alignment = alinhamento_direita
+                    cell.number_format = "#,##0"
+                elif col_idx == 6:  # Valor Ref. Unitário
+                    cell.alignment = alinhamento_direita
+                    cell.number_format = "R$ #,##0.00"
+                elif col_idx == 8:  # Custo Aquisição (Editável)
+                    cell.alignment = alinhamento_direita
+                    cell.number_format = "R$ #,##0.00"
+                    cell.fill = fill_editavel
+                elif col_idx == 9:  # Margem Alvo (%)
+                    cell.alignment = alinhamento_direita
+                    cell.number_format = "0.0%"
+                    cell.value = 0.15  # 15%
+                elif col_idx == 10:  # Preço Proposta Unitário (Fórmula Dinâmica)
+                    cell.alignment = alinhamento_direita
+                    cell.number_format = "R$ #,##0.00"
+                    # = H{row} * (1 + I{row})
+                    cell.value = f"=H{row_idx}*(1+I{row_idx})"
+
+        # 3. Autoajuste da largura das colunas
+        for col in ws.columns:
+            col_letter = get_column_letter(col[0].column)
+            max_len = max(len(str(cell.value or '')) for cell in col)
+            ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
+
+        # Larguras fixas personalizadas para colunas de texto longo
+        ws.column_dimensions['B'].width = 42  # Descrição
+        ws.column_dimensions['C'].width = 25  # Princípio Ativo
+        ws.column_dimensions['F'].width = 28  # Laboratório
+        ws.column_dimensions['G'].width = 22  # Produto Referência
+
+    return output.getvalue()
+
 # 5. Processamento
 if arquivo_pdf and api_key:
     if st.button("🚀 Processar Edital", type="primary"):
-        with st.spinner("Extraindo texto e cruzando com o banco de dados de portfólio..."):
+        with st.spinner("Extraindo itens e gerando Mapa de Preços executivo..."):
             try:
                 texto_edital = extrair_texto_pdf(arquivo_pdf)
 
@@ -220,9 +299,9 @@ if arquivo_pdf and api_key:
 
                     DIRETRIZES MANDATÓRIAS:
                     1. Identifique e extraia todos os itens de medicamentos com descrição, dosagem e forma farmacêutica.
-                    2. No campo 'principio_ativo_identificado', extraia rigorosamente apenas a substância / denominação genérica (ex: 'Propofol', 'Enoxaparina Sódica', 'Meropenem', 'Sevoflurano').
+                    2. No campo 'principio_ativo_identificado', extraia a denominação genérica (ex: 'Propofol', 'Enoxaparina Sódica', 'Meropenem').
                     3. Converta quantidades e valores de referência para números decimais (float).
-                    4. Retorne a resposta no formato JSON estruturado.
+                    4. Retorne no formato JSON estruturado.
 
                     TEXTO DO EDITAL:
                     \"\"\"
@@ -240,7 +319,6 @@ if arquivo_pdf and api_key:
                     \"\"\"
                     """
 
-                # 3.6 prioritário com fallbacks estáveis
                 modelos_tentativa = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash-latest"]
                 resposta = None
                 ultimo_erro = None
@@ -281,26 +359,23 @@ if arquivo_pdf and api_key:
 
                     if segmento == "Medicamentos":
                         df = enriquecer_com_portfolio(df, df_portfolio, labs_selecionados)
-                        
-                        # Aplica o filtro de visualização escolhido na barra lateral
                         if filtro_exibicao == "Apenas Itens com Match nos Laboratórios":
                             df = df[df["Laboratório Sugerido"] != "Não mapeado / Verificar"]
 
-                    # Colunas comerciais adicionais
+                    # Estrutura de colunas comerciais
                     df["Custo Aquisição (R$)"] = 0.0
-                    df["Margem Alvo (%)"] = 15.0
-                    df["Preço Proposta Unit. (R$)"] = df["Custo Aquisição (R$)"] * (1 + df["Margem Alvo (%)"] / 100)
+                    df["Margem Alvo (%)"] = 0.15
+                    df["Preço Proposta Unit. (R$)"] = 0.0
 
                     st.success(f"Foram identificados e mapeados {len(df)} itens no edital!")
                     st.dataframe(df, use_container_width=True)
 
-                    buffer = BytesIO()
-                    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
-                        df.to_excel(writer, index=False, sheet_name="Mapa_Medicamentos")
+                    # Geração do arquivo estilizado
+                    excel_bytes = gerar_excel_estilizado(df)
 
                     st.download_button(
-                        label="📥 Baixar Mapa de Preços (.xlsx)",
-                        data=buffer.getvalue(),
+                        label="📥 Baixar Mapa de Preços Profissional (.xlsx)",
+                        data=excel_bytes,
                         file_name=f"Mapa_Precos_{arquivo_pdf.name.replace('.pdf', '')}.xlsx",
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
