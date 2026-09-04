@@ -232,7 +232,7 @@ if arquivo_pdf and api_key:
                     \"\"\"
                     """
 
-                modelos_tentativa = ["gemini-3.6-flash", "gemini-1.5-flash"]
+                modelos_tentativa = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash-latest"]
                 resposta = None
                 ultimo_erro = None
 
