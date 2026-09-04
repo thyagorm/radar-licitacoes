@@ -107,8 +107,9 @@ if segmento == "Medicamentos":
     )
 
     st.sidebar.info(
-        "**Regras Comerciais Fixadas:**\n"
-        "- 🥇 **Blau** tem prioridade sobre **Eurofarma** em itens concorrentes.\n"
+        "**Hierarquia Comercial Fixada:**\n"
+        "- 🥇 **Sanofi** (Referência) tem prioridade máxima.\n"
+        "- 🥈 **Blau** tem prioridade sobre **Eurofarma**.\n"
         "- 🚫 **Sanofi:** exclui linha Medley (sem genéricos)."
     )
 
@@ -146,6 +147,7 @@ def enriquecer_com_portfolio(df_extraido, df_port, labs_escolhidos):
     for lab in labs_escolhidos:
         termos_busca_labs.extend(MAPEAMENTO_LABS.get(lab, [normalizar_texto(lab)]))
 
+    # Regra Sanofi: Bloqueio de Medley / Genéricos
     mascara_medley = base["PRODUTO_NORM"].str.contains("MEDLEY") | \
                      base["LABORATORIO_NORM"].str.contains("MEDLEY")
     base_valida = base[~mascara_medley]
@@ -168,11 +170,18 @@ def enriquecer_com_portfolio(df_extraido, df_port, labs_escolhidos):
 
         if not matches.empty:
             labs_encontrados = matches["LABORATORIO_NORM"].unique().tolist()
+            
+            # Hierarquia: Sanofi > Blau > Eurofarma
+            tem_sanofi = any("SANOFI" in l for l in labs_encontrados)
             tem_blau = any("BLAU" in l for l in labs_encontrados)
             tem_euro = any("EUROFARMA" in l for l in labs_encontrados)
 
-            if tem_blau and tem_euro:
+            if tem_sanofi:
+                lab_final_filtro = [l for l in labs_encontrados if "SANOFI" in l][0]
+            elif tem_blau:
                 lab_final_filtro = [l for l in labs_encontrados if "BLAU" in l][0]
+            elif tem_euro:
+                lab_final_filtro = [l for l in labs_encontrados if "EUROFARMA" in l][0]
             else:
                 lab_final_filtro = labs_encontrados[0]
 
@@ -187,7 +196,7 @@ def enriquecer_com_portfolio(df_extraido, df_port, labs_escolhidos):
     df_extraido["Produto / Marca Ref."] = produtos_atribuidos
     return df_extraido
 
-# Função geradora do Excel estilizado
+# Gerador Excel Executivo com Fórmulas e Estilos
 def gerar_excel_estilizado(df_dados):
     output = BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
@@ -195,7 +204,6 @@ def gerar_excel_estilizado(df_dados):
         ws = writer.sheets["Mapa_de_Precos"]
         ws.views.sheetView[0].showGridLines = True
 
-        # Estilos
         fonte_cabecalho = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
         fill_cabecalho = PatternFill(start_color="1F4E78", end_color="1F4E78", fill_type="solid")
         
@@ -216,7 +224,7 @@ def gerar_excel_estilizado(df_dados):
         num_linhas = len(df_dados)
         num_cols = len(df_dados.columns)
 
-        # 1. Estilização do cabeçalho
+        # 1. Cabeçalho
         for col_num in range(1, num_cols + 1):
             celula = ws.cell(row=1, column=col_num)
             celula.font = fonte_cabecalho
@@ -224,7 +232,7 @@ def gerar_excel_estilizado(df_dados):
             celula.alignment = alinhamento_centro
             ws.row_dimensions[1].height = 28
 
-        # 2. Formatação dos dados e fórmulas
+        # 2. Dados e Fórmulas
         for row_idx in range(2, num_linhas + 2):
             ws.row_dimensions[row_idx].height = 20
             for col_idx in range(1, num_cols + 1):
@@ -232,10 +240,9 @@ def gerar_excel_estilizado(df_dados):
                 cell.font = fonte_corpo
                 cell.border = borda_fina
 
-                # Alinhamentos e Formatos
                 if col_idx in [1, 4]:  # Item e Unidade
                     cell.alignment = alinhamento_centro
-                elif col_idx in [2, 3, 6, 7]:  # Textos
+                elif col_idx in [2, 3, 6, 7]:  # Descrição, Princípio, Lab, Produto
                     cell.alignment = alinhamento_esquerda
                 elif col_idx == 5:  # Quantidade
                     cell.alignment = alinhamento_direita
@@ -254,20 +261,18 @@ def gerar_excel_estilizado(df_dados):
                 elif col_idx == 10:  # Preço Proposta Unitário (Fórmula Dinâmica)
                     cell.alignment = alinhamento_direita
                     cell.number_format = "R$ #,##0.00"
-                    # = H{row} * (1 + I{row})
                     cell.value = f"=H{row_idx}*(1+I{row_idx})"
 
-        # 3. Autoajuste da largura das colunas
+        # 3. Autoajuste de Colunas
         for col in ws.columns:
             col_letter = get_column_letter(col[0].column)
             max_len = max(len(str(cell.value or '')) for cell in col)
             ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
 
-        # Larguras fixas personalizadas para colunas de texto longo
-        ws.column_dimensions['B'].width = 42  # Descrição
-        ws.column_dimensions['C'].width = 25  # Princípio Ativo
-        ws.column_dimensions['F'].width = 28  # Laboratório
-        ws.column_dimensions['G'].width = 22  # Produto Referência
+        ws.column_dimensions['B'].width = 42
+        ws.column_dimensions['C'].width = 25
+        ws.column_dimensions['F'].width = 28
+        ws.column_dimensions['G'].width = 22
 
     return output.getvalue()
 
@@ -362,7 +367,6 @@ if arquivo_pdf and api_key:
                         if filtro_exibicao == "Apenas Itens com Match nos Laboratórios":
                             df = df[df["Laboratório Sugerido"] != "Não mapeado / Verificar"]
 
-                    # Estrutura de colunas comerciais
                     df["Custo Aquisição (R$)"] = 0.0
                     df["Margem Alvo (%)"] = 0.15
                     df["Preço Proposta Unit. (R$)"] = 0.0
@@ -370,7 +374,6 @@ if arquivo_pdf and api_key:
                     st.success(f"Foram identificados e mapeados {len(df)} itens no edital!")
                     st.dataframe(df, use_container_width=True)
 
-                    # Geração do arquivo estilizado
                     excel_bytes = gerar_excel_estilizado(df)
 
                     st.download_button(
