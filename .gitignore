@@ -1,32 +1,24 @@
-# Python
+# Python / FastAPI
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
 .Python
 env/
 venv/
-*.egg-info/
-dist/
+ENV/
 build/
+dist/
+*.egg-info/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Database
-*.db
-*.sqlite
-
-# Logs
-*.log
-app.log
-
-# Environment
+# Variáveis de ambiente e segredos
 .env
-.env.local
 
-# Cache
+# Bases de dados locais
+*.db
+*.sqlite3
+
+# Logs e ficheiros temporários
+logs/
+*.log
 .DS_Store
-Thumbs.db
