@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Radar de Licitações - Bem-vindo!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        .subtitle {
+            color: #999;
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .status {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            font-weight: 600;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            text-align: left;
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .card a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .card a:hover {
+            text-decoration: underline;
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .btn {
+            padding: 16px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-3px);
+        }
+        
+        .features {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+            text-align: left;
+        }
+        
+        .features h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 10px;
+            align-items: start;
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            min-width: 30px;
+        }
+        
+        .feature-text {
+            color: #666;
+        }
+        
+        .code-block {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            overflow-x: auto;
+        }
+        
+        .footer {
+            color: #999;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .grid, .button-group, .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Radar de Licitações</h1>
+        <p class="subtitle">Sistema Inteligente de Monitoramento de Contratações Públicas</p>
+        
+        <div class="status">
+            ✅ Aplicação funcionando corretamente!
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>📱 Dashboard Web</h2>
+                <p>Acesse a aplicação completa com interface intuitiva para gerenciar seus portfolios e visualizar oportunidades.</p>
+                <a href="/static/index.html" target="_blank">→ Abrir Dashboard</a>
+            </div>
+            
+            <div class="card">
+                <h2>📚 Documentação API</h2>
+                <p>Explore todos os endpoints disponíveis com Swagger. Ideal para integração e testes.</p>
+                <a href="/docs" target="_blank">→ Ver Swagger</a>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <a href="/static/index.html" class="btn btn-primary">Acessar Dashboard</a>
+            <a href="/docs" class="btn btn-secondary">Ver API</a>
+        </div>
+        
+        <div class="features">
+            <h3>✨ Funcionalidades Principais</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">Dashboard em tempo real com estatísticas</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">Matching inteligente com seus produtos</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">Alertas via WhatsApp e Email</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-text">Análise automática de margem comercial</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-text">Filtros avançados por estado, valor, tipo</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-text">Histórico e tendências de oportunidades</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h3>🚀 Começar</h3>
+            <p style="margin-bottom: 15px;">1. <strong>Crie uma conta</strong> no dashboard</p>
+            <p style="margin-bottom: 15px;">2. <strong>Adicione seus produtos/serviços</strong> (use código CMED ou NCM)</p>
+            <p style="margin-bottom: 15px;">3. <strong>Configure suas preferências</strong> (estado, valor mínimo)</p>
+            <p>4. <strong>Receba alertas automáticos</strong> de licitações relevantes</p>
+        </div>
+        
+        <div class="features">
+            <h3>🔗 Endpoints da API</h3>
+            <p><strong>Health Check:</strong></p>
+            <div class="code-block">GET /health</div>
+            
+            <p style="margin-top: 15px;"><strong>Usuários:</strong></p>
+            <div class="code-block">
+POST /api/users/register
+POST /api/users/login
+GET /api/users/me
+            </div>
+            
+            <p style="margin-top: 15px;"><strong>Portfolio:</strong></p>
+            <div class="code-block">
+GET /api/portfolio
+POST /api/portfolio
+            </div>
+            
+            <p style="margin-top: 15px;"><strong>Documentação completa:</strong></p>
+            <p><a href="/docs" target="_blank" style="color: #667eea; font-weight: 600;">→ Acessar Swagger interativo</a></p>
+        </div>
+        
+        <div class="features">
+            <h3>💡 Dicas</h3>
+            <p><strong>Credenciais de teste:</strong></p>
+            <div class="code-block" style="margin: 10px 0;">
+Email: teste@radar.com
+Senha: 123456
+CNPJ: 00.000.000/0000-00
+Empresa: Empresa Teste
+WhatsApp: (21) 99999-9999
+            </div>
+            <p style="margin-top: 15px;">Use essas informações para fazer seu primeiro login e explorar a aplicação!</p>
+        </div>
+        
+        <div class="footer">
+            <p>Radar de Licitações © 2024 - Desenvolvido por Thyago</p>
+            <p>Versão 1.0.0 | Sistema de Monitoramento Inteligente de Contratações Públicas</p>
+        </div>
+    </div>
+</body>
+</html>
