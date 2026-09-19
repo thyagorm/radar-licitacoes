@@ -409,6 +409,9 @@
                             <button onclick="salvarConfiguracaoAlertas()" style="background: #2b6cb0; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; flex: 1;">
                                 💾 Guardar Configurações
                             </button>
+                            <button onclick="dispararAlertasAgora()" style="background: #276749; color: #fff; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">
+                                🚀 Enviar Alerta Agora
+                            </button>
                             <button onclick="testarSimulacaoAlertas()" style="background: #edf2f7; color: #2d3748; border: 1px solid #cbd5e0; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">
                                 ⚡ Simular Digest
                             </button>
@@ -1236,5 +1239,55 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+
+    async function dispararAlertasAgora() {
+        const email = document.getElementById("alertEmail").value.trim();
+        if (!email) {
+            alert("Por favor, preencha o campo de e-mail.");
+            return;
+        }
+
+        const payload = {
+            usuario_email: email,
+            whatsapp_telefone: document.getElementById("alertTelefone").value.trim(),
+            ufs: document.getElementById("alertUfs").value.trim(),
+            palavras_chave: document.getElementById("alertPalavras").value.trim(),
+            valor_minimo: parseFloat(document.getElementById("alertValorMin").value || 0),
+            ativo: true
+        };
+
+        try {
+            const res = await fetch("/api/alerts/disparar-agora", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            let statusMail = data.status_email?.sucesso ? "✅ Enviado" : `⚠️ Não configurado (${data.status_email?.motivo || "Erro"})`;
+            let statusWpp = data.status_whatsapp?.sucesso ? "✅ Enviado" : `⚠️ Não configurado (${data.status_whatsapp?.motivo || "Erro"})`;
+
+            let msg = `Resultado do envio:
+`;
+            msg += `• Editais encontrados: ${data.total_oportunidades || 0}
+`;
+            msg += `• E-mail: ${statusMail}
+`;
+            msg += `• WhatsApp: ${statusWpp}
+
+`;
+
+            if (!data.status_email?.sucesso || !data.status_whatsapp?.sucesso) {
+                msg += `Nota: Para envio em produção, configure as chaves no arquivo .env (SMTP ou WhatsApp API).`;
+            }
+
+            alert(msg);
+        } catch (e) {
+            alert("Falha na comunicação com o servidor.");
+        }
+    }
+
+</script>
 </body>
 </html>

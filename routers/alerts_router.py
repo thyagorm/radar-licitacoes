@@ -75,3 +75,79 @@ async def forcar_execucao_rotina():
     await tarefa_sincronizar_editais_pncp()
     await tarefa_processar_digest_matinal()
     return {"sucesso": True, "mensagem": "Rotinas de sincronização e digest executadas com sucesso!"}
+
+from services.notification_sender import enviar_email_digest, enviar_whatsapp_alerta
+
+@router.post("/disparar-agora")
+async def disparar_alertas_agora(dados: AlertasConfigSchema):
+    # 1. Garante que os dados do formulário ficam salvos na base
+    salvar_config_alertas(
+        usuario_email=dados.usuario_email,
+        whatsapp_telefone=dados.whatsapp_telefone or "",
+        ufs=dados.ufs or "",
+        palavras_chave=dados.palavras_chave or "",
+        valor_minimo=dados.valor_minimo or 0.0,
+        ativo=True
+    )
+
+    cfg = obter_config_alertas(dados.usuario_email) or {
+        "usuario_email": dados.usuario_email,
+        "whatsapp_telefone": dados.whatsapp_telefone,
+        "ufs": dados.ufs,
+        "palavras_chave": dados.palavras_chave,
+        "valor_minimo": dados.valor_minimo
+    }
+
+    oportunidades = filtrar_oportunidades_para_usuario(cfg)
+    msg_wpp = formatar_mensagem_whatsapp(oportunidades)
+    email_html = formatar_email_html(oportunidades, dados.usuario_email)
+
+    res_email = {"sucesso": False, "motivo": "SMTP_NAO_CONFIGURADO"}
+    res_wpp = {"sucesso": False, "motivo": "WHATSAPP_NAO_CONFIGURADO"}
+
+    if dados.usuario_email:
+        res_email = enviar_email_digest(
+            destinatario=dados.usuario_email,
+            assunto="🎯 Oportunidades do Dia | Radar de Editais",
+            conteudo_html=email_html
+        )
+
+    if dados.whatsapp_telefone:
+        res_wpp = enviar_whatsapp_alerta(
+            telefone=dados.whatsapp_telefone,
+            mensagem_texto=msg_wpp
+        )
+
+    return {
+        "sucesso": True,
+        "total_oportunidades": len(oportunidades),
+        "status_email": res_email,
+        "status_whatsapp": res_wpp
+    }
+
+    msg_wpp = formatar_mensagem_whatsapp(oportunidades)
+    email_html = formatar_email_html(oportunidades, usuario_email)
+
+    res_email = {"sucesso": False, "motivo": "NAO_EXECUTADO"}
+    res_wpp = {"sucesso": False, "motivo": "NAO_EXECUTADO"}
+
+    # 1. Disparo de E-mail
+    if usuario_email:
+        res_email = enviar_email_digest(
+            destinatario=usuario_email,
+            assunto="🎯 Oportunidades do Dia | Radar de Editais",
+            conteudo_html=email_html
+        )
+
+    # 2. Disparo de WhatsApp
+    tel = cfg.get("whatsapp_telefone")
+    if tel:
+        res_wpp = enviar_whatsapp_alerta(telefone=tel, mensagem_texto=msg_wpp)
+
+    return {
+        "sucesso": True,
+        "total_oportunidades": len(oportunidades),
+        "status_email": res_email,
+        "status_whatsapp": res_wpp,
+        "mensagem": "Processo de envio finalizado. Verifique os status individuais."
+    }
