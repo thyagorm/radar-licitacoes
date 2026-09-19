@@ -309,5 +309,91 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuItems = document.querySelectorAll(".sidebar-item");
+            const contentArea = document.querySelector(".content");
+            const initialDashboardHTML = contentArea ? contentArea.innerHTML : "";
+
+            const views = {
+                "meus matches": initialDashboardHTML,
+                "dashboard": initialDashboardHTML,
+                "meu portfolio": `
+                    <div class="header">
+                        <h2>📦 Meu Portfólio</h2>
+                        <p>Gerencie produtos, insumos e margens cadastradas.</p>
+                    </div>
+                    <div style="background: #fff; padding: 25px; border-radius: 12px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <input type="text" placeholder="Código (CMED/NCM)" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; flex: 1;">
+                            <input type="text" placeholder="Descrição do produto" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; flex: 2;">
+                            <input type="number" placeholder="Custo (R$)" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; width: 140px;">
+                            <button style="background: #667eea; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">+ Adicionar</button>
+                        </div>
+                        <p style="color: #888; font-size: 14px;">Nenhum item salvo no momento.</p>
+                    </div>
+                `,
+                "licitações": `
+                    <div class="header">
+                        <h2>📋 Licitações Encontradas</h2>
+                        <p>Contratações públicas recolhidas diretamente do PNCP.</p>
+                    </div>
+                    <div style="background: #fff; padding: 25px; border-radius: 12px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <p style="color: #666;">Novos editais serão populados automaticamente pelo extrator da API.</p>
+                    </div>
+                `,
+                "preferências": `
+                    <div class="header">
+                        <h2>⚙️ Preferências de Busca</h2>
+                        <p>Filtros de monitoramento geográfico e valores.</p>
+                    </div>
+                    <div style="background: #fff; padding: 25px; border-radius: 12px; margin-top: 20px; max-width: 500px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Estados (UF):</label>
+                        <input type="text" value="RJ, SP, MG" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Margem Mínima (%):</label>
+                        <input type="number" value="20" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 20px;">
+                        <button style="background: #667eea; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">Salvar Preferências</button>
+                    </div>
+                `,
+                "notificações": `
+                    <div class="header">
+                        <h2>🔔 Alertas e Notificações</h2>
+                        <p>Configuração de avisos no WhatsApp e Email.</p>
+                    </div>
+                `,
+                "conta": `
+                    <div class="header">
+                        <h2>⚙️ Dados da Empresa</h2>
+                        <p>Informações de cadastro e credenciais da conta.</p>
+                    </div>
+                `
+            };
+
+            menuItems.forEach(btn => {
+                btn.style.cursor = "pointer";
+                btn.addEventListener("click", () => {
+                    menuItems.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+
+                    const rawText = btn.textContent.toLowerCase();
+                    const key = Object.keys(views).find(k => rawText.includes(k));
+
+                    if (key && contentArea) {
+                        contentArea.innerHTML = views[key];
+                    }
+                });
+            });
+
+            // Botao Sair
+            const logoutBtns = Array.from(document.querySelectorAll("button, a")).filter(el => el.textContent.includes("Sair"));
+            logoutBtns.forEach(btn => {
+                btn.style.cursor = "pointer";
+                btn.addEventListener("click", () => {
+                    localStorage.removeItem("radar_token");
+                    window.location.href = "/static/index.html";
+                });
+            });
+        });
+    </script>
 </body>
 </html>
