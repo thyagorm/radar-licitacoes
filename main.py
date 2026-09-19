@@ -11,7 +11,7 @@ from pathlib import Path
 
 from config import settings
 from utils import init_db
-from routers import users, portfolio, licitations, matches, notifications, dashboard
+from routers import edital_analyzer, admin_logs,  users, licitations, matches, notifications, dashboard, cmed_prices
 
 # Configurar logging
 logging.basicConfig(level=settings.log_level)
@@ -64,12 +64,15 @@ if static_dir.exists():
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Incluir routers
+
+app.include_router(edital_analyzer.router, prefix="/api/analyzer", tags=["analyzer"])
 app.include_router(users.router, prefix="/api/users", tags=["users"])
-app.include_router(portfolio.router, prefix="/api/portfolio", tags=["portfolio"])
+# app.include_router(portfolio.router, prefix="/api/portfolio", tags=["portfolio"])
 app.include_router(licitations.router, prefix="/api/licitations", tags=["licitations"])
 app.include_router(matches.router, prefix="/api/matches", tags=["matches"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["notifications"])
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["dashboard"])
+app.include_router(cmed_prices.router, prefix="/api/cmed-prices", tags=["cmed-prices"])
 
 
 # Health Check

@@ -85,3 +85,8 @@ venv.bak/
 # Project specific
 .env.production
 .env.staging
+database.db
+storage/
+__pycache__/
+*.pyc
+.env
