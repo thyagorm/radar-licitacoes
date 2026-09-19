@@ -316,15 +316,125 @@
     
     <script>
         function switchTab(index) {
-            const tabs = document.querySelectorAll('.tab');
-            const contents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => tab.classList.remove('active'));
-            contents.forEach(content => content.classList.remove('active'));
-            
-            tabs[index].classList.add('active');
-            contents[index].classList.add('active');
+            const tabs = document.querySelectorAll(".tab");
+            const contents = document.querySelectorAll(".tab-content");
+            tabs.forEach(tab => tab.classList.remove("active"));
+            contents.forEach(content => content.classList.remove("active"));
+            tabs[index].classList.add("active");
+            contents[index].classList.add("active");
         }
+
+        // Login
+        const loginTab = document.querySelectorAll(".tab-content")[0];
+        const loginEmailInput = loginTab.querySelector("input[type=email]");
+        const loginPassInput = loginTab.querySelector("input[type=password]");
+        const loginBtn = loginTab.querySelector(".btn-submit");
+
+        loginBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const email = loginEmailInput.value.trim();
+            const password = loginPassInput.value;
+
+            if (!email || !password) {
+                alert("Por favor, preencha email e senha.");
+                return;
+            }
+
+            loginBtn.textContent = "Entrando...";
+            loginBtn.disabled = true;
+
+            try {
+                // Tenta envio em JSON para /api/users/login
+                let res = await fetch("/api/users/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                // Se o backend esperar form-data (OAuth2), faz o fallback
+                if (res.status === 422) {
+                    const formData = new URLSearchParams();
+                    formData.append("username", email);
+                    formData.append("password", password);
+                    res = await fetch("/api/users/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: formData
+                    });
+                }
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.detail || "Falha no login");
+                }
+
+                // Armazena o token de autenticacao
+                const token = data.access_token || data.token;
+                if (token) {
+                    localStorage.setItem("radar_token", token);
+                }
+
+                // Redireciona para o dashboard se existir ou recarrega
+                window.location.href = "/static/dashboard.html";
+            } catch (err) {
+                alert("Erro ao entrar: " + err.message);
+            } finally {
+                loginBtn.textContent = "Entrar";
+                loginBtn.disabled = false;
+            }
+        });
+
+        // Registro
+        const regTab = document.querySelectorAll(".tab-content")[1];
+        const regInputs = regTab.querySelectorAll("input");
+        const regName = regInputs[0];
+        const regEmail = regInputs[1];
+        const regCnpj = regInputs[2];
+        const regCompany = regInputs[3];
+        const regPhone = regInputs[4];
+        const regPass = regInputs[5];
+        const regPassConfirm = regInputs[6];
+        const regBtn = regTab.querySelector(".btn-submit");
+
+        regBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            if (regPass.value !== regPassConfirm.value) {
+                alert("As senhas nao conferem.");
+                return;
+            }
+
+            regBtn.textContent = "Criando...";
+            regBtn.disabled = true;
+
+            try {
+                const res = await fetch("/api/users/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: regEmail.value.trim(),
+                        password: regPass.value,
+                        cnpj: regCnpj.value.replace(/\D/g, "") || "00000000000191",
+                        company_name: regCompany.value.trim() || regName.value.trim() || "Empresa",
+                        phone: regPhone.value.trim()
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.detail || "Erro no cadastro");
+                }
+
+                alert("Conta criada com sucesso! Faça login.");
+                switchTab(0);
+                loginEmailInput.value = regEmail.value.trim();
+                loginPassInput.value = regPass.value;
+            } catch (err) {
+                alert("Erro ao cadastrar: " + err.message);
+            } finally {
+                regBtn.textContent = "Criar Conta";
+                regBtn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
