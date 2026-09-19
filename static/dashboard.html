@@ -877,6 +877,9 @@ Clique em "⚡ Simular Digest" para gerar a pré-visualização das mensagens co
                             <a href="${l.link_pncp}" target="_blank" style="background: #edf2f7; color: #2b6cb0; text-decoration: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e0; display: inline-block;">
                                 Abrir ↗
                             </a>
+                            <button onclick='abrirModalAnaliseIa(${JSON.stringify(l).replace(/'/g, "&apos;")})' style="background: #276749; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-block; white-space: nowrap; margin-left: 4px;">
+                                ⚡ IA
+                            </button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -987,6 +990,9 @@ Clique em "⚡ Simular Digest" para gerar a pré-visualização das mensagens co
                             <a href="${linkAcesso}" target="_blank" style="background: #edf2f7; color: #2b6cb0; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e0; display: inline-block; white-space: nowrap;">
                                 Abrir ↗
                             </a>
+                            <button onclick='abrirModalAnaliseIa(${JSON.stringify(l).replace(/'/g, "&apos;")})' style="background: #276749; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-block; white-space: nowrap; margin-left: 4px;">
+                                ⚡ IA
+                            </button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -1106,6 +1112,9 @@ Clique em "⚡ Simular Digest" para gerar a pré-visualização das mensagens co
                             <a href="${linkAcesso}" target="_blank" style="background: #edf2f7; color: #2b6cb0; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e0; display: inline-block; white-space: nowrap;">
                                 Abrir ↗
                             </a>
+                            <button onclick='abrirModalAnaliseIa(${JSON.stringify(l).replace(/'/g, "&apos;")})' style="background: #276749; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-block; white-space: nowrap; margin-left: 4px;">
+                                ⚡ IA
+                            </button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -1286,6 +1295,95 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {
             alert("Falha na comunicação com o servidor.");
         }
+    }
+
+</script>
+
+    <!-- MODAL DE ANÁLISE IA DO EDITAL -->
+    <div id="modalAnaliseEdital" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 99999; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #fff; width: 100%; max-width: 800px; max-height: 90vh; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <div style="background: #1a202c; color: #fff; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; color: #63b3ed;">⚡ Parecer Técnico de IA do Edital</h3>
+                    <p id="modalEditalSubtitulo" style="margin: 3px 0 0 0; font-size: 12px; color: #a0aec0;"></p>
+                </div>
+                <button onclick="fecharModalAnaliseIa()" style="background: transparent; border: none; color: #cbd5e0; font-size: 22px; cursor: pointer;">&times;</button>
+            </div>
+
+            <div id="modalEditalConteudo" style="padding: 24px; overflow-y: auto; flex: 1; font-size: 13px; color: #2d3748; line-height: 1.5;">
+                A carregar parecer...
+            </div>
+
+            <div style="background: #edf2f7; padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0;">
+                <button onclick="fecharModalAnaliseIa()" style="background: #cbd5e0; color: #2d3748; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    async function abrirModalAnaliseIa(edital) {
+        const modal = document.getElementById("modalAnaliseEdital");
+        const sub = document.getElementById("modalEditalSubtitulo");
+        const box = document.getElementById("modalEditalConteudo");
+        
+        modal.style.display = "flex";
+        sub.textContent = `${edital.orgao_nome || 'Órgão'} • Processo: ${edital.numero_edital || '-'}`;
+        box.innerHTML = `<div style="text-align: center; padding: 40px; color: #718096;">⚡ A analisar objeto e requisitos da licitação com IA...</div>`;
+
+        try {
+            const res = await fetch("/api/pncp/analisar-edital", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(edital)
+            });
+            const data = await res.json();
+            const a = data.analise;
+
+            let htmlResp = `
+                <div style="margin-bottom: 18px; background: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px 16px; border-radius: 4px;">
+                    <strong style="color: #2b6cb0; display: block; margin-bottom: 4px;">📌 Resumo Executivo:</strong>
+                    ${a.resumo_executivo}
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+                    <div style="background: #f7fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #4a5568; display: block; margin-bottom: 4px;">🎯 Segmento:</strong>
+                        <span>${a.segmento}</span>
+                    </div>
+                    <div style="background: #f7fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #4a5568; display: block; margin-bottom: 4px;">⚖️ Complexidade:</strong>
+                        <span style="font-weight: bold; color: ${a.complexidade === 'Alta' ? '#c53030' : a.complexidade === 'Média' ? '#d69e2e' : '#276749'}">${a.complexidade}</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <strong style="color: #2d3748; display: block; margin-bottom: 8px;">📋 Requisitos Críticos de Habilitação:</strong>
+                    <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
+                        ${a.requisitos_habilitacao.map(r => `<li style="margin-bottom: 4px;">${r}</li>`).join("")}
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <strong style="color: #c53030; display: block; margin-bottom: 8px;">⚠️ Pontos de Atenção & Riscos:</strong>
+                    <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
+                        ${a.pontos_atencao_riscos.map(p => `<li style="margin-bottom: 4px;">${p}</li>`).join("")}
+                    </ul>
+                </div>
+
+                <div style="background: #f0fff4; border-left: 4px solid #38a169; padding: 12px 16px; border-radius: 4px;">
+                    <strong style="color: #276749; display: block; margin-bottom: 4px;">💡 Estratégia de Precificação & BDI:</strong>
+                    ${a.estrategia_precificacao}
+                </div>
+            `;
+            box.innerHTML = htmlResp;
+        } catch (e) {
+            box.innerHTML = `<div style="text-align: center; color: #c53030; padding: 30px;">Falha ao gerar o parecer técnico de IA.</div>`;
+        }
+    }
+
+    function fecharModalAnaliseIa() {
+        document.getElementById("modalAnaliseEdital").style.display = "none";
     }
 
 </script>

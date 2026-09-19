@@ -68,3 +68,22 @@ async def sincronizar_pncp(segmento: Optional[str] = Query(None)):
         "segmento_buscado": segmento if segmento else "Todos os segmentos",
         "mensagem": f"{novos} novos editais sincronizados."
     }
+
+from services.edital_analyzer_service import analisar_edital_com_ia
+from pydantic import BaseModel
+
+class EditalAnaliseInput(BaseModel):
+    id: Optional[int] = None
+    numero_edital: Optional[str] = "-"
+    orgao_nome: Optional[str] = ""
+    uf: Optional[str] = "BR"
+    objeto: Optional[str] = ""
+    valor_estimado: Optional[float] = 0.0
+
+@router.post("/analisar-edital")
+async def analisar_edital_endpoint(dados: EditalAnaliseInput):
+    resultado = analisar_edital_com_ia(dados.dict())
+    return {
+        "sucesso": True,
+        "analise": resultado
+    }
