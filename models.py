@@ -148,9 +148,9 @@ class LicitationItem(Base):
     quantity = Column(Float, nullable=True)
     unit = Column(String, nullable=True)
     
-    # Códigos
-    code_cmed = Column(String, nullable=True, index=True)  # CMED para medicamentos
-    code_ncm = Column(String, nullable=True, index=True)   # NCM para produtos
+    # Códigos (indexados via __table_args__)
+    code_cmed = Column(String, nullable=True)
+    code_ncm = Column(String, nullable=True)
     
     # Metadados
     extracted_keywords = Column(String, nullable=True)
