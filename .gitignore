@@ -1,24 +1,87 @@
-# Python / FastAPI
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
 .Python
 env/
 venv/
 ENV/
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
 *.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Variáveis de ambiente e segredos
-.env
-
-# Bases de dados locais
-*.db
-*.sqlite3
-
-# Logs e ficheiros temporários
-logs/
-*.log
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-project
+*.sublime-workspace
 .DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+radar_licitacoes.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+app.log
+debug.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.pytest_cache/
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Node (if using npm scripts)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Virtual environments
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE settings
+.vscode/settings.json
+.idea/
+
+# Project specific
+.env.production
+.env.staging
