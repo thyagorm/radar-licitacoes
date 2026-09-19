@@ -85,6 +85,7 @@
 
             <h3>Operacional</h3>
             <div class="sidebar-item" data-tab="licitacoes">📋 Licitações (PNCP)</div>
+            <div class="sidebar-item" data-tab="alertas" style="cursor:pointer;">🔔 Alertas & Digest</div>
             <div class="sidebar-item" data-tab="matches">📊 Meus Matches</div>
             <div class="sidebar-item active" data-tab="cmed">💰 Mapa de Preços</div>
 
@@ -365,7 +366,67 @@
                     </table>
                 </div>
             </div>
-            <div id="pane-matches" class="tab-pane">
+            
+
+            <!-- ABA CONFIGURAÇÃO DE ALERTAS & NOTIFICAÇÕES -->
+            <div id="pane-alertas" class="tab-pane" style="display: none;">
+                <div class="header" style="margin-bottom: 20px;">
+                    <h2 style="font-size: 22px; color: #1a202c; font-weight: 700;">🔔 Automação de Alertas & Digest Diário</h2>
+                    <p style="color: #718096; font-size: 14px; margin-top: 4px;">Defina critérios personalizados para receber as oportunidades por WhatsApp e E-mail.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                    <!-- Formulário de Preferências -->
+                    <div class="box" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                        <h3 style="font-size: 16px; margin-bottom: 16px; color: #2d3748;">⚙️ Preferências de Monitorização</h3>
+                        
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 4px;">E-mail para Digest Matinal</label>
+                            <input type="email" id="alertEmail" placeholder="seu-email@empresa.com" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 4px;">WhatsApp para Alertas Rápidos (com DDI/DDD)</label>
+                            <input type="text" id="alertTelefone" placeholder="5521999999999" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 4px;">Estados / UFs de Interesse (ex: RJ, SP, MG, BA)</label>
+                            <input type="text" id="alertUfs" placeholder="RJ, SP, MG" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 4px;">Palavras-Chave do Objeto</label>
+                            <input type="text" id="alertPalavras" placeholder="engenharia, vigilância, veículos, limpeza" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+
+                        <div style="margin-bottom: 18px;">
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 4px;">Valor Mínimo Estimado (R$)</label>
+                            <input type="number" id="alertValorMin" placeholder="0.00" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="salvarConfiguracaoAlertas()" style="background: #2b6cb0; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; flex: 1;">
+                                💾 Guardar Configurações
+                            </button>
+                            <button onclick="testarSimulacaoAlertas()" style="background: #edf2f7; color: #2d3748; border: 1px solid #cbd5e0; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">
+                                ⚡ Simular Digest
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pré-visualização WhatsApp -->
+                    <div class="box" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: #2d3748;">📱 Pré-visualização: Mensagem WhatsApp</h3>
+                        <p style="font-size: 12px; color: #718096; margin-bottom: 14px;">Formato conciso para leitura em 30 segundos no telemóvel.</p>
+                        
+                        <div style="background: #eef2f5; border: 1px solid #cbd5e0; border-radius: 8px; padding: 16px; flex: 1; font-family: monospace; font-size: 12px; white-space: pre-wrap; color: #1a202c; overflow-y: auto; max-height: 380px;" id="previewWhatsappBox">
+Clique em "⚡ Simular Digest" para gerar a pré-visualização das mensagens com base nos seus filtros.
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <div id="pane-matches" class="tab-pane">
                 <div class="header">
                     <h2>📊 Meus Matches</h2>
                     <p>Oportunidades em aberto filtradas diretamente pela base de portfólio.</p>
@@ -1074,5 +1135,106 @@
         }
 
 </script>
+<script>
+
+        async function carregarConfiguracaoAlertas() {
+            const email = localStorage.getItem("radar_user_email") || "contato@empresa.com";
+            document.getElementById("alertEmail").value = email;
+
+            try {
+                const res = await fetch(`/api/alerts/configuracao?usuario_email=${encodeURIComponent(email)}`);
+                const data = await res.json();
+                if (data.config) {
+                    const c = data.config;
+                    document.getElementById("alertTelefone").value = c.whatsapp_telefone || "";
+                    document.getElementById("alertUfs").value = c.ufs || "";
+                    document.getElementById("alertPalavras").value = c.palavras_chave || "";
+                    document.getElementById("alertValorMin").value = c.valor_minimo || 0;
+                }
+            } catch (err) {
+                console.error("Erro ao carregar configurações de alertas:", err);
+            }
+        }
+
+        async function salvarConfiguracaoAlertas() {
+            const email = document.getElementById("alertEmail").value.trim();
+            if (!email) {
+                alert("Por favor, preencha o seu e-mail.");
+                return;
+            }
+
+            const dados = {
+                usuario_email: email,
+                whatsapp_telefone: document.getElementById("alertTelefone").value.trim(),
+                ufs: document.getElementById("alertUfs").value.trim(),
+                palavras_chave: document.getElementById("alertPalavras").value.trim(),
+                valor_minimo: parseFloat(document.getElementById("alertValorMin").value || 0),
+                ativo: true
+            };
+
+            try {
+                const res = await fetch("/api/alerts/configurar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(dados)
+                });
+                const resp = await res.json();
+                alert(resp.mensagem || "Configurações salvas!");
+                localStorage.setItem("radar_user_email", email);
+                testarSimulacaoAlertas();
+            } catch (err) {
+                alert("Falha ao salvar as configurações.");
+            }
+        }
+
+        async function testarSimulacaoAlertas() {
+            const email = document.getElementById("alertEmail").value.trim();
+            const box = document.getElementById("previewWhatsappBox");
+            box.textContent = "A cruzar editais e a compor o Digest...";
+
+            try {
+                const res = await fetch(`/api/alerts/simular-digest?usuario_email=${encodeURIComponent(email)}`);
+                const data = await res.json();
+                box.textContent = data.whatsapp_preview || "Nenhum edital compatível encontrado.";
+            } catch (err) {
+                box.textContent = "Erro ao simular digest.";
+            }
+        }
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Garante escuta em todos os itens que possuem data-tab
+    document.querySelectorAll('[data-tab]').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const tabName = item.getAttribute('data-tab');
+            if (!tabName) return;
+
+            // Remove classe ativa de todos os itens do menu
+            document.querySelectorAll('[data-tab]').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+
+            // Oculta todos os painéis
+            document.querySelectorAll('.tab-pane').forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+
+            // Exibe o painel selecionado
+            const target = document.getElementById(`pane-${tabName}`);
+            if (target) {
+                target.classList.add('active');
+                target.style.display = 'block';
+            }
+
+            if (tabName === 'alertas' && typeof carregarConfiguracaoAlertas === 'function') {
+                carregarConfiguracaoAlertas();
+            }
+        });
+    });
+});
+</script>
+
 </body>
 </html>

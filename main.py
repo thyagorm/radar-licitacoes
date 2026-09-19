@@ -1,3 +1,4 @@
+from routers import alerts_router
 """
 Radar de Licitações - Aplicação FastAPI
 Sistema inteligente de monitoramento de contratações públicas
@@ -65,6 +66,7 @@ if static_dir.exists():
 
 # Incluir routers
 
+app.include_router(alerts_router.router, prefix="/api/alerts", tags=["Alertas & Notificações"])
 app.include_router(pncp_router.router, prefix="/api/pncp", tags=["Editais PNCP"])
 app.include_router(edital_analyzer.router, prefix="/api/analyzer", tags=["analyzer"])
 app.include_router(users.router, prefix="/api/users", tags=["users"])
