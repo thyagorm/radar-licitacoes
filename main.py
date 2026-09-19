@@ -11,7 +11,7 @@ from pathlib import Path
 
 from config import settings
 from utils import init_db
-from routers import edital_analyzer, admin_logs,  users, licitations, matches, notifications, dashboard, cmed_prices
+from routers import pncp_router, edital_analyzer, admin_logs,  users, licitations, matches, notifications, dashboard, cmed_prices
 
 # Configurar logging
 logging.basicConfig(level=settings.log_level)
@@ -65,6 +65,7 @@ if static_dir.exists():
 
 # Incluir routers
 
+app.include_router(pncp_router.router, prefix="/api/pncp", tags=["Editais PNCP"])
 app.include_router(edital_analyzer.router, prefix="/api/analyzer", tags=["analyzer"])
 app.include_router(users.router, prefix="/api/users", tags=["users"])
 # app.include_router(portfolio.router, prefix="/api/portfolio", tags=["portfolio"])

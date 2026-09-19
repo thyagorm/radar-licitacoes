@@ -284,32 +284,83 @@
 
             <!-- OUTRAS ABAS -->
             <div id="pane-licitacoes" class="tab-pane">
-                <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <h2>🏛️ Editais Farmacêuticos (PNCP)</h2>
-                        <p>Oportunidades em aberto recolhidas da API oficial do Portal Nacional de Contratações Públicas.</p>
+                        <h2 style="font-size: 22px; color: #1a202c; font-weight: 700;">🏛️ Editais Públicos em Aberto (PNCP)</h2>
+                        <p style="color: #718096; font-size: 14px; margin-top: 4px;">Monitorização em tempo real de compras públicas: obras, serviços, locação, engenharia, materiais e insumos.</p>
                     </div>
-                    <div>
-                        <button id="btnSincronizarPncp" onclick="sincronizarPNCP()" style="background: #2b6cb0; color: #ffffff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            🔄 Sincronizar Editais do PNCP
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button onclick="alternarGavetaFiltros()" style="background: #edf2f7; color: #2d3748; border: 1px solid #cbd5e0; padding: 9px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                            ⚙️ <span id="txtBtnFiltro">Exibir Filtros Avançados</span>
+                        </button>
+                        <button id="btnSincronizarPncp" onclick="sincronizarPNCPMulti()" style="background: #2b6cb0; color: #fff; border: none; padding: 9px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                            🔄 Sincronizar PNCP
                         </button>
                     </div>
                 </div>
 
-                <div class="box">
-                    <table>
+                <!-- GAVETA DE FILTROS EXPANSÍVEL -->
+                <div id="gavetaFiltros" style="display: none; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 5px;">Estado (UF)</label>
+                            <select id="filtroUf" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; background: #fff;">
+                                <option value="">Todos os Estados</option>
+                                <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option>
+                                <option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option>
+                                <option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                                <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option>
+                                <option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option>
+                                <option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                                <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 5px;">Órgão Comprador</label>
+                            <input type="text" id="filtroOrgao" placeholder="Ex: Prefeitura, Tribunal, Ministério..." style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 5px;">Objeto / Palavras-chave</label>
+                            <input type="text" id="filtroObjeto" placeholder="Ex: engenharia, limpeza, vigilância..." style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 5px;">Valor Mínimo (R$)</label>
+                            <input type="number" id="filtroValorMin" placeholder="0,00" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 5px;">Valor Máximo (R$)</label>
+                            <input type="number" id="filtroValorMax" placeholder="Sem limite" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: #4a5568; margin-bottom: 5px;">Abertura a partir de</label>
+                            <input type="date" id="filtroDataAbertura" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px;">
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #edf2f7; padding-top: 12px;">
+                        <button onclick="limparFiltrosAvancados()" style="background: #edf2f7; color: #4a5568; border: 1px solid #cbd5e0; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">
+                            Limpar
+                        </button>
+                        <button onclick="aplicarFiltrosAvancados()" style="background: #1a202c; color: #fff; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box" style="background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; padding: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
                         <thead>
-                            <tr>
-                                <th>Órgão Comprador</th>
-                                <th>Edital / Processo</th>
-                                <th>Modalidade</th>
-                                <th>Objeto da Aquisição</th>
-                                <th>Abertura</th>
-                                <th>Ações</th>
+                            <tr style="background: #f7fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568; width: 60px; text-align: center;">UF</th>
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568; width: 230px;">Órgão Comprador</th>
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568; width: 170px;">Edital / Processo</th>
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568; width: 140px; text-align: right;">Valor Estimado</th>
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568;">Objeto da Contratação</th>
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568; width: 110px; text-align: center;">Abertura</th>
+                                <th style="padding: 14px 16px; font-size: 12px; font-weight: 700; color: #4a5568; width: 90px; text-align: center;">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="pncpTableBody">
-                            <tr><td colspan="6" style="text-align: center; color: #a0aec0; padding: 25px;">A carregar editais do PNCP...</td></tr>
+                            <tr><td colspan="7" style="text-align: center; color: #a0aec0; padding: 30px;">A carregar editais...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -414,7 +465,7 @@
                 if (targetPane) targetPane.classList.add("active");
                 if (tab === "cmed" || tab === "dashboard") verificarStatusPortfolio();
                 if (tab === "admin-logs") carregarLogsAdmin();
-                if (tab === "licitacoes") carregarLicitacoesPNCP();
+                if (tab === "licitacoes") carregarEditaisPncpCorrigido();
             });
         });
 
@@ -721,7 +772,7 @@
                 const res = await fetch("/api/pncp/sincronizar", { method: "POST" });
                 const data = await res.json();
                 alert(data.mensagem || "Sincronização concluída com sucesso!");
-                carregarLicitacoesPNCP();
+                carregarEditaisPncpCorrigido();
             } catch (err) {
                 alert("Falha na sincronização com o PNCP.");
             } finally {
@@ -801,7 +852,7 @@
         }
 
         selecionarTodosPadroes();
-        carregarLicitacoesPNCP();
+        carregarEditaisPncpCorrigido();
         verificarStatusPortfolio();
     </script>
 <script>
@@ -813,6 +864,215 @@
                     }
                 });
             });
+</script>
+<script>
+
+        async function carregarEditaisPncpCorrigido(termo = "") {
+            const tbody = document.getElementById("pncpTableBody");
+            if (!tbody) return;
+            try {
+                const url = termo ? `/api/pncp/licitacoes?busca=${encodeURIComponent(termo)}` : "/api/pncp/licitacoes";
+                const res = await fetch(url);
+                const data = await res.json();
+                tbody.innerHTML = "";
+
+                const lista = data.licitacoes || [];
+                if (lista.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 35px; color: #718096;">Nenhum edital localizado. Utilize a busca acima ou clique em <strong>Sincronizar PNCP</strong>.</td></tr>`;
+                    return;
+                }
+
+                lista.forEach(l => {
+                    const tr = document.createElement("tr");
+                    tr.style.borderBottom = "1px solid #edf2f7";
+
+                    const val = Number(l.valor_estimado || 0);
+                    const valFmt = val > 0 
+                        ? val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+                        : '<span style="color:#a0aec0; font-weight:normal;">Não informado</span>';
+
+                    let dtAbertura = "-";
+                    if (l.data_abertura_proposta) {
+                        dtAbertura = l.data_abertura_proposta.substring(0, 10).split("-").reverse().join("/");
+                    }
+
+                    const linkAcesso = l.link_origem || l.link_pncp;
+
+                    tr.innerHTML = `
+                        <td style="padding: 14px; text-align: center; vertical-align: top;">
+                            <span style="background: #2b6cb0; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; display: inline-block;">${l.uf || 'BR'}</span>
+                        </td>
+                        <td style="padding: 14px; vertical-align: top;">
+                            <strong style="color: #2d3748; font-size: 13px; line-height: 1.3; display: block;">${l.orgao_nome || 'Órgão Público'}</strong>
+                            <span style="color: #718096; font-size: 11px; margin-top: 3px; display: block;">${l.municipio || ''}</span>
+                        </td>
+                        <td style="padding: 14px; vertical-align: top;">
+                            <span style="color: #2b6cb0; font-weight: 700; font-size: 12px; display: block;">${l.numero_edital || '-'}</span>
+                            <span style="color: #718096; font-size: 11px;">${l.modalidade_nome || 'Pregão Eletrônico'}</span>
+                        </td>
+                        <td style="padding: 14px; text-align: right; vertical-align: top; white-space: nowrap;">
+                            <strong style="color: #276749; font-size: 13px;">${valFmt}</strong>
+                        </td>
+                        <td style="padding: 14px; vertical-align: top; color: #4a5568; font-size: 12px; line-height: 1.45;">
+                            ${l.objeto || '-'}
+                        </td>
+                        <td style="padding: 14px; text-align: center; vertical-align: top; white-space: nowrap; font-size: 12px; color: #4a5568;">
+                            ${dtAbertura}
+                        </td>
+                        <td style="padding: 14px; text-align: center; vertical-align: top;">
+                            <a href="${linkAcesso}" target="_blank" style="background: #edf2f7; color: #2b6cb0; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e0; display: inline-block; white-space: nowrap;">
+                                Abrir ↗
+                            </a>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error("Erro ao carregar editais:", err);
+            }
+        }
+
+        function buscarEditaisLocal() {
+            const input = document.getElementById("filtroTermoPncp");
+            const termo = input ? input.value.trim() : "";
+            carregarEditaisPncpCorrigido(termo);
+        }
+
+        async function sincronizarPNCPMulti() {
+            const btn = document.getElementById("btnSincronizarPncp");
+            const input = document.getElementById("filtroTermoPncp");
+            const termo = input ? input.value.trim() : "";
+            
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "⏳ Sincronizando...";
+            }
+            try {
+                const url = termo ? `/api/pncp/sincronizar?segmento=${encodeURIComponent(termo)}` : "/api/pncp/sincronizar";
+                const res = await fetch(url, { method: "POST" });
+                const data = await res.json();
+                alert(data.mensagem || "Editais sincronizados!");
+                carregarEditaisPncpCorrigido(termo);
+            } catch (err) {
+                alert("Falha na sincronização.");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "🔄 Sincronizar PNCP";
+                }
+            }
+        }
+
+</script>
+<script>
+
+        function alternarGavetaFiltros() {
+            const gaveta = document.getElementById("gavetaFiltros");
+            const txt = document.getElementById("txtBtnFiltro");
+            if (gaveta.style.display === "none" || gaveta.style.display === "") {
+                gaveta.style.display = "block";
+                txt.textContent = "Ocultar Filtros";
+            } else {
+                gaveta.style.display = "none";
+                txt.textContent = "Exibir Filtros Avançados";
+            }
+        }
+
+        async function carregarEditaisPncpCorrigido(params = {}) {
+            const tbody = document.getElementById("pncpTableBody");
+            if (!tbody) return;
+            try {
+                const q = new URLSearchParams();
+                if (params.busca) q.append("busca", params.busca);
+                if (params.uf) q.append("uf", params.uf);
+                if (params.orgao) q.append("orgao", params.orgao);
+                if (params.valor_min) q.append("valor_min", params.valor_min);
+                if (params.valor_max) q.append("valor_max", params.valor_max);
+                if (params.data_abertura_ini) q.append("data_abertura_ini", params.data_abertura_ini);
+
+                const url = `/api/pncp/licitacoes?${q.toString()}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                tbody.innerHTML = "";
+
+                const lista = data.licitacoes || [];
+                if (lista.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 35px; color: #718096;">Nenhum edital localizado para estes critérios.</td></tr>`;
+                    return;
+                }
+
+                lista.forEach(l => {
+                    const tr = document.createElement("tr");
+                    tr.style.borderBottom = "1px solid #edf2f7";
+
+                    const val = Number(l.valor_estimado || 0);
+                    const valFmt = val > 0 
+                        ? val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+                        : '<span style="color:#a0aec0; font-weight:normal;">Não informado</span>';
+
+                    let dtAbertura = "-";
+                    if (l.data_abertura_proposta) {
+                        dtAbertura = l.data_abertura_proposta.substring(0, 10).split("-").reverse().join("/");
+                    }
+
+                    const linkAcesso = l.link_origem || l.link_pncp;
+
+                    tr.innerHTML = `
+                        <td style="padding: 14px; text-align: center; vertical-align: top;">
+                            <span style="background: #2b6cb0; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; display: inline-block;">${l.uf || 'BR'}</span>
+                        </td>
+                        <td style="padding: 14px; vertical-align: top;">
+                            <strong style="color: #2d3748; font-size: 13px; line-height: 1.3; display: block;">${l.orgao_nome || 'Órgão Público'}</strong>
+                            <span style="color: #718096; font-size: 11px; margin-top: 3px; display: block;">${l.municipio || ''}</span>
+                        </td>
+                        <td style="padding: 14px; vertical-align: top;">
+                            <span style="color: #2b6cb0; font-weight: 700; font-size: 12px; display: block;">${l.numero_edital || '-'}</span>
+                            <span style="color: #718096; font-size: 11px;">${l.modalidade_nome || 'Pregão Eletrônico'}</span>
+                        </td>
+                        <td style="padding: 14px; text-align: right; vertical-align: top; white-space: nowrap;">
+                            <strong style="color: #276749; font-size: 13px;">${valFmt}</strong>
+                        </td>
+                        <td style="padding: 14px; vertical-align: top; color: #4a5568; font-size: 12px; line-height: 1.45;">
+                            ${l.objeto || '-'}
+                        </td>
+                        <td style="padding: 14px; text-align: center; vertical-align: top; white-space: nowrap; font-size: 12px; color: #4a5568;">
+                            ${dtAbertura}
+                        </td>
+                        <td style="padding: 14px; text-align: center; vertical-align: top;">
+                            <a href="${linkAcesso}" target="_blank" style="background: #edf2f7; color: #2b6cb0; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e0; display: inline-block; white-space: nowrap;">
+                                Abrir ↗
+                            </a>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error("Erro ao carregar editais:", err);
+            }
+        }
+
+        function aplicarFiltrosAvancados() {
+            const params = {
+                uf: document.getElementById("filtroUf").value,
+                orgao: document.getElementById("filtroOrgao").value.trim(),
+                busca: document.getElementById("filtroObjeto").value.trim(),
+                valor_min: document.getElementById("filtroValorMin").value,
+                valor_max: document.getElementById("filtroValorMax").value,
+                data_abertura_ini: document.getElementById("filtroDataAbertura").value
+            };
+            carregarEditaisPncpCorrigido(params);
+        }
+
+        function limparFiltrosAvancados() {
+            document.getElementById("filtroUf").value = "";
+            document.getElementById("filtroOrgao").value = "";
+            document.getElementById("filtroObjeto").value = "";
+            document.getElementById("filtroValorMin").value = "";
+            document.getElementById("filtroValorMax").value = "";
+            document.getElementById("filtroDataAbertura").value = "";
+            carregarEditaisPncpCorrigido({});
+        }
+
 </script>
 </body>
 </html>

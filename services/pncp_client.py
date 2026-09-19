@@ -258,7 +258,17 @@ def persistir_editais_pncp(editais: List[Dict[str, Any]]) -> int:
     conn.close()
     return salvos
 
-def listar_editais_pncp_banco(limite: int = 50, busca: Optional[str] = None, uf: Optional[str] = None) -> List[Dict[str, Any]]:
+def listar_editais_pncp_banco(
+    limite: int = 150,
+    busca: Optional[str] = None,
+    uf: Optional[str] = None,
+    orgao: Optional[str] = None,
+    valor_min: Optional[float] = None,
+    valor_max: Optional[float] = None,
+    data_inicio: Optional[str] = None,
+    data_fim: Optional[str] = None
+) -> List[Dict[str, Any]]:
+    init_pncp_db()
     conn = get_conn()
     cursor = conn.cursor()
 
@@ -266,13 +276,34 @@ def listar_editais_pncp_banco(limite: int = 50, busca: Optional[str] = None, uf:
     params = []
 
     if busca:
-        termo = f"%{busca}%"
-        query += " AND (objeto LIKE ? OR orgao_nome LIKE ? OR segmento LIKE ?)"
-        params.extend([termo, termo, termo])
+        termo = f"%{busca.strip()}%"
+        query += " AND (objeto LIKE ? OR segmento LIKE ?)"
+        params.extend([termo, termo])
 
-    if uf:
+    if uf and uf.strip():
         query += " AND uf = ?"
-        params.append(uf.upper())
+        params.append(uf.strip().upper())
+
+    if orgao and orgao.strip():
+        termo_orgao = f"%{orgao.strip()}%"
+        query += " AND orgao_nome LIKE ?"
+        params.append(termo_orgao)
+
+    if valor_min is not None and valor_min > 0:
+        query += " AND valor_estimado >= ?"
+        params.append(valor_min)
+
+    if valor_max is not None and valor_max > 0:
+        query += " AND valor_estimado <= ?"
+        params.append(valor_max)
+
+    if data_inicio and data_inicio.strip():
+        query += " AND data_abertura_proposta >= ?"
+        params.append(data_inicio.strip())
+
+    if data_fim and data_fim.strip():
+        query += " AND data_abertura_proposta <= ?"
+        params.append(data_fim.strip() + "T23:59:59")
 
     query += " ORDER BY id DESC LIMIT ?"
     params.append(limite)
@@ -281,3 +312,4 @@ def listar_editais_pncp_banco(limite: int = 50, busca: Optional[str] = None, uf:
     rows = [dict(r) for r in cursor.fetchall()]
     conn.close()
     return rows
+
