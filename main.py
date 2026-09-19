@@ -1,3 +1,4 @@
+from services.scheduler_service import iniciar_agendador, parar_agendador
 from routers import alerts_router
 """
 Radar de Licitações - Aplicação FastAPI
@@ -65,6 +66,15 @@ if static_dir.exists():
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Incluir routers
+
+
+@app.on_event("startup")
+async def ao_iniciar_aplicacao():
+    iniciar_agendador()
+
+@app.on_event("shutdown")
+async def ao_encerrar_aplicacao():
+    parar_agendador()
 
 app.include_router(alerts_router.router, prefix="/api/alerts", tags=["Alertas & Notificações"])
 app.include_router(pncp_router.router, prefix="/api/pncp", tags=["Editais PNCP"])

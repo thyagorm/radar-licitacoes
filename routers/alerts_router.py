@@ -68,3 +68,10 @@ async def simular_digest(usuario_email: str):
         "email_html_preview": email_html,
         "oportunidades": oportunidades[:5]
     }
+
+@router.post("/executar-rotina-agendada")
+async def forcar_execucao_rotina():
+    from services.scheduler_service import tarefa_sincronizar_editais_pncp, tarefa_processar_digest_matinal
+    await tarefa_sincronizar_editais_pncp()
+    await tarefa_processar_digest_matinal()
+    return {"sucesso": True, "mensagem": "Rotinas de sincronização e digest executadas com sucesso!"}
