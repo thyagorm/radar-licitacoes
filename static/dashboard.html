@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <link rel="stylesheet" href="/static/strike_tokens_2.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radar de Licitações - Gestão Estratégica</title>
@@ -281,17 +282,99 @@
     }
 
 </style>
+
+<style id="claude-acabamento-perfeito">
+    /* Forçar fundos escuros nos painéis que ficaram com o fundo transparente/branco */
+    .main-content > div > div:not(.kpi-grid), div[class*="card"], div[class*="panel"] {
+        background-color: #12151A !important;
+        border: 1px solid #303844 !important;
+        color: #E8EEF6 !important;
+        border-radius: 10px !important;
+    }
+
+    /* Garantir texto legível nas tabelas inferiores */
+    table, tr, td, th { background: transparent !important; border-color: #303844 !important; color: #E8EEF6 !important; }
+    th, .kpi-title, .kpi-subtext { color: #A9B4C6 !important; }
+
+    /* Consertar o Botão Ouro Técnico ("Abrir Mesa") */
+    button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
+        background-color: #D9A62E !important;
+        color: #0A0A0A !important;
+        border: none !important;
+        font-weight: 600 !important;
+    }
+
+    /* Consertar Botões Secundários ("Atualizar") */
+    .btn-secondary, button[onclick*="carregar"] {
+        background-color: #12151A !important;
+        color: #E8EEF6 !important;
+        border: 1px solid #303844 !important;
+    }
+</style>
+
+
+<style id="strike-correcao-definitiva">
+    /* Forçar fundo escuro nos painéis inferiores independentemente do que lá estiver */
+    .panel-box, .table-card, [style*="var(--bg-surface)"] {
+        background-color: var(--bg-surface, #12151A) !important;
+        background: var(--bg-surface, #12151A) !important;
+        border: 1px solid var(--border-default, #303844) !important;
+        color: var(--text-primary, #E8EEF6) !important;
+    }
+    
+    /* Garantir que o texto das tabelas e painéis fica legível */
+    .panel-box *, .table-card * { color: var(--text-primary, #E8EEF6) !important; }
+    .panel-box p, .table-card p, .panel-box th, .panel-box .text-muted { color: var(--text-secondary, #A9B4C6) !important; }
+    table td { border-bottom: 1px solid var(--border-subtle, #232932) !important; }
+
+    /* Corrigir os botões no canto superior direito para não se sobreporem */
+    .topbar, .master-top-actions {
+        position: absolute !important;
+        top: 32px !important;
+        right: 40px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        background: transparent !important;
+        width: auto !important;
+        z-index: 9999 !important;
+    }
+    .topbar-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12px !important;
+        position: static !important; /* Remove conflitos antigos */
+    }
+    .topbar-actions button, .master-top-actions button {
+        position: static !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Garantir cor Dourada no botão principal */
+    button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
+        background-color: #D9A62E !important;
+        color: #0A0A0A !important;
+        font-weight: 700 !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 8px 16px !important;
+    }
+</style>
+
+    <link rel="stylesheet" href="/static/strike_tokens_2.css?v=2">
 </head>
 <body>
 
     <div class="topbar">
         <div class="topbar-brand">
-            <span>🎯</span>
+            <span></span>
             <span>Radar de Licitações</span>
         </div>
         <div class="topbar-actions">
             <button id="btnThemeToggle" class="btn-theme-toggle" onclick="alternarTemaVisual()" title="Alternar Modo Claro/Escuro">
-                🌙
+                
             </button>
             <button class="btn-logout" onclick="fazerLogout()">
                 👤 Sair
@@ -303,32 +386,32 @@
         <aside class="sidebar">
             <div class="sidebar-section-title">Visão Geral</div>
             <div class="sidebar-item active" data-tab="dashboard">
-                <span>📊 Dashboard</span>
+                <span> Dashboard</span>
             </div>
 
             <div class="sidebar-section-title">Operacional de Licitações</div>
             <div class="sidebar-item" data-tab="licitacoes">
-                <span>📋 Mural de Editais (PNCP)</span>
+                <span> Mural de Editais (PNCP)</span>
             </div>
             <div class="sidebar-item" data-tab="matches">
-                <span>🎯 Radar de Matches</span>
+                <span> Radar de Matches</span>
             </div>
             <div class="sidebar-item" data-tab="mesa">
-                <span>💼 Mesa de Operação</span>
+                <span> Mesa de Operação</span>
             </div>
             <div class="sidebar-item" data-tab="alertas">
-                <span>🔔 Alertas</span>
+                <span> Alertas</span>
             </div>
 
             <div class="sidebar-section-title">Gestão & Estratégia</div>
             <div class="sidebar-item" data-tab="preferencias">
-                <span>⚙️ Estratégia & Critérios</span>
+                <span> Estratégia & Critérios</span>
             </div>
             <div class="sidebar-item" data-tab="notificacoes">
-                <span>🔔 Notificações</span>
+                <span> Notificações</span>
             </div>
             <div class="sidebar-item" data-tab="conta">
-                <span>🏢 Empresa & Certidões</span>
+                <span> Empresa & Certidões</span>
             </div>
         </aside>
 
@@ -346,7 +429,7 @@
                             ↻ Atualizar
                         </button>
                         <button onclick="trocarAbaSistema('mesa')" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);">
-                            💼 Abrir Mesa ↗
+                             Abrir Mesa ↗
                         </button>
                     </div>
                 </div>
@@ -355,7 +438,7 @@
                     <div class="kpi-card blue">
                         <div class="kpi-header">
                             <span class="kpi-title">Mesa em Operação</span>
-                            <span class="kpi-icon">📋</span>
+                            <span class="kpi-icon"></span>
                         </div>
                         <div id="dashKpiOperacao" class="kpi-value" style="color: var(--color-primary);">0</div>
                         <div id="dashKpiOperacaoSub" class="kpi-subtitle">0 ativas / 0 análise</div>
@@ -364,7 +447,7 @@
                     <div class="kpi-card green">
                         <div class="kpi-header">
                             <span class="kpi-title">Pipeline de Propostas</span>
-                            <span class="kpi-icon">💼</span>
+                            <span class="kpi-icon"></span>
                         </div>
                         <div id="dashKpiVolume" class="kpi-value" style="color: var(--color-success);">R$ 0,00</div>
                         <div class="kpi-subtitle">em disputa comercial</div>
@@ -373,7 +456,7 @@
                     <div class="kpi-card orange">
                         <div class="kpi-header">
                             <span class="kpi-title">Taxa de Conversão</span>
-                            <span class="kpi-icon">📈</span>
+                            <span class="kpi-icon"></span>
                         </div>
                         <div id="dashKpiWinRate" class="kpi-value" style="color: var(--color-warning);">0%</div>
                         <div id="dashKpiWinRateSub" class="kpi-subtitle">0 ganhas / 0 perdas</div>
@@ -382,7 +465,7 @@
                     <div class="kpi-card purple">
                         <div class="kpi-header">
                             <span class="kpi-title">Matches de Portfólio</span>
-                            <span class="kpi-icon">🎯</span>
+                            <span class="kpi-icon"></span>
                         </div>
                         <div id="dashKpiMatches" class="kpi-value" style="color: var(--color-info);">0</div>
                         <div class="kpi-subtitle">editais compatíveis</div>
@@ -391,7 +474,7 @@
                     <div class="kpi-card green" id="cardDocContainer">
                         <div class="kpi-header">
                             <span class="kpi-title">Risco Documental</span>
-                            <span class="kpi-icon">🛡️</span>
+                            <span class="kpi-icon"></span>
                         </div>
                         <div id="dashKpiCertidoes" class="kpi-value" style="color: var(--color-success);">0</div>
                         <div id="dashKpiCertidoesSub" class="kpi-subtitle">todas regularizadas</div>
@@ -420,7 +503,7 @@
                 <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px;">
                     <div class="table-container" style="padding: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading);">⚡ Editais Ativos na Mesa</h3>
+                            <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading);"> Editais Ativos na Mesa</h3>
                             <span style="font-size: 12px; color: var(--color-primary); cursor: pointer; font-weight: 600;" onclick="trocarAbaSistema('mesa')">Ver todos ↗</span>
                         </div>
                         <table class="table-modern">
@@ -440,7 +523,7 @@
 
                     <div class="table-container" style="padding: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading);">🎯 Calibração Comercial</h3>
+                            <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading);"> Calibração Comercial</h3>
                             <span class="badge badge-blue">Inteligência</span>
                         </div>
                         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
@@ -461,7 +544,7 @@
             <div id="pane-licitacoes" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                     <div>
-                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-heading); margin: 0;">📋 Mural de Editais (PNCP)</h2>
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-heading); margin: 0;"> Mural de Editais (PNCP)</h2>
                         <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Captação contínua e triagem de certames públicos em tempo real.</p>
                     </div>
                     <div style="display: flex; gap: 8px; align-items: center;">
@@ -496,7 +579,7 @@
                         </select>
                     </div>
                     <button type="button" onclick="toggleFiltrosAvancados()" id="btnToggleFiltros" style="background: var(--table-stripe); color: var(--text-body); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                        ⚙️ Filtros Avançados
+                         Filtros Avançados
                     </button>
                     <button type="button" onclick="carregarLicitacoesPncp()" style="background: var(--color-primary); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
                         🔍 Filtrar
@@ -581,7 +664,7 @@
             <div id="pane-matches" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);">🎯 Radar de Matches de Portfólio</h2>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);"> Radar de Matches de Portfólio</h2>
                         <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Editais identificados com alta aderência aos seus produtos.</p>
                     </div>
                     <button onclick="carregarMeusMatches()" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer;">
@@ -610,7 +693,7 @@
             <div id="pane-mesa" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);">💼 Mesa de Operação</h2>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);"> Mesa de Operação</h2>
                         <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Gestão da esteira de propostas, cotações e disputas.</p>
                     </div>
                     <button onclick="carregarProcessosMesa(statusMesaAtual)" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer;">
@@ -651,7 +734,7 @@
             <div id="pane-alertas" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;">🔔 Central de Alertas & Notificações Ativas</h2>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;"> Central de Alertas & Notificações Ativas</h2>
                         <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Configure os canais de recebimento imediato de oportunidades e prazos via WhatsApp e E-mail.</p>
                     </div>
                     <button type="button" onclick="salvarConfiguracaoAlertas()" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);">
@@ -679,7 +762,7 @@
                             <div style="display: flex; gap: 8px;">
                                 <input type="text" id="alertaWppNumero" placeholder="(21) 99999-9999" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--bg-card); color: var(--text-body);">
                                 <button type="button" onclick="testarDisparoWhatsapp()" style="background: #25d366; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
-                                    ⚡ Enviar Teste
+                                     Enviar Teste
                                 </button>
                             </div>
                         </div>
@@ -700,7 +783,7 @@
                     <div class="kpi-card blue" style="padding: 22px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 24px;">✉️</span>
+                                <span style="font-size: 24px;">✉</span>
                                 <h3 style="font-size: 16px; font-weight: 700; color: var(--text-heading); margin: 0;">Disparo via E-mail</h3>
                             </div>
                             <span class="badge badge-blue">ATIVO</span>
@@ -714,7 +797,7 @@
                             <div style="display: flex; gap: 8px;">
                                 <input type="text" id="alertaEmailDestino" placeholder="comercial@suaempresa.com.br" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--bg-card); color: var(--text-body);">
                                 <button type="button" onclick="testarDisparoEmail()" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
-                                    ✉️ Enviar Teste
+                                    ✉ Enviar Teste
                                 </button>
                             </div>
                         </div>
@@ -755,21 +838,21 @@
                             <tr>
                                 <td><span class="badge badge-green">📱 WhatsApp</span></td>
                                 <td><strong>(21) 98765-4321</strong></td>
-                                <td>🎯 Novo Match 94%: Pregão 045/2026 - SMS Rio (Amoxicilina 500mg)</td>
+                                <td> Novo Match 94%: Pregão 045/2026 - SMS Rio (Amoxicilina 500mg)</td>
                                 <td style="color: var(--text-muted);">Hoje às 08:15</td>
                                 <td style="text-align: center;"><span class="badge badge-green">✓ Entregue</span></td>
                             </tr>
                             <tr>
-                                <td><span class="badge badge-blue">✉️ E-mail</span></td>
+                                <td><span class="badge badge-blue">✉ E-mail</span></td>
                                 <td><strong>comercial@empresa.com.br</strong></td>
-                                <td>📊 Relatório Matinal: 8 novos editais encontrados no PNCP</td>
+                                <td> Relatório Matinal: 8 novos editais encontrados no PNCP</td>
                                 <td style="color: var(--text-muted);">Hoje às 08:00</td>
                                 <td style="text-align: center;"><span class="badge badge-green">✓ Entregue</span></td>
                             </tr>
                             <tr>
                                 <td><span class="badge badge-green">📱 WhatsApp</span></td>
                                 <td><strong>(21) 98765-4321</strong></td>
-                                <td>⚠️ Atenção: Certidão Municipal expira em 12 dias</td>
+                                <td>⚠ Atenção: Certidão Municipal expira em 12 dias</td>
                                 <td style="color: var(--text-muted);">Ontem às 16:30</td>
                                 <td style="text-align: center;"><span class="badge badge-green">✓ Entregue</span></td>
                             </tr>
@@ -781,7 +864,7 @@
             <div id="pane-preferencias" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;">⚙️ Estratégia Comercial & Critérios de Participação</h2>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;"> Estratégia Comercial & Critérios de Participação</h2>
                         <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Defina regras comerciais, modalidades aceitas e governança de lances.</p>
                     </div>
                     <button type="button" onclick="salvarPreferenciasConfig()" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);">
@@ -792,7 +875,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                     <div class="kpi-card" style="padding: 20px;">
                         <h3 style="font-size: 14px; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-                            🏛️ Modalidades & Julgamento Aceitos
+                            🏛 Modalidades & Julgamento Aceitos
                         </h3>
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
@@ -820,7 +903,7 @@
 
                     <div class="kpi-card" style="padding: 20px;">
                         <h3 style="font-size: 14px; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-                            ⚖️ Governança de Margens & Parâmetros
+                            ⚖ Governança de Margens & Parâmetros
                         </h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
                             <div>
@@ -864,7 +947,7 @@
             <!-- 7. NOTIFICAÇÕES -->
             <div id="pane-notificacoes" class="tab-pane">
                 <div style="margin-bottom: 20px;">
-                    <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);">🔔 Central de Notificações</h2>
+                    <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);"> Central de Notificações</h2>
                     <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Avisos em tempo real e regras de envio.</p>
                 </div>
                 <div class="kpi-card" style="padding: 24px;">
@@ -876,14 +959,14 @@
             <div id="pane-conta" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                     <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;">🏢 Gestão da Empresa & Habilitação</h2>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;"> Gestão da Empresa & Habilitação</h2>
                         <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Configurações institucionais, ramo de atividade, certidões e equipa.</p>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 8px; margin-bottom: 20px;">
                     <button class="subtab-btn" onclick="alternarSubTabEmpresa('dados', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--color-primary); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">
-                        🏢 Dados Gerais
+                         Dados Gerais
                     </button>
                     <button class="subtab-btn" onclick="alternarSubTabEmpresa('pagamento', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--border-color); color: var(--text-body); font-size: 12px; font-weight: 700; cursor: pointer;">
                         💳 Pagamento da Plataforma
@@ -904,7 +987,7 @@
                         <div style="display: flex; flex-direction: column; gap: 14px;">
                             <div class="kpi-card" style="padding: 16px;">
                                 <h3 style="font-size: 13px; font-weight: 700; color: var(--text-heading); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-                                    📋 Identificação & Ramo de Atuação
+                                     Identificação & Ramo de Atuação
                                 </h3>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                     <div style="grid-column: span 2;">
@@ -968,7 +1051,7 @@
 
                             <div class="kpi-card" style="padding: 16px;">
                                 <h3 style="font-size: 13px; font-weight: 700; color: var(--text-heading); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-                                    ✍️ Representante & Dados Bancários
+                                    ✍ Representante & Dados Bancários
                                 </h3>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                     <div>
@@ -993,7 +1076,7 @@
 
                         <div class="kpi-card" style="padding: 16px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <h3 style="font-size: 13px; font-weight: 700; color: var(--text-heading); margin: 0;">🛡️ Radar de Certidões & Validades</h3>
+                                <h3 style="font-size: 13px; font-weight: 700; color: var(--text-heading); margin: 0;"> Radar de Certidões & Validades</h3>
                                 <button type="button" onclick="adicionarNovoDocumentoCertidao()" style="background: var(--table-stripe); color: var(--color-primary); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer;">
                                     + Outro Documento
                                 </button>
@@ -1089,7 +1172,7 @@
             const isDark = document.body.classList.toggle("dark-mode");
             localStorage.setItem("radar_dark_mode", isDark);
             const btn = document.getElementById("btnThemeToggle");
-            if (btn) btn.innerHTML = isDark ? "☀️" : "🌙";
+            if (btn) btn.innerHTML = isDark ? "☀" : "";
         }
 
         function trocarAbaSistema(nome) {
@@ -1138,7 +1221,7 @@
             if (localStorage.getItem("radar_dark_mode") === "true") {
                 document.body.classList.add("dark-mode");
                 const btn = document.getElementById("btnThemeToggle");
-                if (btn) btn.innerHTML = "☀️";
+                if (btn) btn.innerHTML = "☀";
             }
 
             carregarDashboardCompleto();
@@ -1673,7 +1756,7 @@
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="6" style="text-align: center; padding: 22px; color: var(--color-danger); font-size: 12px;">
-                            ⚠️ Erro ao carregar mural: ${err.message}
+                            ⚠ Erro ao carregar mural: ${err.message}
                         </td>
                     </tr>
                 `;
@@ -1731,7 +1814,7 @@
             }
             alert(`Disparando mensagem de teste via WhatsApp para: ${num}
 
-Mensagem: "🎯 Radar de Licitações: Teste de alerta ativo bem-sucedido!"`);
+Mensagem: " Radar de Licitações: Teste de alerta ativo bem-sucedido!"`);
         }
 
         function testarDisparoEmail() {
@@ -1742,7 +1825,7 @@ Mensagem: "🎯 Radar de Licitações: Teste de alerta ativo bem-sucedido!"`);
             }
             alert(`Enviando e-mail de teste para: ${email}
 
-Assunto: "🎯 Radar de Licitações - Teste de Notificação Ativa"`);
+Assunto: " Radar de Licitações - Teste de Notificação Ativa"`);
         }
 
 
@@ -1963,7 +2046,7 @@ Assunto: "🎯 Radar de Licitações - Teste de Notificação Ativa"`);
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="6" style="text-align: center; padding: 22px; color: var(--color-danger); font-size: 12px;">
-                            ⚠️ Erro ao carregar mural: ${err.message}
+                            ⚠ Erro ao carregar mural: ${err.message}
                         </td>
                     </tr>
                 `;
@@ -1979,5 +2062,93 @@ Assunto: "🎯 Radar de Licitações - Teste de Notificação Ativa"`);
         }
 
     </script>
+
+<!-- PATCH DESIGN CLAUDE (100% FIDELIDADE) -->
+<link rel="stylesheet" href="/static/strike_tokens_2.css">
+<style>
+    /* Forçar Modo Escuro Oficial Claude */
+    :root, body, html {
+        --bg-app: #0A0B0D !important;
+        --bg-surface: #12151A !important;
+        --bg-sidebar: #0D0F12 !important;
+        --border-default: #303844 !important;
+        --text-primary: #E8EEF6 !important;
+        --text-secondary: #A9B4C6 !important;
+        background-color: var(--bg-app) !important;
+        color: var(--text-primary) !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    }
+    
+    /* Layout à Prova de Bala */
+    body { margin: 0 !important; }
+    .app-container { display: flex !important; min-height: 100vh !important; width: 100% !important; padding: 0 !important; }
+    .main-content { flex: 1 !important; padding: 40px !important; position: relative !important; background-color: var(--bg-app) !important; }
+    
+    /* Posicionamento Correto do Topo (Canto Superior Direito) */
+    .topbar { position: absolute !important; top: 32px !important; right: 40px !important; background: transparent !important; border: none !important; box-shadow: none !important; display: flex !important; width: auto !important; padding: 0 !important; z-index: 99; }
+    .topbar-brand { display: none !important; }
+    .topbar-actions { display: flex !important; gap: 12px !important; }
+    .topbar-actions button { background: var(--bg-surface) !important; border: 1px solid var(--border-default) !important; color: var(--text-primary) !important; padding: 8px 16px !important; border-radius: 6px !important; font-weight: 500 !important; }
+    
+    /* Sidebar Escura e Limpa */
+    .sidebar { background-color: var(--bg-sidebar) !important; border-right: 1px solid var(--border-default) !important; width: 250px !important; min-width: 250px !important; padding-top: 24px !important; }
+    .sidebar-brand { display: none !important; } /* Oculta marca antiga */
+    .sidebar-item { background: transparent !important; color: var(--text-secondary) !important; border: none !important; padding: 10px 16px !important; margin: 4px 12px !important; border-radius: 6px !important; font-weight: 500 !important; }
+    .sidebar-item.active, .sidebar-item:hover { background-color: #1F242C !important; color: #FFF !important; }
+    
+    /* Cartões de KPI perfeitos */
+    .kpi-card, .dashboard-card, .panel-box, .funnel-card, .table-card { background-color: var(--bg-surface) !important; border: 1px solid var(--border-default) !important; border-radius: 10px !important; box-shadow: none !important; }
+    .kpi-card { padding: 20px !important; border-top: 1px solid var(--border-default) !important; }
+    .kpi-card::before, .kpi-card::after { display: none !important; } /* Anula faixas coloridas */
+    div[style*="linear-gradient"] { background: transparent !important; } 
+    
+    /* Botão Ouro Técnico */
+    .btn-primary, button[onclick*="abrirMesa"], #btnAbrirMesa { background-color: #D9A62E !important; color: #0A0A0A !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; padding: 8px 16px !important; }
+    
+    /* Tipografia de Títulos e Valores */
+    h1, h2, h3, .kpi-value { color: var(--text-primary) !important; font-weight: 700 !important; }
+    p, .kpi-title, th { color: var(--text-secondary) !important; text-transform: none !important; }
+    .kpi-value { font-size: 28px !important; margin: 8px 0 !important; }
+    
+    table td { color: var(--text-primary) !important; border-bottom: 1px solid var(--border-default) !important; }
+    table th { border-bottom: 1px solid var(--border-default) !important; }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. Mover Topbar para dentro do main-content (Conserta Layout)
+        const topbar = document.querySelector('.topbar');
+        const main = document.querySelector('.main-content');
+        if (topbar && main) main.appendChild(topbar);
+
+        // 2. Injetar Novo Logótipo na Sidebar
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && !document.getElementById('novo-strike-logo')) {
+            sidebar.insertAdjacentHTML('afterbegin', `
+            <div id="novo-strike-logo" style="padding: 0 24px 32px 24px; display: flex; align-items: center; gap: 12px;">
+                <svg width="24" height="24" viewBox="0 0 100 100" fill="none"><path d="M72 24 H34 C24 24 24 45 42 48 L56 51" stroke="#E8EEF6" stroke-width="14" stroke-linecap="round"/><path d="M48 50 L58 53 C76 56 76 76 66 76 H28" stroke="#7D8CA6" stroke-width="14" stroke-linecap="round"/><line x1="14" y1="76" x2="86" y2="24" stroke="#D9A62E" stroke-width="6" stroke-linecap="round"/></svg>
+                <span style="color: #FFF; font-weight: 800; font-size: 18px; letter-spacing: 0.2em;">STRIKE</span>
+            </div>`);
+        }
+        
+        // 3. Limpar Emojis e forçar minúsculas sem partir eventos de cliques
+        document.querySelectorAll('.kpi-title, .sidebar-item').forEach(el => {
+            let texto = el.innerHTML;
+            texto = texto.replace(/MESA EM OPERAÇÃO/g, "Mesa em operação")
+                         .replace(/PIPELINE DE PROPOSTAS/g, "Pipeline de propostas")
+                         .replace(/TAXA DE CONVERSÃO/g, "Taxa de conversão")
+                         .replace(/MATCHES DE PORTFÓLIO/g, "Matches de portfólio")
+                         .replace(/RISCO DOCUMENTAL/g, "Risco documental")
+                         .replace(/[]/g, "");
+            el.innerHTML = texto;
+        });
+            
+        // Forçar Dark Mode Globalmente
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.setAttribute('data-theme', 'dark');
+    });
+</script>
+<!-- FIM PATCH DESIGN CLAUDE -->
+
 </body>
 </html>
