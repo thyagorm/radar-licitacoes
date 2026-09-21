@@ -1,0 +1,239 @@
+/* ========================================================================
+   STRIKE - CSS CONSOLIDADO DEFINITIVO (v3)
+   Paleta: #0A0B0D (bg-app) | #12151A (bg-surface) | #D9A62E (accent-gold)
+   ======================================================================== */
+
+* { box-sizing: border-box; }
+
+:root {
+    --bg-app: #0A0B0D;
+    --bg-surface: #12151A;
+    --bg-sidebar: #0D0F12;
+    --bg-subtle: #1F242C;
+    --bg-hover: #232932;
+    --border-default: #303844;
+    --border-subtle: #232932;
+    --text-primary: #E8EEF6;
+    --text-secondary: #A9B4C6;
+    --text-muted: #8493AD;
+    --accent-action: #D9A62E;
+    --accent-action-hover: #E6B84A;
+    --accent-action-text: #0A0A0A;
+    --interactive-primary: #667eea;
+    --interactive-success: #1db584;
+    --interactive-warning: #f5a623;
+    --interactive-danger: #e74c3c;
+    --radius-control: 6px;
+    --radius-card: 10px;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* TOPBAR FIXA NO TOPO */
+.topbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 48px !important;
+    background-color: var(--bg-app) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 24px !important;
+    z-index: 10000 !important;
+    box-sizing: border-box !important;
+}
+
+.topbar-brand { display: none !important; }
+
+.topbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-left: auto !important;
+}
+
+.topbar-actions button {
+    height: 32px !important;
+    padding: 0 12px !important;
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: var(--radius-control) !important;
+    color: var(--text-primary) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+}
+
+/* CONTAINER PRINCIPAL E SIDEBAR */
+.app-container {
+    display: flex !important;
+    flex: 1 !important;
+    min-height: 100vh !important;
+    padding-top: 48px !important;
+}
+
+.sidebar {
+    width: 250px !important;
+    background-color: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border-default) !important;
+    padding: 20px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+    overflow-y: auto !important;
+}
+
+.sidebar::before {
+    content: "⚡ STRIKE";
+    display: block;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    margin-bottom: 24px;
+    padding: 0 8px;
+}
+
+.sidebar-section-title {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase !important;
+    margin: 14px 8px 6px 8px !important;
+}
+
+.sidebar-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 8px 12px !important;
+    border-radius: var(--radius-control) !important;
+    color: var(--text-secondary) !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+    text-decoration: none !important;
+}
+
+.sidebar-item:hover, .sidebar-item.active {
+    background-color: var(--bg-subtle) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ÁREA DE CONTEÚDO E CABEÇALHOS */
+.main-content {
+    flex: 1 !important;
+    padding: 28px 36px !important;
+    overflow-y: auto !important;
+    background-color: var(--bg-app) !important;
+}
+
+.pane-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 24px !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.pane-header-title h2 {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+}
+
+.pane-header-title p {
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+    margin-top: 4px !important;
+}
+
+.pane-header-actions {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+}
+
+/* BOTÕES */
+button[onclick*="carregarDashboardCompleto"],
+.btn-secondary {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-default) !important;
+    color: var(--text-primary) !important;
+    padding: 8px 16px !important;
+    border-radius: var(--radius-control) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+
+button[onclick*="trocarAbaSistema('mesa')"],
+.btn-primary {
+    background-color: var(--accent-action) !important;
+    border: none !important;
+    color: var(--accent-action-text) !important;
+    padding: 8px 18px !important;
+    border-radius: var(--radius-control) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(217, 166, 46, 0.15) !important;
+}
+
+/* CARDS E TABELAS */
+.kpi-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+}
+
+.kpi-card, .panel-box, .table-card, .card {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: var(--radius-card) !important;
+    padding: 20px !important;
+    color: var(--text-primary) !important;
+}
+
+.kpi-title {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase !important;
+}
+
+.kpi-value {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin: 4px 0 !important;
+}
+
+.kpi-subtitle {
+    font-size: 12px !important;
+    color: var(--text-muted) !important;
+}

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="stylesheet" href="/static/strike_tokens_2.css">
+    <link rel="stylesheet" href="/static/strike_consolidated.css?v=4">
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radar de Licitações - Gestão Estratégica</title>
@@ -283,87 +284,12 @@
 
 </style>
 
-<style id="claude-acabamento-perfeito">
-    /* Forçar fundos escuros nos painéis que ficaram com o fundo transparente/branco */
-    .main-content > div > div:not(.kpi-grid), div[class*="card"], div[class*="panel"] {
-        background-color: #12151A !important;
-        border: 1px solid #303844 !important;
-        color: #E8EEF6 !important;
-        border-radius: 10px !important;
-    }
-
-    /* Garantir texto legível nas tabelas inferiores */
-    table, tr, td, th { background: transparent !important; border-color: #303844 !important; color: #E8EEF6 !important; }
-    th, .kpi-title, .kpi-subtext { color: #A9B4C6 !important; }
-
-    /* Consertar o Botão Ouro Técnico ("Abrir Mesa") */
-    button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
-        background-color: #D9A62E !important;
-        color: #0A0A0A !important;
-        border: none !important;
-        font-weight: 600 !important;
-    }
-
-    /* Consertar Botões Secundários ("Atualizar") */
-    .btn-secondary, button[onclick*="carregar"] {
-        background-color: #12151A !important;
-        color: #E8EEF6 !important;
-        border: 1px solid #303844 !important;
-    }
-</style>
 
 
-<style id="strike-correcao-definitiva">
-    /* Forçar fundo escuro nos painéis inferiores independentemente do que lá estiver */
-    .panel-box, .table-card, [style*="var(--bg-surface)"] {
-        background-color: var(--bg-surface, #12151A) !important;
-        background: var(--bg-surface, #12151A) !important;
-        border: 1px solid var(--border-default, #303844) !important;
-        color: var(--text-primary, #E8EEF6) !important;
-    }
+
+
+
     
-    /* Garantir que o texto das tabelas e painéis fica legível */
-    .panel-box *, .table-card * { color: var(--text-primary, #E8EEF6) !important; }
-    .panel-box p, .table-card p, .panel-box th, .panel-box .text-muted { color: var(--text-secondary, #A9B4C6) !important; }
-    table td { border-bottom: 1px solid var(--border-subtle, #232932) !important; }
-
-    /* Corrigir os botões no canto superior direito para não se sobreporem */
-    .topbar, .master-top-actions {
-        position: absolute !important;
-        top: 32px !important;
-        right: 40px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 12px !important;
-        background: transparent !important;
-        width: auto !important;
-        z-index: 9999 !important;
-    }
-    .topbar-actions {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 12px !important;
-        position: static !important; /* Remove conflitos antigos */
-    }
-    .topbar-actions button, .master-top-actions button {
-        position: static !important;
-        margin: 0 !important;
-        white-space: nowrap !important;
-    }
-
-    /* Garantir cor Dourada no botão principal */
-    button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
-        background-color: #D9A62E !important;
-        color: #0A0A0A !important;
-        font-weight: 700 !important;
-        border: none !important;
-        border-radius: 6px !important;
-        padding: 8px 16px !important;
-    }
-</style>
-
-    <link rel="stylesheet" href="/static/strike_tokens_2.css?v=2">
 </head>
 <body>
 
@@ -419,18 +345,14 @@
             
             <!-- 1. DASHBOARD -->
             <div id="pane-dashboard" class="tab-pane active">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
-                    <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);">Painel Executivo</h2>
-                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Monitorização em tempo real de certames, propostas e conformidade documental.</p>
+                <div class="pane-header">
+                    <div class="pane-header-title">
+                        <h2>Painel Executivo</h2>
+                        <p>Monitorização em tempo real de certames, propostas e conformidade documental.</p>
                     </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button onclick="carregarDashboardCompleto()" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-body); padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
-                            ↻ Atualizar
-                        </button>
-                        <button onclick="trocarAbaSistema('mesa')" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);">
-                             Abrir Mesa ↗
-                        </button>
+                    <div class="pane-header-actions">
+                        <button onclick="carregarDashboardCompleto()">↻ Atualizar</button>
+                        <button onclick="trocarAbaSistema('mesa')">Abrir Mesa ↗</button>
                     </div>
                 </div>
 
@@ -2064,90 +1986,7 @@ Assunto: " Radar de Licitações - Teste de Notificação Ativa"`);
     </script>
 
 <!-- PATCH DESIGN CLAUDE (100% FIDELIDADE) -->
-<link rel="stylesheet" href="/static/strike_tokens_2.css">
-<style>
-    /* Forçar Modo Escuro Oficial Claude */
-    :root, body, html {
-        --bg-app: #0A0B0D !important;
-        --bg-surface: #12151A !important;
-        --bg-sidebar: #0D0F12 !important;
-        --border-default: #303844 !important;
-        --text-primary: #E8EEF6 !important;
-        --text-secondary: #A9B4C6 !important;
-        background-color: var(--bg-app) !important;
-        color: var(--text-primary) !important;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    }
-    
-    /* Layout à Prova de Bala */
-    body { margin: 0 !important; }
-    .app-container { display: flex !important; min-height: 100vh !important; width: 100% !important; padding: 0 !important; }
-    .main-content { flex: 1 !important; padding: 40px !important; position: relative !important; background-color: var(--bg-app) !important; }
-    
-    /* Posicionamento Correto do Topo (Canto Superior Direito) */
-    .topbar { position: absolute !important; top: 32px !important; right: 40px !important; background: transparent !important; border: none !important; box-shadow: none !important; display: flex !important; width: auto !important; padding: 0 !important; z-index: 99; }
-    .topbar-brand { display: none !important; }
-    .topbar-actions { display: flex !important; gap: 12px !important; }
-    .topbar-actions button { background: var(--bg-surface) !important; border: 1px solid var(--border-default) !important; color: var(--text-primary) !important; padding: 8px 16px !important; border-radius: 6px !important; font-weight: 500 !important; }
-    
-    /* Sidebar Escura e Limpa */
-    .sidebar { background-color: var(--bg-sidebar) !important; border-right: 1px solid var(--border-default) !important; width: 250px !important; min-width: 250px !important; padding-top: 24px !important; }
-    .sidebar-brand { display: none !important; } /* Oculta marca antiga */
-    .sidebar-item { background: transparent !important; color: var(--text-secondary) !important; border: none !important; padding: 10px 16px !important; margin: 4px 12px !important; border-radius: 6px !important; font-weight: 500 !important; }
-    .sidebar-item.active, .sidebar-item:hover { background-color: #1F242C !important; color: #FFF !important; }
-    
-    /* Cartões de KPI perfeitos */
-    .kpi-card, .dashboard-card, .panel-box, .funnel-card, .table-card { background-color: var(--bg-surface) !important; border: 1px solid var(--border-default) !important; border-radius: 10px !important; box-shadow: none !important; }
-    .kpi-card { padding: 20px !important; border-top: 1px solid var(--border-default) !important; }
-    .kpi-card::before, .kpi-card::after { display: none !important; } /* Anula faixas coloridas */
-    div[style*="linear-gradient"] { background: transparent !important; } 
-    
-    /* Botão Ouro Técnico */
-    .btn-primary, button[onclick*="abrirMesa"], #btnAbrirMesa { background-color: #D9A62E !important; color: #0A0A0A !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; padding: 8px 16px !important; }
-    
-    /* Tipografia de Títulos e Valores */
-    h1, h2, h3, .kpi-value { color: var(--text-primary) !important; font-weight: 700 !important; }
-    p, .kpi-title, th { color: var(--text-secondary) !important; text-transform: none !important; }
-    .kpi-value { font-size: 28px !important; margin: 8px 0 !important; }
-    
-    table td { color: var(--text-primary) !important; border-bottom: 1px solid var(--border-default) !important; }
-    table th { border-bottom: 1px solid var(--border-default) !important; }
-</style>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // 1. Mover Topbar para dentro do main-content (Conserta Layout)
-        const topbar = document.querySelector('.topbar');
-        const main = document.querySelector('.main-content');
-        if (topbar && main) main.appendChild(topbar);
-
-        // 2. Injetar Novo Logótipo na Sidebar
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebar && !document.getElementById('novo-strike-logo')) {
-            sidebar.insertAdjacentHTML('afterbegin', `
-            <div id="novo-strike-logo" style="padding: 0 24px 32px 24px; display: flex; align-items: center; gap: 12px;">
-                <svg width="24" height="24" viewBox="0 0 100 100" fill="none"><path d="M72 24 H34 C24 24 24 45 42 48 L56 51" stroke="#E8EEF6" stroke-width="14" stroke-linecap="round"/><path d="M48 50 L58 53 C76 56 76 76 66 76 H28" stroke="#7D8CA6" stroke-width="14" stroke-linecap="round"/><line x1="14" y1="76" x2="86" y2="24" stroke="#D9A62E" stroke-width="6" stroke-linecap="round"/></svg>
-                <span style="color: #FFF; font-weight: 800; font-size: 18px; letter-spacing: 0.2em;">STRIKE</span>
-            </div>`);
-        }
-        
-        // 3. Limpar Emojis e forçar minúsculas sem partir eventos de cliques
-        document.querySelectorAll('.kpi-title, .sidebar-item').forEach(el => {
-            let texto = el.innerHTML;
-            texto = texto.replace(/MESA EM OPERAÇÃO/g, "Mesa em operação")
-                         .replace(/PIPELINE DE PROPOSTAS/g, "Pipeline de propostas")
-                         .replace(/TAXA DE CONVERSÃO/g, "Taxa de conversão")
-                         .replace(/MATCHES DE PORTFÓLIO/g, "Matches de portfólio")
-                         .replace(/RISCO DOCUMENTAL/g, "Risco documental")
-                         .replace(/[]/g, "");
-            el.innerHTML = texto;
-        });
-            
-        // Forçar Dark Mode Globalmente
-        document.documentElement.setAttribute('data-theme', 'dark');
-        document.body.setAttribute('data-theme', 'dark');
-    });
-</script>
 <!-- FIM PATCH DESIGN CLAUDE -->
 
 </body>
