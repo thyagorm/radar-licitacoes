@@ -129,7 +129,7 @@ def isolar_paginas_tabela(bytes_arquivo: bytes) -> str:
 
 def extrair_tabela_com_ia(texto_tabela: str, api_key: str) -> List[Dict[str, Any]]:
     client = genai.Client(api_key=api_key)
-    modelos_candidatos = ["gemini-3.6-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+    modelos_candidatos = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3.6-flash"]
 
     prompt = f"""
     Voce deve analisar o texto de um edital de compras publicas hospitalares e extrair TODOS os itens, medicamentos, insumos ou principios ativos citados na cotação.

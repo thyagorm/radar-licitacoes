@@ -1,0 +1,202 @@
+/* ==========================================================================
+   STRIKE DESIGN SYSTEM - DESIGN TOKENS (WCAG 2.x AA)
+   Baseado nas diretrizes oficiais da marca STRIKE
+   ========================================================================== */
+
+:root {
+  --strike-brand-black: #0A0A0A;
+  --strike-brand-ice: #E8EEF6;
+  --strike-brand-steel: #7D8CA6;
+  --strike-brand-gold: #D9A62E;
+
+  /* Paleta de Séries para Gráficos */
+  --strike-chart-1: #78AEF0; /* Série principal */
+  --strike-chart-2: #D9A62E; /* Destaque */
+  --strike-chart-3: #4FB99F; /* Série de apoio */
+  --strike-chart-4: #A99AE0; /* Série de apoio */
+  --strike-chart-5: #E8907A; /* Série de apoio */
+  --strike-chart-6: #8493AD; /* Neutra / Comparação */
+
+  --strike-radius-sm: 6px;
+  --strike-radius-md: 8px;
+  --strike-radius-lg: 12px;
+  --strike-radius-full: 9999px;
+  --strike-transition: all 0.15s ease-in-out;
+}
+
+/* --- MODO ESCURO (PADRÃO STRIKE) --- */
+:root,
+[data-theme="dark"],
+.theme-dark {
+  --bg-app: #0A0B0D;
+  --bg-surface: #12151A;
+  --bg-elevated: #191D24;
+  --bg-subtle: #1F242C;
+  --bg-sidebar: #0D0F12;
+  --bg-sidebar-active: #1F242C;
+
+  --border-subtle: #232932;
+  --border-default: #303844;
+  --border-input: #667388;
+
+  --text-primary: #E8EEF6;
+  --text-secondary: #A9B4C6;
+  --text-muted: #8493AD;
+  --text-disabled: #566175;
+  --text-on-accent: #0A0A0A;
+  --text-sidebar: #A9B4C6;
+  --text-sidebar-active: #E8EEF6;
+
+  --accent-action: #D9A62E;
+  --accent-action-hover: #E6B84A;
+  --accent-action-pressed: #BF8F22;
+  --accent-gold-text: #D9A62E;
+
+  --interactive: #78AEF0;
+
+  --success: #3FBF8F;
+  --success-bg: #14261F;
+  --success-border: #24503F;
+
+  --warning: #F58A3D;
+  --warning-bg: #2B1E14;
+  --warning-border: #5A3A1E;
+
+  --error: #F2706B;
+  --error-bg: #2C1817;
+  --error-border: #5C2E2C;
+
+  --info-bg: #14212F;
+  --info-border: #24405F;
+
+  --neutral-status: #8493AD;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* --- MODO CLARO --- */
+[data-theme="light"],
+.theme-light {
+  --bg-app: #F4F6FA;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-subtle: #EDF1F7;
+  --bg-sidebar: #0D0F12; /* Mantém-se escura para contraste da marca */
+  --bg-sidebar-active: #1F242C;
+
+  --border-subtle: #E1E6EE;
+  --border-default: #CBD3DF;
+  --border-input: #7F8BA0;
+
+  --text-primary: #0F1720;
+  --text-secondary: #475467;
+  --text-muted: #667085;
+  --text-disabled: #98A2B3;
+  --text-on-accent: #0A0A0A;
+  --text-sidebar: #A9B4C6;
+  --text-sidebar-active: #E8EEF6;
+
+  --accent-action: #D9A62E;
+  --accent-action-hover: #C4931F;
+  --accent-action-pressed: #B07F14;
+  --accent-gold-text: #8A5F00; /* WCAG AA sobre branco */
+
+  --interactive: #1D5FB8;
+
+  --success: #0F7B55;
+  --success-bg: #E6F5EE;
+  --success-border: #A7DBC5;
+
+  --warning: #B45309;
+  --warning-bg: #FDF1E3;
+  --warning-border: #F2C99B;
+
+  --error: #C62828;
+  --error-bg: #FDEAEA;
+  --error-border: #F0B4B4;
+
+  --info-bg: #E8F0FB;
+  --info-border: #B3CDF0;
+
+  --neutral-status: #667085;
+
+  --shadow-card: 0 2px 8px rgba(15, 23, 32, 0.08);
+}
+
+/* --- REGRAS GLOBAIS DE INTERFACE --- */
+body {
+  background-color: var(--bg-app) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Barra Lateral STRIKE */
+.sidebar {
+  background-color: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-subtle) !important;
+}
+
+.sidebar-item {
+  color: var(--text-sidebar) !important;
+  border-radius: var(--strike-radius-md) !important;
+  position: relative;
+  transition: var(--strike-transition);
+}
+
+.sidebar-item:hover {
+  background-color: var(--bg-sidebar-active) !important;
+  color: var(--text-sidebar-active) !important;
+}
+
+.sidebar-item.active {
+  background-color: var(--bg-sidebar-active) !important;
+  color: var(--text-sidebar-active) !important;
+  font-weight: 600 !important;
+}
+
+/* Barra dourada de 3px no item ativo */
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background-color: var(--accent-action);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Botão Primário STRIKE (Regra 5% ouro: texto #0A0A0A) */
+.btn-primary,
+button.btn-primary,
+#btnProcessar,
+#btnProcessarEdital {
+  background-color: var(--accent-action) !important;
+  color: var(--text-on-accent) !important;
+  font-weight: 700 !important;
+  border: none !important;
+  border-radius: var(--strike-radius-md) !important;
+  cursor: pointer !important;
+  transition: var(--strike-transition) !important;
+}
+
+.btn-primary:hover,
+#btnProcessar:hover,
+#btnProcessarEdital:hover {
+  background-color: var(--accent-action-hover) !important;
+}
+
+/* Superfícies de Cartões, Painéis e Tabelas */
+.card,
+.stat-card,
+.analyzer-sidebar,
+.tab-pane > div {
+  background-color: var(--bg-surface);
+  border-color: var(--border-default);
+}
+
+/* Formatação Numérica Tabular para Valores em Tabelas */
+td, .kpi-value, .valor-lance {
+  font-variant-numeric: tabular-nums;
+}

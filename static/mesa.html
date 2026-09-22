@@ -437,10 +437,7 @@
     </div>
 
     <script>
-    function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebar) sidebar.classList.toggle('collapsed');
-    }
+    
 
     function toggleMesaDrawer(drawerId, rowEl) {
         const drawer = document.getElementById(drawerId);
@@ -524,6 +521,52 @@
     window.addEventListener('click', function(e) {
         const m = document.getElementById('modalNovoEdital');
         if (e.target === m) fecharModalNovoEdital();
+    });
+    </script>
+<script>
+    // Controle da Sidebar com persistência de estado (não reabre sozinho)
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
+        const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
+        if (!sidebar) return;
+
+        const estaColapsado = sidebar.classList.toggle('collapsed');
+        if (container) {
+            container.classList.toggle('sidebar-collapsed', estaColapsado);
+        }
+        localStorage.setItem('strike_sidebar_collapsed', estaColapsado ? 'true' : 'false');
+    }
+
+    // Aplica o estado salvo imediatamente no carregamento
+    (function aplicarEstadoSidebar() {
+        const salvo = localStorage.getItem('strike_sidebar_collapsed');
+        if (salvo === 'true') {
+            document.addEventListener('DOMContentLoaded', () => {
+                const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
+                const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
+                if (sidebar) sidebar.classList.add('collapsed');
+                if (container) container.classList.add('sidebar-collapsed');
+            });
+        }
+    })();
+    </script>
+<script>
+    // Fechar menu automaticamente ao mudar de aba ou clicar em qualquer item do menu
+    document.addEventListener('DOMContentLoaded', () => {
+        const itensMenu = document.querySelectorAll('.sidebar-item, .subtab-btn, [data-tab]');
+        itensMenu.forEach(item => {
+            item.addEventListener('click', () => {
+                const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
+                const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
+                if (sidebar) {
+                    sidebar.classList.add('collapsed');
+                }
+                if (container) {
+                    container.classList.add('sidebar-collapsed');
+                }
+                localStorage.setItem('strike_sidebar_collapsed', 'true');
+            });
+        });
     });
     </script>
 </body>

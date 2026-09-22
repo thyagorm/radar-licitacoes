@@ -19,7 +19,7 @@ def analisar_edital_com_ia(dados_edital: Dict[str, Any]) -> Dict[str, Any]:
 
     if gemini_key:
         try:
-            import google.generativeai as genai
+            from google import genai
             genai.configure(api_key=gemini_key)
             model = genai.GenerativeModel("gemini-2.5-flash")
 
@@ -83,3 +83,70 @@ def analisar_edital_com_ia(dados_edital: Dict[str, Any]) -> Dict[str, Any]:
         ],
         "estrategia_precificacao": f"Valor teto estimado de R$ {valor:,.2f}. Recomenda-se margem de BDI entre 18% e 25% dependendo da incidência de insumos."
     }
+
+def gerar_parecer_tecnico_ia(dados_edital: dict) -> dict:
+    try:
+        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            return {"erro": "Chave de API do Gemini não configurada no ambiente."}
+
+        client = genai.Client(api_key=api_key)
+
+        orgao = dados_edital.get("orgao_nome") or dados_edital.get("orgao") or "Órgão Público"
+        uf = dados_edital.get("uf") or "BR"
+        numero = dados_edital.get("numero_edital") or dados_edital.get("numero") or "-"
+        valor = float(dados_edital.get("valor_estimado") or dados_edital.get("valor") or 0.0)
+        objeto = dados_edital.get("objeto") or dados_edital.get("descricao") or "-"
+
+        prompt = f"""
+Você é um especialista sênior em licitações públicas brasileiras (Lei 14.133/21).
+Analise as informações do seguinte edital e gere um parecer técnico estruturado exclusivamente em formato JSON válido:
+
+Órgão: {orgao} ({uf})
+Processo/Edital: {numero}
+Valor Estimado: R$ {valor:,.2f}
+Objeto: {objeto}
+
+Responda APENAS com um objeto JSON válido no seguinte formato:
+{{
+    "resumo_executivo": "resumo conciso do objeto e escopo",
+    "segmento": "ex: Medicamentos Hospitalares, Saúde, Serviços",
+    "complexidade": "Baixa" | "Média" | "Alta",
+    "itens_provaveis": [
+        {{"item": "nome do item ou grupo", "quantidade_estimada": "quantidade", "unidade": "UN", "observacao": "..."}}
+    ],
+    "requisitos_habilitacao": [
+        "documentos regulatórios Anvisa/CMED esperados",
+        "qualificação técnica e certidões"
+    ],
+    "pontos_atencao_riscos": [
+        "prazos de entrega",
+        "risco de dotação ou impugnação"
+    ],
+    "recomendacao_final": "Participar" | "Analisar com Cautela" | "Não Participar",
+    "justificativa_estrategica": "parecer conclusivo sobre a viabilidade comercial"
+}}
+"""
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+
+        texto_resp = response.text.strip()
+        # Limpar blocos de markdown se houver
+        if texto_resp.startswith("```json"):
+            texto_resp = texto_resp[7:]
+        if texto_resp.startswith("```"):
+            texto_resp = texto_resp[3:]
+        if texto_resp.endswith("```"):
+            texto_resp = texto_resp[:-3]
+
+        return json.loads(texto_resp.strip())
+
+    except Exception as e:
+        print(f"Erro ao gerar parecer técnico: {e}")
+        return {"erro": f"Falha ao gerar o parecer técnico de IA: {str(e)}"}

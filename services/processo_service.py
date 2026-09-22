@@ -1,3 +1,4 @@
+from services.sequencial_service import gerar_proximo_codigo_interno
 import sqlite3
 import json
 from datetime import datetime
@@ -88,10 +89,13 @@ def promover_edital_pncp(dados: Dict[str, Any]) -> Dict[str, Any]:
         conn.close()
         return {"sucesso": False, "mensagem": "Este edital já está na sua Mesa de Operação!", "id": existente[0]}
 
+    empresa_id = dados.get("empresa_id", 1)
+    ano, sequencial, codigo_interno = gerar_proximo_codigo_interno(empresa_id=empresa_id)
+
     cursor.execute('''
         INSERT INTO processos_licitatorios 
-        (origem, numero_edital, orgao_nome, uf, objeto, segmento, valor_estimado, data_abertura, link_edital, status, viabilidade)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVA', 'PENDENTE')
+        (origem, numero_edital, orgao_nome, uf, objeto, segmento, valor_estimado, data_abertura, link_edital, status, viabilidade, empresa_id, ano, sequencial, codigo_interno)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVA', 'PENDENTE', ?, ?, ?, ?)
     ''', (
         'PNCP',
         dados.get("numero_edital", "-"),
@@ -101,7 +105,11 @@ def promover_edital_pncp(dados: Dict[str, Any]) -> Dict[str, Any]:
         dados.get("segmento", "MEDICAMENTOS"),
         float(dados.get("valor_estimado") or 0.0),
         dados.get("data_abertura", ""),
-        dados.get("link_edital", "")
+        dados.get("link_edital", ""),
+        empresa_id,
+        ano,
+        sequencial,
+        codigo_interno
     ))
     novo_id = cursor.lastrowid
     conn.commit()
@@ -113,10 +121,13 @@ def cadastrar_processo_manual(dados: Dict[str, Any]) -> Dict[str, Any]:
     conn = get_conn()
     cursor = conn.cursor()
 
+    empresa_id = dados.get("empresa_id", 1)
+    ano, sequencial, codigo_interno = gerar_proximo_codigo_interno(empresa_id=empresa_id)
+
     cursor.execute('''
         INSERT INTO processos_licitatorios 
-        (origem, numero_edital, orgao_nome, uf, objeto, segmento, valor_estimado, data_abertura, link_edital, status, viabilidade, notas)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVA', 'PENDENTE', ?)
+        (origem, numero_edital, orgao_nome, uf, objeto, segmento, valor_estimado, data_abertura, link_edital, status, viabilidade, notas, empresa_id, ano, sequencial, codigo_interno)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVA', 'PENDENTE', ?, ?, ?, ?, ?)
     ''', (
         'MANUAL',
         dados.get("numero_edital", "-"),
@@ -127,7 +138,11 @@ def cadastrar_processo_manual(dados: Dict[str, Any]) -> Dict[str, Any]:
         float(dados.get("valor_estimado") or 0.0),
         dados.get("data_abertura", ""),
         dados.get("link_edital", ""),
-        dados.get("notas", "")
+        dados.get("notas", ""),
+        empresa_id,
+        ano,
+        sequencial,
+        codigo_interno
     ))
     novo_id = cursor.lastrowid
     conn.commit()

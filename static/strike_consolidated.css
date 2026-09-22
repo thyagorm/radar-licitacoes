@@ -59,7 +59,7 @@ html, body {
 .topbar-brand { display: none !important; }
 
 .topbar-actions {
-    display: flex !important;
+    display: none;
     align-items: center !important;
     gap: 10px !important;
     margin-left: auto !important;
@@ -100,16 +100,7 @@ html, body {
     overflow-y: auto !important;
 }
 
-.sidebar::before {
-    content: "⚡ STRIKE";
-    display: block;
-    color: var(--text-primary);
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 0.15em;
-    margin-bottom: 24px;
-    padding: 0 8px;
-}
+.sidebar::before { display: none !important; content: "" !important; }
 
 .sidebar-section-title {
     font-size: 10px !important;
@@ -121,7 +112,7 @@ html, body {
 }
 
 .sidebar-item {
-    display: flex !important;
+    display: none;
     align-items: center !important;
     justify-content: space-between !important;
     padding: 8px 12px !important;
@@ -236,4 +227,2698 @@ button[onclick*="trocarAbaSistema('mesa')"],
 .kpi-subtitle {
     font-size: 12px !important;
     color: var(--text-muted) !important;
+}
+
+
+/* -------------------------------------------------------------
+   COMPORTAMENTO: MENU LATERAL RECOLHÍVEL (COLLAPSIBLE SIDEBAR)
+   ------------------------------------------------------------- */
+.sidebar-toggle-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-secondary, #A9B4C6) !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px 10px !important;
+    border-radius: var(--radius-control, 6px) !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+    margin-right: 12px !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: var(--bg-hover, #232932) !important;
+    color: var(--text-primary, #E8EEF6) !important;
+}
+
+.sidebar {
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease !important;
+}
+
+/* Estado quando o menu lateral está oculto */
+body.sidebar-collapsed .sidebar {
+    margin-left: -250px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   BRANDING: LOGO STRIKE FIXO NA TOPBAR
+   ------------------------------------------------------------- */
+.topbar {
+    justify-content: flex-start !important;
+}
+
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    user-select: none !important;
+    cursor: default !important;
+}
+
+.topbar-brand span:first-child {
+    color: var(--accent-action, #D9A62E) !important;
+    font-size: 16px !important;
+}
+
+.topbar-actions {
+    margin-left: auto !important;
+}
+
+/* -------------------------------------------------------------
+   SINCRONIZAÇÃO DINÂMICA DE COR: TOPBAR E TEMA
+   ------------------------------------------------------------- */
+.topbar {
+    background-color: var(--bg-app) !important;
+    background-image: none !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+/* Modo Noturno Explícito */
+body.dark-mode .topbar,
+[data-theme="dark"] .topbar {
+    background-color: var(--bg-app, #0A0B0D) !important;
+    background-image: none !important;
+    border-bottom: 1px solid var(--border-subtle, #232932) !important;
+}
+
+/* Modo Claro Explícito */
+body.light-mode,
+[data-theme="light"] {
+    --bg-app: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --bg-sidebar: #F1F5F9;
+    --bg-subtle: #E2E8F0;
+    --bg-hover: #CBD5E1;
+    --border-default: #CBD5E1;
+    --border-subtle: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+}
+
+body.light-mode .topbar,
+[data-theme="light"] .topbar {
+    background-color: #FFFFFF !important;
+    background-image: none !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+}
+
+body.light-mode .topbar-brand,
+body.light-mode .sidebar-toggle-btn {
+    color: #0F172A !important;
+}
+
+body.light-mode .topbar-actions button {
+    background-color: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+}
+
+
+/* -------------------------------------------------------------
+   LOGÓTIPO OFICIAL STRIKE (IMAGEM)
+   ------------------------------------------------------------- */
+.topbar .topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    height: 100% !important;
+    text-decoration: none !important;
+}
+
+.topbar-logo-img {
+    height: 28px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    border-radius: 4px !important;
+    display: block !important;
+}
+
+.topbar .topbar-brand span {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.18em !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    text-transform: uppercase !important;
+}
+
+/* -------------------------------------------------------------
+   AMPLIAÇÃO DO LOGOTIPO OFICIAL STRIKE
+   ------------------------------------------------------------- */
+.topbar {
+    height: 56px !important;
+}
+
+.app-container {
+    padding-top: 56px !important;
+}
+
+.topbar-logo-img {
+    height: 40px !important;
+    max-height: 40px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    border-radius: 6px !important;
+}
+
+.topbar .topbar-brand span {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.15em !important;
+}
+
+/* -------------------------------------------------------------
+   AMPLIAÇÃO E ZOOM DIRETO NO LOGÓTIPO STRIKE
+   ------------------------------------------------------------- */
+.topbar {
+    height: 60px !important;
+}
+
+.app-container {
+    padding-top: 60px !important;
+}
+
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+/* Caixa de recorte que amplia a parte central do logótipo */
+.topbar-brand-logo-wrapper {
+    width: 48px !important;
+    height: 48px !important;
+    overflow: hidden !important;
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+}
+
+.topbar-brand-logo-wrapper img {
+    width: 72px !important;
+    height: 72px !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    transform: translateY(-2px) scale(1.3) !important;
+}
+
+.topbar .topbar-brand span {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.16em !important;
+    color: var(--text-primary, #E8EEF6) !important;
+}
+
+/* -------------------------------------------------------------
+   BRANDING ESTÁVEL: ⚡ STRIKE NA TOPBAR
+   ------------------------------------------------------------- */
+.topbar {
+    height: 52px !important;
+}
+
+.app-container {
+    padding-top: 52px !important;
+}
+
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    user-select: none !important;
+    cursor: default !important;
+}
+
+.topbar-brand span:first-child {
+    color: var(--accent-action, #D9A62E) !important;
+    font-size: 16px !important;
+}
+
+
+/* -------------------------------------------------------------
+   EXIBIÇÃO EXCLUSIVA: LOGÓTIPO NA TOPBAR (SEM TEXTO)
+   ------------------------------------------------------------- */
+.topbar {
+    height: 54px !important;
+}
+
+.app-container {
+    padding-top: 54px !important;
+}
+
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+}
+
+/* Ocultar qualquer span ou texto remanescente dentro da brand */
+.topbar-brand span,
+.topbar-brand text {
+    display: none !important;
+}
+
+.topbar-brand::before,
+.topbar-brand::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Imagem do logótipo dimensionada com proporção e altura ideal */
+.topbar-logo-img {
+    height: 38px !important;
+    width: auto !important;
+    max-height: 38px !important;
+    display: block !important;
+    object-fit: contain !important;
+    border-radius: 6px !important;
+}
+
+
+/* -------------------------------------------------------------
+   CORREÇÃO DEFINITIVA: REMOVER BARRA BRANCA E TEXTO RESIDUAL
+   ------------------------------------------------------------- */
+html, body {
+    background-color: #0A0B0D !important;
+}
+
+.topbar {
+    background-color: #0A0B0D !important;
+    border-bottom: 1px solid #1E232B !important;
+    height: 54px !important;
+    box-sizing: border-box !important;
+}
+
+/* Elimina a fresta/barra branca abaixo da topbar */
+.app-container,
+.main-wrapper,
+.content-wrapper,
+.main-content {
+    background-color: #0A0B0D !important;
+}
+
+/* Zera tamanho de qualquer texto na brand para eliminar resquícios */
+.topbar-brand {
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: transparent !important;
+}
+
+.topbar-brand * {
+    font-size: 0 !important;
+}
+
+.topbar-logo-img {
+    height: 38px !important;
+    width: auto !important;
+    max-height: 38px !important;
+    display: block !important;
+    object-fit: contain !important;
+}
+
+
+/* -------------------------------------------------------------
+   ELIMINAÇÃO ABSOLUTA DO TEXTO FANTASMA STRIKE
+   ------------------------------------------------------------- */
+.topbar::before,
+.topbar::after,
+.topbar-brand::before,
+.topbar-brand::after,
+.topbar-actions::before,
+.topbar-actions::after {
+    content: none !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+.topbar-brand {
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    user-select: none !important;
+}
+
+.topbar-brand span,
+.topbar-brand p,
+.topbar-brand h1,
+.topbar-brand h2,
+.topbar-brand div:not(.topbar-logo-img) {
+    display: none !important;
+}
+
+/* -------------------------------------------------------------
+   BLOQUEIO NUCLEAR: ELIMINAÇÃO TOTAL DE TEXTO NA TOPBAR-BRAND
+   ------------------------------------------------------------- */
+.topbar, .topbar *, .topbar-brand, .topbar-brand * {
+    text-shadow: none !important;
+}
+
+.topbar-brand::before,
+.topbar-brand::after,
+.topbar::before,
+.topbar::after {
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+.topbar-brand {
+    font-size: 0px !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    overflow: hidden !important;
+}
+
+.topbar-logo-img {
+    height: 40px !important;
+    width: auto !important;
+    max-height: 40px !important;
+    display: inline-block !important;
+}
+
+
+/* -------------------------------------------------------------
+   SINCRONIZAÇÃO: TOPBAR COM A COR EXATA DO LOGÓTIPO
+   ------------------------------------------------------------- */
+.topbar,
+body.dark-mode .topbar,
+[data-theme="dark"] .topbar {
+    background-color: #000000 !important;
+    background-image: none !important;
+    border-bottom: 1px solid #14171C !important;
+}
+
+/* Fundo da imagem e da brand alinhados a preto */
+.topbar-brand,
+.topbar-logo-img {
+    background-color: transparent !important;
+}
+
+/* Botão hambúrguer harmonizado com o fundo preto */
+.sidebar-toggle-btn {
+    background-color: transparent !important;
+    color: #A9B4C6 !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: #14171C !important;
+    color: #FFFFFF !important;
+}
+
+
+/* -------------------------------------------------------------
+   SINCRONIZAÇÃO: TOPBAR COM A COR EXATA DO LOGÓTIPO
+   ------------------------------------------------------------- */
+.topbar,
+body.dark-mode .topbar,
+[data-theme="dark"] .topbar {
+    background-color: #000000 !important;
+    background-image: none !important;
+    border-bottom: 1px solid #14171C !important;
+}
+
+/* Fundo da imagem e da brand alinhados a preto */
+.topbar-brand,
+.topbar-logo-img {
+    background-color: transparent !important;
+}
+
+/* Botão hambúrguer harmonizado com o fundo preto */
+.sidebar-toggle-btn {
+    background-color: transparent !important;
+    color: #A9B4C6 !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: #14171C !important;
+    color: #FFFFFF !important;
+}
+
+
+/* -------------------------------------------------------------
+   BARRA SUPERIOR AMPLA COM LOGO GRANDE VINCULADO AO MENU
+   ------------------------------------------------------------- */
+.topbar {
+    height: 64px !important;
+    background-color: #000000 !important;
+    border-bottom: 1px solid #14171C !important;
+    display: none;
+    align-items: center !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+}
+
+.app-container {
+    padding-top: 64px !important;
+}
+
+/* Botão hambúrguer sempre visível */
+.sidebar-toggle-btn {
+    font-size: 22px !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+    color: #A9B4C6 !important;
+    padding: 6px 10px !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 12px !important;
+    transition: color 0.2s ease, background-color 0.2s ease !important;
+}
+
+.sidebar-toggle-btn:hover {
+    color: #FFFFFF !important;
+    background-color: #14171C !important;
+}
+
+/* Container do logo com transição suave */
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    max-width: 200px !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    transition: max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s ease, 
+                transform 0.25s ease !important;
+}
+
+/* Logo em tamanho grande */
+.topbar-logo-img {
+    height: 52px !important;
+    max-height: 52px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    background: transparent !important;
+}
+
+/* REGRA DE OURO: QUANDO O MENU FOR OCULTO -> OCULTA A LOGO */
+body.sidebar-collapsed .topbar-brand {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    transform: translateX(-16px) !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* -------------------------------------------------------------
+   ESTILO MINIMALISTA INSPIRADO NO CLAUDE
+   ------------------------------------------------------------- */
+.topbar {
+    height: 48px !important;
+    background-color: #000000 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: none;
+    align-items: center !important;
+    padding: 0 14px !important;
+    gap: 8px !important;
+}
+
+.app-container {
+    padding-top: 48px !important;
+}
+
+/* Botão de painel lateral estilo Claude */
+.sidebar-toggle-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    color: #9CA3AF !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+}
+
+.sidebar-toggle-btn svg {
+    width: 19px !important;
+    height: 19px !important;
+    display: block !important;
+}
+
+/* Tipografia Strike estilo Claude (elegante, com serifa moderna ou sem serifa limpa) */
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    overflow: hidden !important;
+    max-width: 160px !important;
+    opacity: 1 !important;
+    transition: max-width 0.22s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.18s ease !important;
+}
+
+.brand-text-claude {
+    font-family: -apple-system, BlinkMacSystemFont, "Canela", "Georgia", "Iowan Old Style", "Times New Roman", serif !important;
+    font-size: 21px !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.01em !important;
+    color: #F3F4F6 !important;
+    line-height: 1 !important;
+    user-select: none !important;
+}
+
+/* Quando recolher o menu, recolhe suavemente o nome junto */
+body.sidebar-collapsed .topbar-brand {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* -------------------------------------------------------------
+   ESTILO CLAUDE COM LOGÓTIPO OFICIAL
+   ------------------------------------------------------------- */
+.topbar {
+    height: 52px !important;
+    background-color: #000000 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: none;
+    align-items: center !important;
+    padding: 0 14px !important;
+    gap: 10px !important;
+}
+
+.app-container {
+    padding-top: 52px !important;
+}
+
+/* Botão minimalista Claude */
+.sidebar-toggle-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    color: #9CA3AF !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+}
+
+.sidebar-toggle-btn svg {
+    width: 19px !important;
+    height: 19px !important;
+    display: block !important;
+}
+
+/* Contentor do logótipo com recolhimento suave */
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    max-width: 140px !important;
+    opacity: 1 !important;
+    transition: max-width 0.22s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.18s ease !important;
+}
+
+/* Imagem do logótipo dimensionada com altura de topo */
+.topbar-logo-img {
+    height: 38px !important;
+    max-height: 38px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+/* Recolher o logótipo quando o menu lateral for fechado */
+body.sidebar-collapsed .topbar-brand {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* -------------------------------------------------------------
+   HARMONIZAÇÃO TOTAL: BARRA SUPERIOR E BARRA LATERAL A PRETO
+   ------------------------------------------------------------- */
+.topbar,
+.sidebar,
+.sidebar-container,
+aside.sidebar,
+#sidebar {
+    background-color: #000000 !important;
+    border-right: 1px solid #14171C !important;
+}
+
+/* -------------------------------------------------------------
+   LOGÓTIPO GRANDE E TOTALMENTE VISÍVEL NA BARRA SUPERIOR
+   ------------------------------------------------------------- */
+.topbar {
+    height: 70px !important;
+    padding: 0 16px !important;
+}
+
+.app-container {
+    padding-top: 70px !important;
+}
+
+/* Permite que o logótipo ocupe toda a largura da coluna da sidebar */
+.topbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    max-width: 260px !important;
+    width: auto !important;
+    height: 100% !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s ease !important;
+}
+
+/* Dimensão generosa e sem compressão visual */
+.topbar-logo-img {
+    height: 56px !important;
+    max-height: 56px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6)) !important;
+}
+
+/* Quando a sidebar for recolhida, oculta o logótipo de forma suave */
+body.sidebar-collapsed .topbar-brand {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* -------------------------------------------------------------
+   LOGO CENTRALIZADA E GRANDE NO TOPO DA SIDEBAR
+   ------------------------------------------------------------- */
+.sidebar,
+aside.sidebar,
+#sidebar {
+    background-color: #000000 !important;
+}
+
+/* Espaço dedicado à logo no topo do menu lateral */
+.sidebar-logo-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 24px 16px 16px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    background-color: #000000 !important;
+}
+
+/* Logo em destaque, centralizada e proporcional ao menu */
+.sidebar-logo-img {
+    width: 130px !important;
+    max-width: 80% !important;
+    height: auto !important;
+    max-height: 110px !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7)) !important;
+}
+
+/* Quando a sidebar for recolhida, esconde o contêiner da logo */
+body.sidebar-collapsed .sidebar-logo-container {
+    display: none !important;
+}
+
+/* Ajuste na topbar para manter apenas o botão limpo */
+.topbar {
+    height: 52px !important;
+    background-color: #000000 !important;
+}
+
+.app-container {
+    padding-top: 52px !important;
+}
+
+/* -------------------------------------------------------------
+   DASHBOARD ENTERPRISE: DENSIDADE, FOCO OPERACIONAL E TABULAR-NUMS
+   ------------------------------------------------------------- */
+/* Fundo limpo e uniforme sem gradientes difusos */
+.dashboard-container,
+.main-content,
+.content-area {
+    background: #000000 !important;
+    padding: 20px 24px !important;
+}
+
+/* Cartões de métricas compactos, retos e informativos */
+.kpi-card,
+.stat-card,
+.metric-box {
+    background: #090A0D !important;
+    border: 1px solid #1A1F26 !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    padding: 12px 16px !important;
+}
+
+/* Alinhamento numérico tabular estrito para valores e datas */
+.kpi-card .value,
+.stat-card .number,
+td.value-cell,
+td.date-cell,
+.tabular-data {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace !important;
+    font-variant-numeric: tabular-nums !important;
+    letter-spacing: -0.02em !important;
+    font-weight: 600 !important;
+    color: #F0F4F8 !important;
+}
+
+/* Tabela de densidade analítica: linhas finas e sem espaçamento ocioso */
+.dashboard-table,
+.operations-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 13px !important;
+}
+
+.dashboard-table th {
+    background: #060709 !important;
+    color: #6B7280 !important;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+    letter-spacing: 0.05em !important;
+    padding: 8px 12px !important;
+    border-bottom: 1px solid #1A1F26 !important;
+    text-align: left !important;
+}
+
+.dashboard-table td {
+    padding: 8px 12px !important;
+    border-bottom: 1px solid #11141A !important;
+    color: #D1D5DB !important;
+}
+
+.dashboard-table tr:hover td {
+    background: #0F1217 !important;
+}
+
+/* Cores estritamente semânticas para estados */
+.badge-urgent {
+    background: rgba(239, 68, 68, 0.12) !important;
+    color: #F87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+    padding: 2px 6px !important;
+    font-size: 11px !important;
+    border-radius: 3px !important;
+}
+
+.badge-open {
+    background: rgba(16, 185, 129, 0.12) !important;
+    color: #34D399 !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+    padding: 2px 6px !important;
+    font-size: 11px !important;
+    border-radius: 3px !important;
+}
+
+
+/* -------------------------------------------------------------
+   GRELHA DE KPIS DE VOLUME FINANCEIRO
+   ------------------------------------------------------------- */
+.financial-kpi-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.kpi-card {
+    background: #090A0D !important;
+    border: 1px solid #1A1F26 !important;
+    border-radius: 4px !important;
+    padding: 14px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+.kpi-highlight-active {
+    border-color: #2E3846 !important;
+    background: #0C0E12 !important;
+}
+
+.kpi-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #8C96A5 !important;
+}
+
+.kpi-value-row {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+}
+
+.kpi-currency {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #6B7280 !important;
+}
+
+.kpi-amount {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #F3F4F6 !important;
+    font-variant-numeric: tabular-nums !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace !important;
+}
+
+.kpi-subtext {
+    font-size: 11px !important;
+    color: #6B7280 !important;
+}
+
+.kpi-subtext.badge-active {
+    color: #FBBF24 !important;
+}
+
+.kpi-subtext.badge-success {
+    color: #34D399 !important;
+}
+
+/* -------------------------------------------------------------
+   PALETA ERGONÓMICA DE ALTO CONTRASTE (SLATE DARK THEME)
+   ------------------------------------------------------------- */
+:root {
+    /* Camada 0: Fundo Geral da Aplicação */
+    --bg-base: #0F1419 !important;
+    
+    /* Camada 1: Estruturas Principais (Sidebar, Topbar) */
+    --bg-surface: #111827 !important;
+    
+    /* Camada 2: Cartões, Blocos KPI e Painéis */
+    --bg-card: #1F2937 !important;
+    --bg-card-hover: #283344 !important;
+    
+    /* Linhas divisórias subtis */
+    --border-subtle: #2D3748 !important;
+    
+    /* Tipografia com conforto ocular */
+    --text-primary: #F3F4F6 !important;
+    --text-secondary: #9CA3AF !important;
+    --text-muted: #6B7280 !important;
+}
+
+/* 1. Fundo Base */
+html, body, .app-container, .main-content, .content-area {
+    background-color: var(--bg-base) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 2. Topbar e Sidebar integradas na Camada 1 */
+.topbar,
+.sidebar,
+aside.sidebar,
+#sidebar,
+.sidebar-logo-container {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-subtle) !important;
+}
+
+/* 3. Cards, Containers de Métricas e Tabelas na Camada 2 */
+.kpi-card,
+.stat-card,
+.metric-box,
+.card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+}
+
+.kpi-card:hover {
+    background-color: var(--bg-card-hover) !important;
+}
+
+/* 4. Tipografia Off-White com menor fadiga */
+h1, h2, h3, h4, 
+.kpi-amount, 
+.topbar-brand span, 
+.brand-text-claude {
+    color: var(--text-primary) !important;
+}
+
+.kpi-label, 
+.kpi-currency {
+    color: var(--text-secondary) !important;
+}
+
+.kpi-subtext {
+    color: var(--text-muted) !important;
+}
+
+/* 5. Linhas da Tabela Operacional */
+.dashboard-table th {
+    background-color: #161E2E !important;
+    color: var(--text-secondary) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+.dashboard-table td {
+    border-bottom: 1px solid var(--border-subtle) !important;
+    color: var(--text-primary) !important;
+}
+
+.dashboard-table tr:hover td {
+    background-color: var(--bg-card) !important;
+}
+
+
+/* =============================================================
+   TEMA DEFINITIVO: MODO CLARO COM NAVEGAÇÃO PRETA (TOPBAR + SIDEBAR)
+   ============================================================= */
+:root {
+    /* Área de Conteúdo / Workspace (Modo Claro) */
+    --bg-page: #F8FAFC !important;
+    --bg-surface-card: #FFFFFF !important;
+    --bg-surface-hover: #F1F5F9 !important;
+    --border-light: #E2E8F0 !important;
+    --border-card: #CBD5E1 !important;
+
+    --text-main: #0F172A !important;
+    --text-muted: #64748B !important;
+    --text-dim: #94A3B8 !important;
+
+    /* Navegação Estrutural (Preto Absoluto) */
+    --nav-bg: #000000 !important;
+    --nav-border: #1E293B !important;
+    --nav-text: #F8FAFC !important;
+    --nav-text-muted: #94A3B8 !important;
+    --nav-item-hover: #111827 !important;
+    --nav-item-active: #1E293B !important;
+}
+
+/* 1. Base da Página (Fundo Claro) */
+html, body, .app-container, .main-wrapper, .main-content, .content-area {
+    background-color: var(--bg-page) !important;
+    color: var(--text-main) !important;
+}
+
+/* 2. Barra Superior (Preta) */
+.topbar {
+    background-color: var(--nav-bg) !important;
+    border-bottom: 1px solid var(--nav-border) !important;
+    color: var(--nav-text) !important;
+}
+
+.sidebar-toggle-btn {
+    color: var(--nav-text-muted) !important;
+    background: transparent !important;
+}
+
+.sidebar-toggle-btn:hover {
+    color: #FFFFFF !important;
+    background-color: var(--nav-item-hover) !important;
+}
+
+/* 3. Barra Lateral (Preta) */
+.sidebar,
+aside.sidebar,
+#sidebar,
+.sidebar-container,
+.sidebar-logo-container {
+    background-color: var(--nav-bg) !important;
+    border-right: 1px solid var(--nav-border) !important;
+}
+
+.sidebar a,
+.sidebar .nav-item,
+.sidebar .nav-link {
+    color: var(--nav-text-muted) !important;
+}
+
+.sidebar a:hover,
+.sidebar .nav-item:hover,
+.sidebar .nav-link:hover {
+    background-color: var(--nav-item-hover) !important;
+    color: #FFFFFF !important;
+}
+
+.sidebar .nav-item.active,
+.sidebar .nav-link.active {
+    background-color: var(--nav-item-active) !important;
+    color: #FFFFFF !important;
+}
+
+.sidebar-logo-container {
+    background-color: var(--nav-bg) !important;
+}
+
+/* 4. Cartões, KPIs e Containers (Fundo Branco no Conteúdo) */
+.kpi-card,
+.stat-card,
+.metric-box,
+.card,
+.dashboard-card {
+    background-color: var(--bg-surface-card) !important;
+    border: 1px solid var(--border-light) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.kpi-card:hover {
+    background-color: var(--bg-surface-hover) !important;
+}
+
+.kpi-label {
+    color: var(--text-muted) !important;
+}
+
+.kpi-currency {
+    color: var(--text-muted) !important;
+}
+
+.kpi-amount,
+.stat-card .number,
+.tabular-data {
+    color: var(--text-main) !important;
+}
+
+.kpi-subtext {
+    color: var(--text-muted) !important;
+}
+
+/* 5. Tabelas em Modo Claro */
+.dashboard-table,
+.operations-table {
+    background-color: var(--bg-surface-card) !important;
+}
+
+.dashboard-table th {
+    background-color: #F1F5F9 !important;
+    color: #475569 !important;
+    border-bottom: 1px solid var(--border-card) !important;
+}
+
+.dashboard-table td {
+    border-bottom: 1px solid var(--border-light) !important;
+    color: var(--text-main) !important;
+}
+
+.dashboard-table tr:hover td {
+    background-color: var(--bg-surface-hover) !important;
+}
+
+/* 6. Desativar qualquer alternador visual de dark mode se existir */
+#themeToggle,
+.theme-toggle-btn,
+.dark-mode-toggle {
+    display: none !important;
+}
+
+/* -------------------------------------------------------------
+   AJUSTE DE CONTRASTE: FUNDO REBAIXADO E CARDS BRANCOS EM DESTAQUE
+   ------------------------------------------------------------- */
+:root {
+    /* Fundo geral neutro que destaca os blocos brancos */
+    --bg-page: #EAECEF !important;
+    --bg-surface-card: #FFFFFF !important;
+    --border-card: #D1D5DB !important;
+}
+
+/* Fundo da tela */
+html, body, .app-container, .main-wrapper, .main-content, .content-area {
+    background-color: var(--bg-page) !important;
+}
+
+/* Caixas / Cards brancos destacados com borda e leve elevação */
+.kpi-card,
+.stat-card,
+.metric-box,
+.card,
+.dashboard-card,
+.panel {
+    background-color: var(--bg-surface-card) !important;
+    border: 1px solid var(--border-card) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Tabela operacional destacada */
+.dashboard-table,
+.operations-table {
+    background-color: #FFFFFF !important;
+    border: 1px solid var(--border-card) !important;
+}
+
+.dashboard-table th {
+    background-color: #F3F4F6 !important;
+    border-bottom: 1px solid var(--border-card) !important;
+}
+
+/* -------------------------------------------------------------
+   ELIMINAR FRESTA/ESPAÇO ENTRE TOPBAR E SIDEBAR
+   ------------------------------------------------------------- */
+.topbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #14171C !important;
+    z-index: 1000 !important;
+}
+
+.sidebar,
+aside.sidebar,
+#sidebar,
+.sidebar-container {
+    position: fixed !important;
+    top: 52px !important; /* Encosta rigorosamente na borda inferior da topbar */
+    left: 0 !important;
+    bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+    z-index: 999 !important;
+}
+
+/* Garante que o contêiner do logo cole no início da sidebar */
+.sidebar-logo-container {
+    margin-top: 0 !important;
+    padding-top: 20px !important;
+    background-color: #000000 !important;
+}
+
+/* O fundo cinza de conteúdo fica restrito apenas à área útil */
+.main-wrapper,
+.content-wrapper,
+.main-content,
+.app-container {
+    margin-top: 0 !important;
+    border-top: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   CABEÇALHO EXECUTIVO ACIMA DOS CARDS
+   ------------------------------------------------------------- */
+.dashboard-header-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 8px !important;
+    width: 100% !important;
+}
+
+.header-titles {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+}
+
+.header-main-title {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important; /* Cor escura legível no modo claro */
+    margin: 0 !important;
+    letter-spacing: -0.02em !important;
+}
+
+.header-sub-title {
+    font-size: 13px !important;
+    color: #64748B !important;
+    margin: 0 !important;
+}
+
+.header-actions {
+    display: none;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+/* Botão Atualizar */
+.btn-action-outline {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+    background-color: #0F172A !important;
+    border: 1px solid #1E293B !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.btn-action-outline:hover {
+    background-color: #1E293B !important;
+}
+
+/* Botão Abrir Mesa */
+.btn-action-primary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 18px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+    background-color: #EAB308 !important; /* Amarelo ouro de destaque */
+    border: 1px solid #CA8A04 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: opacity 0.15s ease !important;
+}
+
+.btn-action-primary:hover {
+    opacity: 0.9 !important;
+}
+
+/* -------------------------------------------------------------
+   CORRECÇÃO DE CONTRASTE: VALORES E NÚMEROS NOS CARDS
+   ------------------------------------------------------------- */
+.card,
+.stat-card,
+.kpi-card,
+.metric-box,
+.metric-card {
+    color: #0F172A !important;
+}
+
+/* Todos os valores principais, números grandes e textos em destaque */
+.card .value,
+.card .number,
+.card h2,
+.card h3,
+.card .metric-value,
+.stat-card .number,
+.stat-card .value,
+.stat-card h2,
+.stat-card h3,
+.kpi-amount,
+.kpi-value-row,
+.metric-box .number,
+.metric-card .number,
+[class*="value"],
+[class*="stat-number"] {
+    color: #0F172A !important; /* Cinzento-ardósia escuro de alto contraste */
+    opacity: 1 !important;
+}
+
+/* Rótulos e textos descritivos inferiores */
+.card .label,
+.stat-card .label,
+.card-subtitle,
+.card small,
+.stat-card small,
+[class*="subtext"],
+[class*="footer"] {
+    color: #64748B !important;
+}
+
+
+/* -------------------------------------------------------------
+   REDUÇÃO DO ESPAÇO VAZIO NO TOPO DO DASHBOARD
+   ------------------------------------------------------------- */
+.app-container {
+    padding-top: 52px !important; /* Altura exata da topbar */
+    margin-top: 0 !important;
+}
+
+.main-wrapper,
+.main-content,
+.content-area,
+.dashboard-container {
+    padding-top: 16px !important; /* Espaçamento compacto e proporcional */
+    margin-top: 0 !important;
+}
+
+.dashboard-header-bar {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 16px !important;
+}
+
+
+/* -------------------------------------------------------------
+   ZERAMENTO TOTAL DE RESPIRO SUPERIOR (SUBIR CABEÇALHO)
+   ------------------------------------------------------------- */
+body, 
+.app-container, 
+.main-wrapper, 
+.main-content, 
+.content-area, 
+.dashboard-container,
+main {
+    padding-top: 56px !important; /* Altura exata da barra preta do topo */
+    margin-top: 0 !important;
+}
+
+/* O próprio cabeçalho e seu contêiner encostam no topo */
+.dashboard-header-bar,
+.dashboard-header-bar > *,
+.header-titles,
+.header-titles h1,
+.header-main-title {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Espaçamento compacto interno para não colar na borda preta */
+.dashboard-header-bar {
+    padding-top: 12px !important;
+    margin-bottom: 14px !important;
+}
+
+
+/* -------------------------------------------------------------
+   CORRECÇÃO DEFINITIVA: REMOÇÃO DA SOMA DE PADDINGS ANINHADOS
+   ------------------------------------------------------------- */
+/* 1. O body e a página mantêm-se zerados */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 2. APENAS o container principal compensa a barra fixa do topo (52px) */
+.app-container {
+    padding-top: 52px !important;
+    margin-top: 0 !important;
+}
+
+/* 3. TODOS os containers internos ficam com padding e margin de topo estritamente a zero */
+.main-wrapper,
+.main-content,
+.content-area,
+.dashboard-container,
+main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* 4. Cabeçalho encostado ao topo útil com um respiro mínimo e elegante */
+.dashboard-header-bar {
+    margin-top: 0 !important;
+    padding-top: 14px !important;
+    margin-bottom: 14px !important;
+}
+
+/* -------------------------------------------------------------
+   PADRONIZAÇÃO DOS PAINÉIS INFERIORES NO MODO CLARO
+   ("Editais Ativos na Mesa" e "Calibração Comercial")
+   ------------------------------------------------------------- */
+.dashboard-grid > div,
+.dashboard-section,
+.panel-card,
+.table-card,
+.section-card,
+.calibration-card,
+div[class*="card"],
+div[class*="panel"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    color: #0F172A !important;
+}
+
+/* Títulos dos cartões */
+.table-card h3,
+.calibration-card h3,
+div[class*="card"] h2,
+div[class*="card"] h3,
+div[class*="card"] h4,
+.card-header,
+.card-title {
+    color: #0F172A !important;
+    font-weight: 700 !important;
+}
+
+/* Subtítulos e descrições */
+div[class*="card"] p,
+.card-description,
+.card-subtitle {
+    color: #64748B !important;
+}
+
+/* Link "Ver todos ↗" */
+.card-header a,
+div[class*="card"] a {
+    color: #2563EB !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+
+.card-header a:hover,
+div[class*="card"] a:hover {
+    text-decoration: underline !important;
+}
+
+/* Distintivo / Badge "Inteligência" */
+.badge-intel,
+span[class*="badge"],
+span[class*="tag"] {
+    background-color: #EEF2FF !important;
+    color: #4F46E5 !important;
+    border: 1px solid #C7D2FE !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+}
+
+/* Cabeçalho da tabela de editais */
+.dashboard-table thead,
+.dashboard-table thead tr,
+.dashboard-table th,
+.table-header,
+div[class*="table-header"] {
+    background-color: #F8FAFC !important;
+    color: #475569 !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    font-weight: 600 !important;
+}
+
+/* Linhas, mensagens de carregamento e estados vazios */
+.dashboard-table tbody tr,
+.dashboard-table td,
+.empty-state,
+.loading-state,
+div[class*="empty"],
+div[class*="loading"] {
+    background-color: #FFFFFF !important;
+    color: #64748B !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: #F8FAFC !important;
+}
+
+/* -------------------------------------------------------------
+   MODO CLARO PARA OS CONTENTORES DA TABELA E CALIBRAÇÃO
+   ------------------------------------------------------------- */
+/* Fundo branco e contorno nítido para os dois blocos da grelha */
+.table-container,
+div:has(> .table-modern),
+div:has(> * > h3:contains("Calibração")),
+div:has(> * > h3:contains("Editais Ativos")) {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* O contentor irmão da direita (Calibração Comercial) */
+div[style*="grid-template-columns: 1.35fr 1fr"] > div {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Títulos dos painéis */
+.table-container h3,
+div[style*="grid-template-columns: 1.35fr 1fr"] h3 {
+    color: #0F172A !important;
+}
+
+/* Cabeçalho e linhas da tabela moderna */
+.table-modern {
+    background-color: #FFFFFF !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.table-modern thead tr,
+.table-modern th {
+    background-color: #F8FAFC !important;
+    color: #475569 !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+}
+
+.table-modern tbody tr,
+.table-modern td {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+}
+
+/* Textos de carregamento ou mensagens vazias */
+.table-container p,
+.table-container span,
+.table-container div,
+div[style*="grid-template-columns: 1.35fr 1fr"] p,
+div[style*="grid-template-columns: 1.35fr 1fr"] span:not([onclick]) {
+    color: #64748B !important;
+}
+
+/* Link de ação superior */
+span[onclick*="trocarAbaSistema"] {
+    color: #2563EB !important;
+}
+
+/* -------------------------------------------------------------
+   CORREÇÃO DE CONTRASTE: CARD FUNIL DE DISPUTA (MESA)
+   ------------------------------------------------------------- */
+/* Título principal do Funil */
+h3:has(+ * .progress-bar),
+div:has(> .progress-stacked) h3,
+div:has(> * > span:contains("Fluxo da esteira")) h3,
+[class*="funnel"] h3,
+.funnel-container h3,
+.pipeline-funnel h3 {
+    color: #0F172A !important;
+}
+
+/* Badge / Tag "Fluxo da esteira" no canto superior direito */
+span:contains("Fluxo da esteira"),
+.pipeline-funnel span[class*="badge"],
+.funnel-container span[class*="badge"] {
+    background-color: #EEF2FF !important;
+    color: #3730A3 !important;
+    border: 1px solid #C7D2FE !important;
+    padding: 3px 8px !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+    border-radius: 4px !important;
+}
+
+/* Legendas inferiores do funil (Ativas, Em Análise, Ganhas, Perdidas) */
+div[style*="gap: 16px"] span,
+.pipeline-funnel .legend-item,
+.funnel-legend span,
+.funnel-container span {
+    color: #475569 !important;
+}
+
+/* Destaque para os números nas legendas */
+.pipeline-funnel strong,
+.funnel-container strong,
+.funnel-legend strong {
+    color: #0F172A !important;
+}
+
+/* Ajuste específico para o indicador/ponto de "Ganhas" (que antes era branco) */
+span[style*="background: #ffffff"],
+span[style*="background-color: #ffffff"],
+span[style*="background:#fff"],
+span[style*="background-color:#fff"],
+.dot-won {
+    background-color: #10B981 !important; /* Verde semântico de vitória/sucesso */
+}
+
+
+/* Corrigir indicador e segmento de Ganhas no Funil */
+.funnel-bar-won,
+[data-status="ganhas"],
+span[style*="background: #ffffff"] + span:contains("Ganhas"),
+.progress-bar-won {
+    background-color: #10B981 !important;
+}
+
+
+/* -------------------------------------------------------------
+   CORRECÇÃO DEFINITIVA DE CORES SEMÂNTICAS (MODO CLARO)
+   ------------------------------------------------------------- */
+:root {
+    --color-success: #10B981 !important; /* Verde Esmeralda */
+    --color-primary: #3B82F6 !important; /* Azul Operacional */
+    --color-warning: #F59E0B !important; /* Âmbar / Laranja */
+}
+
+#barGanhas {
+    background: #10B981 !important;
+    background-color: #10B981 !important;
+}
+
+span:has(> #legGanhas) > span,
+span:contains("Ganhas") > span {
+    color: #10B981 !important;
+}
+
+
+/* -------------------------------------------------------------
+   CORRECÇÃO DEFINITIVA DE CORES SEMÂNTICAS (MODO CLARO)
+   ------------------------------------------------------------- */
+:root {
+    --color-success: #10B981 !important; /* Verde Esmeralda */
+    --color-primary: #3B82F6 !important; /* Azul Operacional */
+    --color-warning: #F59E0B !important; /* Âmbar / Laranja */
+}
+
+#barGanhas {
+    background: #10B981 !important;
+    background-color: #10B981 !important;
+}
+
+span:has(> #legGanhas) > span,
+span:contains("Ganhas") > span {
+    color: #10B981 !important;
+}
+
+
+/* -------------------------------------------------------------
+   MARCA STRIKE CENTRALIZADA NA TOPBAR
+   ------------------------------------------------------------- */
+.topbar {
+    position: fixed !important;
+    display: none;
+    align-items: center !important;
+    position: relative !important; /* Para ancorar o centro absoluto */
+}
+
+.topbar-center-brand {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    
+    /* Tipografia técnica da logo */
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.55em !important; /* Espaçamento idêntico à imagem */
+    text-indent: 0.55em !important;    /* Compensa o espaçamento na última letra para centralizar perfeitamente */
+    color: #FFFFFF !important;
+    text-transform: uppercase !important;
+    user-select: none !important;
+    pointer-events: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   MARCA STRIKE IDÊNTICA AO LOGO ORIGINAL (ORBITRON GEOMÉTRICA)
+   ------------------------------------------------------------- */
+.topbar {
+    position: fixed !important;
+    width: 100% !important;
+}
+
+.topbar-center-brand {
+    position: fixed !important;
+    left: 50vw !important;                    /* Centro exato do monitor/viewport */
+    top: 26px !important;                     /* Centro vertical da topbar de 52px */
+    transform: translate(-50%, -50%) !important;
+    z-index: 1001 !important;                 /* Acima de qualquer elemento */
+    
+    /* Tipografia técnica idêntica à logo oficial */
+    font-family: 'Orbitron', 'Eurostile', -apple-system, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.52em !important;        /* Espaçamento expandido idêntico */
+    text-indent: 0.52em !important;           /* Compensa a última letra no cálculo */
+    color: #FFFFFF !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    user-select: none !important;
+    pointer-events: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   AFINAMENTO DO TRAÇO: MARCA STRIKE NA TOPBAR
+   ------------------------------------------------------------- */
+.topbar-center-brand {
+    font-weight: 600 !important;              /* Traço mais fino e elegante */
+    font-size: 14px !important;               /* Proporção exata à barra */
+    letter-spacing: 0.58em !important;        /* Espaçamento ligeiramente mais aberto */
+    text-indent: 0.58em !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    opacity: 0.95 !important;
+}
+
+/* -------------------------------------------------------------
+   REMOVER FUNDO E BORDA DAS LEGENDAS DOS CARDS DE KPI
+   ------------------------------------------------------------- */
+.kpi-card .kpi-subtext,
+.financial-kpi-grid span,
+.financial-kpi-grid small,
+.kpi-subtext span,
+.kpi-footer span,
+.financial-kpi-grid [class*="badge"],
+.financial-kpi-grid [class*="tag"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Manter o realce das cores originais no texto limpo */
+.financial-kpi-grid .text-warning,
+.financial-kpi-grid span[style*="color: #eab308"],
+.financial-kpi-grid span[style*="color: rgb(234, 179, 8)"] {
+    color: #D97706 !important; /* Âmbar nítido para leitura sobre o branco */
+    font-weight: 500 !important;
+}
+
+.financial-kpi-grid .text-success,
+.financial-kpi-grid span[style*="color: #10b981"],
+.financial-kpi-grid span[style*="color: rgb(16, 185, 129)"] {
+    color: #059669 !important; /* Verde esmeralda legível */
+    font-weight: 500 !important;
+}
+
+
+/* -------------------------------------------------------------
+   MESA DE OPERAÇÃO DO CERTAME (COCKPIT STRIKE ENTERPRISE)
+   ------------------------------------------------------------- */
+.mesa-top-bar {
+    background-color: #0F172A !important;
+    border-radius: 8px !important;
+    padding: 16px 20px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    color: #FFFFFF !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.mesa-id-group {
+    display: none;
+    align-items: center !important;
+    gap: 16px !important;
+}
+
+.mesa-badge-portal {
+    background: #1E293B !important;
+    border: 1px solid #334155 !important;
+    color: #38BDF8 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 6px 10px !important;
+    border-radius: 4px !important;
+    letter-spacing: 0.05em !important;
+}
+
+.mesa-title {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    margin: 0 !important;
+}
+
+.mesa-client {
+    font-size: 12px !important;
+    color: #94A3B8 !important;
+    margin: 3px 0 0 0 !important;
+}
+
+.mesa-stats-group {
+    display: none;
+    align-items: center !important;
+    gap: 24px !important;
+}
+
+.mesa-kpi-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+}
+
+.mesa-kpi-item .label {
+    font-size: 11px !important;
+    color: #94A3B8 !important;
+    text-transform: uppercase !important;
+}
+
+.mesa-kpi-item .val {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+}
+
+.mesa-timer-box {
+    background: #1E293B !important;
+    border: 1px solid #334155 !important;
+    border-radius: 6px !important;
+    padding: 6px 14px !important;
+    text-align: center !important;
+}
+
+.timer-label {
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    color: #F59E0B !important;
+    letter-spacing: 0.05em !important;
+    display: block !important;
+}
+
+.timer-digits {
+    font-family: 'Orbitron', monospace !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+}
+
+/* Grelha de 3 colunas da mesa */
+.mesa-grid-layout {
+    display: grid !important;
+    grid-template-columns: 320px 1fr 340px !important;
+    gap: 16px !important;
+    align-items: start !important;
+}
+
+.mesa-col {
+    background: #FFFFFF !important;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+.mesa-panel-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 4px !important;
+}
+
+.mesa-panel-header h3 {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    margin: 0 !important;
+}
+
+.mesa-panel-desc {
+    font-size: 11px !important;
+    color: #64748B !important;
+    margin: 0 0 14px 0 !important;
+}
+
+/* Coluna 1: Documentação */
+.doc-checklist-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-bottom: 14px !important;
+}
+
+.doc-item {
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.doc-item.status-valid {
+    border-left: 3px solid #10B981 !important;
+}
+
+.doc-info {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.doc-name {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #1E293B !important;
+}
+
+.doc-expiry {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.doc-status {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #059669 !important;
+}
+
+.btn-mesa-sec {
+    width: 100% !important;
+    background: #F1F5F9 !important;
+    border: 1px solid #CBD5E1 !important;
+    padding: 8px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #1E293B !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+}
+
+.btn-mesa-sec:hover {
+    background: #E2E8F0 !important;
+}
+
+/* Coluna 2: Tabela de Itens e Disputa */
+.mesa-items-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.mesa-items-table th {
+    background: #F8FAFC !important;
+    color: #475569 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    padding: 10px 8px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    text-align: left !important;
+}
+
+.mesa-items-table td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+    color: #1E293B !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    vertical-align: middle !important;
+}
+
+.item-title {
+    font-weight: 600 !important;
+    color: #0F172A !important;
+}
+
+.item-sub {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.piso-val {
+    font-weight: 600 !important;
+    color: #64748B !important;
+}
+
+.input-lance {
+    width: 90px !important;
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 4px !important;
+    color: #0F172A !important;
+    background: #FFFFFF !important;
+}
+
+.margin-tag {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+
+.margin-tag.high {
+    background: #DCFCE7 !important;
+    color: #15803D !important;
+}
+
+.margin-tag.mid {
+    background: #FEF3C7 !important;
+    color: #B45309 !important;
+}
+
+.margin-tag.low {
+    background: #FEE2E2 !important;
+    color: #B91C1C !important;
+}
+
+.btn-lance-send {
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.btn-lance-send:hover {
+    background: #1E293B !important;
+}
+
+.btn-mesa-mini {
+    background: #F1F5F9 !important;
+    border: 1px solid #CBD5E1 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 5px 10px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.btn-mesa-primary {
+    background: #EAB308 !important;
+    color: #000000 !important;
+    border: 1px solid #CA8A04 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 5px 12px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+/* Coluna 3: Inteligência do Órgão */
+.intel-card-box {
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    margin-bottom: 14px !important;
+}
+
+.intel-metric-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+}
+
+.intel-metric-row:last-child {
+    margin-bottom: 0 !important;
+}
+
+.intel-metric-row .k {
+    color: #64748B !important;
+}
+
+.intel-metric-row .v {
+    font-weight: 600 !important;
+    color: #0F172A !important;
+}
+
+.section-micro-title {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #64748B !important;
+    letter-spacing: 0.04em !important;
+    margin-bottom: 8px !important;
+}
+
+.concorrente-row {
+    border-bottom: 1px solid #F1F5F9 !important;
+    padding: 8px 0 !important;
+}
+
+.concorrente-row:last-child {
+    border-bottom: none !important;
+}
+
+.conc-name {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #0F172A !important;
+}
+
+.conc-meta {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.tag-status-ok {
+    background: #DCFCE7 !important;
+    color: #15803D !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+}
+
+.tag-blue {
+    background: #EFF6FF !important;
+    color: #1D4ED8 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+
+.tag-purple {
+    background: #F3E8FF !important;
+    color: #7E22CE !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+
+
+/* -------------------------------------------------------------
+   REPOSIÇÃO DA MARCA STRIKE CENTRALIZADA NA TOPBAR
+   ------------------------------------------------------------- */
+.topbar-center-brand {
+    position: fixed !important;
+    left: 50vw !important;
+    top: 26px !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 1001 !important;
+    font-family: 'Orbitron', -apple-system, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.58em !important;
+    text-indent: 0.58em !important;
+    color: #FFFFFF !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    user-select: none !important;
+    pointer-events: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   BOTÃO DE OCULTAR MENU E COMPORTAMENTO DA SIDEBAR
+   ------------------------------------------------------------- */
+.sidebar-toggle-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    cursor: pointer !important;
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+    margin-left: 12px !important;
+    z-index: 1002 !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Estado de menu recolhido / oculto */
+.sidebar.collapsed,
+aside.collapsed {
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s ease-in-out !important;
+}
+
+.sidebar-collapsed .main-content,
+.sidebar-collapsed .content-area,
+.sidebar-collapsed main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    transition: margin-left 0.25s ease-in-out !important;
+}
+
+
+/* -------------------------------------------------------------
+   CORREÇÃO DE CONTRASTE: TÍTULOS PRINCIPAIS DO DASHBOARD
+   ------------------------------------------------------------- */
+.dashboard-header-bar h1,
+.dashboard-header-bar h2,
+.main-content h1,
+.main-content h2,
+.content-area h1,
+.content-area h2,
+h1:has(+ *),
+h2:has(+ *),
+.page-title,
+.dashboard-title {
+    color: #0F172A !important;
+}
+
+/* Subtítulo logo abaixo do Painel Executivo */
+.dashboard-header-bar p,
+.page-subtitle,
+.dashboard-subtitle {
+    color: #475569 !important;
+}
+
+
+/* -------------------------------------------------------------
+   REMOÇÃO DEFINITIVA DO BOTÃO DE MODO ESCURO / THEME TOGGLE
+   ------------------------------------------------------------- */
+#theme-toggle,
+#themeToggle,
+#btnDarkMode,
+#toggleTheme,
+.theme-toggle,
+.dark-mode-toggle,
+.btn-theme,
+[onclick*="toggleTheme"],
+[onclick*="toggleDarkMode"],
+[onclick*="alternarTema"] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   MESA DE OPERAÇÃO - TABELA MESTRE EXPANSÍVEL (HIGH-DENSITY)
+   ------------------------------------------------------------- */
+.mesa-card-container {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden !important;
+}
+
+.mesa-master-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 13px !important;
+}
+
+.mesa-master-table th {
+    background: #F8FAFC !important;
+    color: #475569 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    padding: 12px 14px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    text-align: left !important;
+}
+
+.mesa-master-table td {
+    padding: 14px !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    color: #1E293B !important;
+    vertical-align: middle !important;
+}
+
+.master-row {
+    cursor: pointer !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.master-row:hover {
+    background: #F8FAFC !important;
+}
+
+.master-row.expanded {
+    background: #F1F5F9 !important;
+}
+
+.arrow-icon {
+    display: inline-block !important;
+    font-size: 10px !important;
+    color: #64748B !important;
+    transition: transform 0.2s ease !important;
+}
+
+/* Identificadores e Portais */
+.pregao-cod {
+    font-weight: 700 !important;
+    color: #0F172A !important;
+}
+
+.proc-cod {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.orgao-nome {
+    font-weight: 600 !important;
+    color: #1E293B !important;
+}
+
+.orgao-sub {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.portal-badge {
+    display: inline-block !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+
+.portal-badge.gov {
+    background: #EFF6FF !important;
+    color: #1D4ED8 !important;
+}
+
+.portal-badge.bbm {
+    background: #FEF3C7 !important;
+    color: #B45309 !important;
+}
+
+.uasg-badge {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    margin-top: 2px !important;
+}
+
+.data-hora {
+    font-weight: 600 !important;
+    color: #0F172A !important;
+}
+
+.tempo-restante {
+    font-size: 11px !important;
+    color: #059669 !important;
+    font-weight: 500 !important;
+}
+
+.itens-count {
+    background: #F1F5F9 !important;
+    color: #334155 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+}
+
+/* Badges de Status */
+.badge-status-disputa {
+    background: #DCFCE7 !important;
+    color: #15803D !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+}
+
+.badge-status-analise {
+    background: #FEF3C7 !important;
+    color: #B45309 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+}
+
+/* Botões da Esteira */
+.mesa-filter-tabs {
+    background: #E2E8F0 !important;
+    border-radius: 6px !important;
+    padding: 2px !important;
+    display: flex !important;
+    gap: 2px !important;
+}
+
+.mesa-tab-btn {
+    border: none !important;
+    background: transparent !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.mesa-tab-btn.active {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+}
+
+.btn-novo-edital {
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    padding: 7px 14px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+}
+
+.btn-novo-edital:hover {
+    background: #1E293B !important;
+}
+
+.btn-acao-mesa {
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.btn-avancar-disputa {
+    background: #F1F5F9 !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #1E293B !important;
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+/* Gaveta Expansível de Itens */
+.drawer-row td {
+    padding: 0 !important;
+    background: #F8FAFC !important;
+    border-bottom: 2px solid #E2E8F0 !important;
+}
+
+.drawer-content {
+    padding: 16px 20px 20px 20px !important;
+}
+
+.drawer-header-info {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-bottom: 12px !important;
+}
+
+.drawer-title {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    text-transform: uppercase !important;
+}
+
+.drawer-hint {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.mesa-items-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: #FFFFFF !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    border: 1px solid #E2E8F0 !important;
+}
+
+.mesa-items-table th {
+    background: #F1F5F9 !important;
+    font-size: 11px !important;
+    padding: 8px 10px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    color: #475569 !important;
+}
+
+.mesa-items-table td {
+    padding: 8px 10px !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    font-size: 12px !important;
+}
+
+.prod-desc {
+    font-weight: 600 !important;
+    color: #0F172A !important;
+}
+
+.prod-sub {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.piso-val {
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+.input-lance-tatico {
+    width: 85px !important;
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 4px !important;
+    color: #0F172A !important;
+}
+
+.input-lance-tatico.alert-piso {
+    border-color: #EF4444 !important;
+    color: #B91C1C !important;
+    background: #FEF2F2 !important;
+}
+
+.margin-badge {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+
+.margin-badge.high { background: #DCFCE7 !important; color: #15803D !important; }
+.margin-badge.mid { background: #FEF3C7 !important; color: #B45309 !important; }
+.margin-badge.low { background: #FEE2E2 !important; color: #B91C1C !important; }
+
+.btn-lance-disparar {
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.btn-salvar-calib {
+    background: #E2E8F0 !important;
+    color: #0F172A !important;
+    border: 1px solid #CBD5E1 !important;
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+/* Modal Novo Edital */
+.mesa-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 2000 !important;
+}
+
+.mesa-modal-dialog {
+    background: #FFFFFF !important;
+    border-radius: 8px !important;
+    width: 440px !important;
+    max-width: 90vw !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    overflow: hidden !important;
+}
+
+.mesa-modal-header {
+    background: #F8FAFC !important;
+    padding: 14px 18px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.mesa-modal-header h3 {
+    margin: 0 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+}
+
+.modal-close {
+    background: transparent !important;
+    border: none !important;
+    font-size: 14px !important;
+    color: #64748B !important;
+    cursor: pointer !important;
+}
+
+.mesa-modal-body {
+    padding: 18px !important;
+}
+
+.metodo-card {
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 6px !important;
+    padding: 14px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+}
+
+.metodo-card:hover {
+    border-color: #0F172A !important;
+    background: #F8FAFC !important;
+}
+
+.metodo-card strong {
+    display: block !important;
+    font-size: 13px !important;
+    color: #0F172A !important;
+}
+
+.metodo-card span {
+    font-size: 11px !important;
+    color: #64748B !important;
+}
+
+.mesa-modal {
+    display: none !important;
+}
+.mesa-modal.active {
+    display: flex !important;
 }

@@ -1,8 +1,11 @@
+]633;E;echo "# CONTEXTO DO DASHBOARD (STRIKE)";456e80a6-78ca-41fd-8b6f-733449b328d5]633;C# CONTEXTO DO DASHBOARD (STRIKE)
+
+## Arquivo: static/dashboard.html
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="stylesheet" href="/static/strike_consolidated.css?v=4">
-    
+    <link rel="stylesheet" href="/static/strike_tokens_2.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radar de Licitações - Gestão Estratégica</title>
@@ -54,7 +57,8 @@
         }
 
         .topbar {
-            background: #070B14 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid #334155;
             padding: 12px 24px;
             display: flex;
             align-items: center;
@@ -281,88 +285,109 @@
         line-height: 1.35;
     }
 
+</style>
 
-        /* Suporte ao colapso suave da sidebar no Dashboard */
-        .sidebar {
-            transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1), width 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-        .sidebar.collapsed {
-            margin-left: -260px !important;
-            width: 0 !important;
-            min-width: 0 !important;
-            max-width: 0 !important;
-            overflow: hidden !important;
-            border-right: none !important;
-        }
-        .app-container.sidebar-collapsed main, 
-        body.sidebar-collapsed main {
-            margin-left: 0 !important;
-            width: 100% !important;
-        }
+<style id="claude-acabamento-perfeito">
+    /* Forçar fundos escuros nos painéis que ficaram com o fundo transparente/branco */
+    .main-content > div > div:not(.kpi-grid), div[class*="card"], div[class*="panel"] {
+        background-color: #12151A !important;
+        border: 1px solid #303844 !important;
+        color: #E8EEF6 !important;
+        border-radius: 10px !important;
+    }
 
+    /* Garantir texto legível nas tabelas inferiores */
+    table, tr, td, th { background: transparent !important; border-color: #303844 !important; color: #E8EEF6 !important; }
+    th, .kpi-title, .kpi-subtext { color: #A9B4C6 !important; }
+
+    /* Consertar o Botão Ouro Técnico ("Abrir Mesa") */
+    button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
+        background-color: #D9A62E !important;
+        color: #0A0A0A !important;
+        border: none !important;
+        font-weight: 600 !important;
+    }
+
+    /* Consertar Botões Secundários ("Atualizar") */
+    .btn-secondary, button[onclick*="carregar"] {
+        background-color: #12151A !important;
+        color: #E8EEF6 !important;
+        border: 1px solid #303844 !important;
+    }
+</style>
+
+
+<style id="strike-correcao-definitiva">
+    /* Forçar fundo escuro nos painéis inferiores independentemente do que lá estiver */
+    .panel-box, .table-card, [style*="var(--bg-surface)"] {
+        background-color: var(--bg-surface, #12151A) !important;
+        background: var(--bg-surface, #12151A) !important;
+        border: 1px solid var(--border-default, #303844) !important;
+        color: var(--text-primary, #E8EEF6) !important;
+    }
     
-        /* FORÇAR TOPBAR PRETA SÓLIDA CORPORATIVA */
-        .topbar, header.topbar, div.topbar {
-            background: #070B14 !important;
-            background-color: #070B14 !important;
-            background-image: none !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        }
+    /* Garantir que o texto das tabelas e painéis fica legível */
+    .panel-box *, .table-card * { color: var(--text-primary, #E8EEF6) !important; }
+    .panel-box p, .table-card p, .panel-box th, .panel-box .text-muted { color: var(--text-secondary, #A9B4C6) !important; }
+    table td { border-bottom: 1px solid var(--border-subtle, #232932) !important; }
 
-    
-        /* CORREÇÃO VISUAL DA SIDEBAR E SCROLL */
-        .sidebar {
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-        }
-        .sidebar::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
+    /* Corrigir os botões no canto superior direito para não se sobreporem */
+    .topbar, .master-top-actions {
+        position: absolute !important;
+        top: 32px !important;
+        right: 40px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        background: transparent !important;
+        width: auto !important;
+        z-index: 9999 !important;
+    }
+    .topbar-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12px !important;
+        position: static !important; /* Remove conflitos antigos */
+    }
+    .topbar-actions button, .master-top-actions button {
+        position: static !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
 
-    </style>
+    /* Garantir cor Dourada no botão principal */
+    button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
+        background-color: #D9A62E !important;
+        color: #0A0A0A !important;
+        font-weight: 700 !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 8px 16px !important;
+    }
+</style>
 
-
-
-
-
-
-    
+    <link rel="stylesheet" href="/static/strike_tokens_2.css?v=2">
 </head>
 <body>
 
-    <div class="topbar" style="background-color: #070B14 !important; height: 52px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 0 20px !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important; position: sticky !important; top: 0 !important; z-index: 1000 !important; box-sizing: border-box !important;">
-        <!-- LADO ESQUERDO: HAMBÚRGUER + INDICADOR -->
-        <div style="display: flex !important; align-items: center !important; gap: 12px !important;">
-            <button id="sidebarToggle" class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar/Exibir Menu" style="background: transparent; border: none; color: #FFF; cursor: pointer; display: flex; align-items: center; padding: 6px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            <span id="topbar-context-title" style="display: inline-block !important; color: #94A3B8 !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0.02em !important;">STRIKE &bull; Dashboard</span>
+    <div class="topbar">
+        <div class="topbar-brand">
+            <span></span>
+            <span>Radar de Licitações</span>
         </div>
-
-        <!-- CENTRO: LOGO MARCA STRIKE -->
-        <div class="topbar-center-brand" style="color: #FFFFFF !important; font-weight: 700 !important; letter-spacing: 0.15em !important; font-size: 14px !important;">STRIKE</div>
-
-        <!-- LADO DIREITO: BOTÃO DE SAIR -->
-        <div class="topbar-actions" style="display: flex !important; align-items: center !important; gap: 12px !important;">
-            <button class="btn-logout" onclick="if(typeof fazerLogout === 'function') { fazerLogout(); } else { window.location.href='/'; }" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #CBD5E1; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+        <div class="topbar-actions">
+            <button id="btnThemeToggle" class="btn-theme-toggle" onclick="alternarTemaVisual()" title="Alternar Modo Claro/Escuro">
+                
+            </button>
+            <button class="btn-logout" onclick="fazerLogout()">
                 👤 Sair
             </button>
         </div>
     </div>
 
-
-
     <div class="app-container">
         <aside class="sidebar">
-<div class="sidebar-header" style="padding: 24px 16px 16px 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06);">
-        <img src="/static/img/strike-logo.png" alt="STRIKE" style="max-width: 130px; height: auto; display: block; margin: 0 auto;" onerror="this.onerror=null; this.src='/static/strike-logo.png';">
-    </div>
             <div class="sidebar-section-title">Visão Geral</div>
             <div class="sidebar-item active" data-tab="dashboard">
                 <span> Dashboard</span>
@@ -375,7 +400,7 @@
             <div class="sidebar-item" data-tab="matches">
                 <span> Radar de Matches</span>
             </div>
-            <div class="sidebar-item" data-tab="mesa" onclick="window.location.href='/static/mesa.html'">
+            <div class="sidebar-item" data-tab="mesa">
                 <span> Mesa de Operação</span>
             </div>
             <div class="sidebar-item" data-tab="alertas">
@@ -398,14 +423,18 @@
             
             <!-- 1. DASHBOARD -->
             <div id="pane-dashboard" class="tab-pane active">
-                <div class="pane-header">
-                    <div class="pane-header-title">
-                        <h2>Painel Executivo</h2>
-                        <p>Monitorização em tempo real de certames, propostas e conformidade documental.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);">Painel Executivo</h2>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Monitorização em tempo real de certames, propostas e conformidade documental.</p>
                     </div>
-                    <div class="pane-header-actions">
-                        <button onclick="carregarDashboardCompleto()">↻ Atualizar</button>
-                        <a href="/static/mesa.html" style="display: inline-flex; align-items: center; background: #0F172A; color: #FFFFFF; border: 1px solid #0F172A; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);">Mesa de Operação</a>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="carregarDashboardCompleto()" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-body); padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                            ↻ Atualizar
+                        </button>
+                        <button onclick="trocarAbaSistema('mesa')" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);">
+                             Abrir Mesa ↗
+                        </button>
                     </div>
                 </div>
 
@@ -476,7 +505,7 @@
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px;">
-                    <div class="kpi-card" style="padding: 20px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 24px;">
+                    <div class="table-container" style="padding: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading);"> Editais Ativos na Mesa</h3>
                             <span style="font-size: 12px; color: var(--color-primary); cursor: pointer; font-weight: 600;" onclick="trocarAbaSistema('mesa')">Ver todos ↗</span>
@@ -496,7 +525,7 @@
                         </table>
                     </div>
 
-                    <div class="kpi-card" style="padding: 20px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 24px;">
+                    <div class="table-container" style="padding: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading);"> Calibração Comercial</h3>
                             <span class="badge badge-blue">Inteligência</span>
@@ -709,41 +738,40 @@
             <div id="pane-alertas" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <h2 style="font-size: 22px; font-weight: 700; color: #0F172A; margin: 0;">Central de Alertas & Notificações Ativas</h2>
-                        <p style="font-size: 13px; color: #64748B; margin-top: 4px;">Configure os canais de recebimento imediato de oportunidades e prazos via WhatsApp e E-mail.</p>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;"> Central de Alertas & Notificações Ativas</h2>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Configure os canais de recebimento imediato de oportunidades e prazos via WhatsApp e E-mail.</p>
                     </div>
-                    <button type="button" onclick="salvarConfiguracaoAlertas()" style="display: inline-flex; align-items: center; gap: 8px; background: #2563EB; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 1px 2px rgba(37,99,235,0.2);">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                        <span>Salvar Configurações de Disparo</span>
+                    <button type="button" onclick="salvarConfiguracaoAlertas()" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);">
+                        💾 Salvar Configurações de Disparo
                     </button>
                 </div>
 
-                <!-- CARDS DE CANAIS PRINCIPAIS -->
+                <!-- CARDS DE CANAIS PRINCIPAIS (WHATSAPP E E-MAIL) -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
                     <!-- Canal WhatsApp -->
-                    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-top: 4px solid #22C55E; border-radius: 8px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                    <div class="kpi-card green" style="padding: 22px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 0;">Disparo via WhatsApp</h3>
+                                <span style="font-size: 24px;">📱</span>
+                                <h3 style="font-size: 16px; font-weight: 700; color: var(--text-heading); margin: 0;">Disparo via WhatsApp</h3>
                             </div>
-                            <span style="background: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">ATIVO</span>
+                            <span class="badge badge-green" id="badgeStatusWhatsapp">ATIVO</span>
                         </div>
-                        <p style="font-size: 12px; color: #64748B; margin-bottom: 16px;">
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
                             Receba alertas urgentes no celular com link direto para o edital e resumo dos itens.
                         </p>
 
                         <div style="margin-bottom: 14px;">
-                            <label style="font-size: 11px; font-weight: 600; color: #64748B; display: block; margin-bottom: 4px;">Número do WhatsApp (com DDD)</label>
+                            <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Número do WhatsApp (com DDD)</label>
                             <div style="display: flex; gap: 8px;">
-                                <input type="text" id="alertaWppNumero" placeholder="(21) 99999-9999" style="flex: 1; padding: 8px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; font-weight: 600; background: #F8FAFC; color: #0F172A; outline: none;">
-                                <button type="button" onclick="testarDisparoWhatsapp()" style="background: #22C55E; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
-                                    Enviar Teste
+                                <input type="text" id="alertaWppNumero" placeholder="(21) 99999-9999" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--bg-card); color: var(--text-body);">
+                                <button type="button" onclick="testarDisparoWhatsapp()" style="background: #25d366; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+                                     Enviar Teste
                                 </button>
                             </div>
                         </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #334155;">
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                 <input type="checkbox" id="checkWppMatchesAltos" checked style="width: 15px; height: 15px;">
                                 Disparar no WhatsApp quando surgir edital com match ≥ 80%
@@ -756,31 +784,31 @@
                     </div>
 
                     <!-- Canal E-mail -->
-                    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-top: 4px solid #2563EB; border-radius: 8px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                    <div class="kpi-card blue" style="padding: 22px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 0;">Disparo via E-mail</h3>
+                                <span style="font-size: 24px;">✉</span>
+                                <h3 style="font-size: 16px; font-weight: 700; color: var(--text-heading); margin: 0;">Disparo via E-mail</h3>
                             </div>
-                            <span style="background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">ATIVO</span>
+                            <span class="badge badge-blue">ATIVO</span>
                         </div>
-                        <p style="font-size: 12px; color: #64748B; margin-bottom: 16px;">
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
                             Envio de relatórios consolidados e notificações de certidões diretamente na caixa postal.
                         </p>
 
                         <div style="margin-bottom: 14px;">
-                            <label style="font-size: 11px; font-weight: 600; color: #64748B; display: block; margin-bottom: 4px;">E-mail(s) de Destino (separe por vírgula se mais de um)</label>
+                            <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">E-mail(s) de Destino (separe por vírgula se mais de um)</label>
                             <div style="display: flex; gap: 8px;">
-                                <input type="text" id="alertaEmailDestino" placeholder="comercial@suaempresa.com.br" style="flex: 1; padding: 8px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; font-weight: 600; background: #F8FAFC; color: #0F172A; outline: none;">
-                                <button type="button" onclick="testarDisparoEmail()" style="background: #2563EB; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
-                                    Enviar Teste
+                                <input type="text" id="alertaEmailDestino" placeholder="comercial@suaempresa.com.br" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--bg-card); color: var(--text-body);">
+                                <button type="button" onclick="testarDisparoEmail()" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+                                    ✉ Enviar Teste
                                 </button>
                             </div>
                         </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #334155;">
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                <input type="checkbox" id="checkEmailRelatorio" checked style="width: 15px; height: 15px;">
+                                <input type="checkbox" id="checkEmailMatinal" checked style="width: 15px; height: 15px;">
                                 Relatório matinal diário de novas oportunidades às 08:00
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
@@ -792,52 +820,49 @@
                 </div>
 
                 <!-- HISTÓRICO DE DISPAROS RECENTES -->
-                <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 24px;">
+                <div class="table-container" style="padding: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                        <h3 style="font-size: 15px; font-weight: 700; color: #0F172A; margin: 0;">
-                            Histórico de Alertas Recentes Enviados
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading); margin: 0;">
+                            📜 Histórico de Alertas Recentes Enviados
                         </h3>
-                        <span style="font-size: 12px; color: #64748B;">Últimas 24 horas</span>
+                        <span style="font-size: 12px; color: var(--text-muted);">Últimas 24 horas</span>
                     </div>
 
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid #E2E8F0; color: #475569; background: #F8FAFC;">
-                                    <th style="padding: 10px 12px; font-weight: 600;">Canal</th>
-                                    <th style="padding: 10px 12px; font-weight: 600;">Destinatário</th>
-                                    <th style="padding: 10px 12px; font-weight: 600;">Mensagem / Assunto</th>
-                                    <th style="padding: 10px 12px; font-weight: 600;">Data & Hora</th>
-                                    <th style="padding: 10px 12px; font-weight: 600; text-align: center;">Status de Entrega</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaHistoricoAlertasBody" style="color: #1E293B;">
-                                <tr style="border-bottom: 1px solid #F1F5F9;">
-                                    <td style="padding: 12px;"><span style="background: #DCFCE7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">WhatsApp</span></td>
-                                    <td style="padding: 12px; font-weight: 600;">(21) 98765-4321</td>
-                                    <td style="padding: 12px;">Novo Match 94%: Pregão 045/2026 - SMS Rio (Amoxicilina 500mg)</td>
-                                    <td style="padding: 12px; color: #64748B;">Hoje às 08:15</td>
-                                    <td style="padding: 12px; text-align: center;"><span style="background: #F1F5F9; color: #334155; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">✓ Entregue</span></td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid #F1F5F9;">
-                                    <td style="padding: 12px;"><span style="background: #DBEAFE; color: #1E40AF; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">E-mail</span></td>
-                                    <td style="padding: 12px; font-weight: 600;">comercial@empresa.com.br</td>
-                                    <td style="padding: 12px;">Relatório Matinal: 8 novos editais encontrados no PNCP</td>
-                                    <td style="padding: 12px; color: #64748B;">Hoje às 08:00</td>
-                                    <td style="padding: 12px; text-align: center;"><span style="background: #F1F5F9; color: #334155; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">✓ Entregue</span></td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px;"><span style="background: #DCFCE7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">WhatsApp</span></td>
-                                    <td style="padding: 12px; font-weight: 600;">(21) 98765-4321</td>
-                                    <td style="padding: 12px; color: #B45309;">Atenção: Certidão Municipal expira em 12 dias</td>
-                                    <td style="padding: 12px; color: #64748B;">Ontem às 16:30</td>
-                                    <td style="padding: 12px; text-align: center;"><span style="background: #F1F5F9; color: #334155; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">✓ Entregue</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table-modern">
+                        <thead>
+                            <tr>
+                                <th>Canal</th>
+                                <th>Destinatário</th>
+                                <th>Mensagem / Assunto</th>
+                                <th>Data & Hora</th>
+                                <th style="text-align: center;">Status de Entrega</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaHistoricoAlertasBody">
+                            <tr>
+                                <td><span class="badge badge-green">📱 WhatsApp</span></td>
+                                <td><strong>(21) 98765-4321</strong></td>
+                                <td> Novo Match 94%: Pregão 045/2026 - SMS Rio (Amoxicilina 500mg)</td>
+                                <td style="color: var(--text-muted);">Hoje às 08:15</td>
+                                <td style="text-align: center;"><span class="badge badge-green">✓ Entregue</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-blue">✉ E-mail</span></td>
+                                <td><strong>comercial@empresa.com.br</strong></td>
+                                <td> Relatório Matinal: 8 novos editais encontrados no PNCP</td>
+                                <td style="color: var(--text-muted);">Hoje às 08:00</td>
+                                <td style="text-align: center;"><span class="badge badge-green">✓ Entregue</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-green">📱 WhatsApp</span></td>
+                                <td><strong>(21) 98765-4321</strong></td>
+                                <td>⚠ Atenção: Certidão Municipal expira em 12 dias</td>
+                                <td style="color: var(--text-muted);">Ontem às 16:30</td>
+                                <td style="text-align: center;"><span class="badge badge-green">✓ Entregue</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
             </div>
 
             <div id="pane-preferencias" class="tab-pane">
@@ -1155,7 +1180,6 @@
         }
 
         function trocarAbaSistema(nome) {
-    if (history.pushState) { history.pushState(null, null, '#' + nome); }
             document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
             document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
 
@@ -1751,19 +1775,7 @@
                 .trim();
         }
 
-    
-    function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
-        const container = document.querySelector('.app-container') || document.body;
-        if (sidebar) {
-            sidebar.classList.toggle('collapsed');
-        }
-        if (container) {
-            container.classList.toggle('sidebar-collapsed');
-        }
-    }
-
-</script>
+    </script>
 
         /<script>
 
@@ -2056,8 +2068,699 @@ Assunto: " Radar de Licitações - Teste de Notificação Ativa"`);
     </script>
 
 <!-- PATCH DESIGN CLAUDE (100% FIDELIDADE) -->
+<link rel="stylesheet" href="/static/strike_tokens_2.css">
+<style>
+    /* Forçar Modo Escuro Oficial Claude */
+    :root, body, html {
+        --bg-app: #0A0B0D !important;
+        --bg-surface: #12151A !important;
+        --bg-sidebar: #0D0F12 !important;
+        --border-default: #303844 !important;
+        --text-primary: #E8EEF6 !important;
+        --text-secondary: #A9B4C6 !important;
+        background-color: var(--bg-app) !important;
+        color: var(--text-primary) !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    }
+    
+    /* Layout à Prova de Bala */
+    body { margin: 0 !important; }
+    .app-container { display: flex !important; min-height: 100vh !important; width: 100% !important; padding: 0 !important; }
+    .main-content { flex: 1 !important; padding: 40px !important; position: relative !important; background-color: var(--bg-app) !important; }
+    
+    /* Posicionamento Correto do Topo (Canto Superior Direito) */
+    .topbar { position: absolute !important; top: 32px !important; right: 40px !important; background: transparent !important; border: none !important; box-shadow: none !important; display: flex !important; width: auto !important; padding: 0 !important; z-index: 99; }
+    .topbar-brand { display: none !important; }
+    .topbar-actions { display: flex !important; gap: 12px !important; }
+    .topbar-actions button { background: var(--bg-surface) !important; border: 1px solid var(--border-default) !important; color: var(--text-primary) !important; padding: 8px 16px !important; border-radius: 6px !important; font-weight: 500 !important; }
+    
+    /* Sidebar Escura e Limpa */
+    .sidebar { background-color: var(--bg-sidebar) !important; border-right: 1px solid var(--border-default) !important; width: 250px !important; min-width: 250px !important; padding-top: 24px !important; }
+    .sidebar-brand { display: none !important; } /* Oculta marca antiga */
+    .sidebar-item { background: transparent !important; color: var(--text-secondary) !important; border: none !important; padding: 10px 16px !important; margin: 4px 12px !important; border-radius: 6px !important; font-weight: 500 !important; }
+    .sidebar-item.active, .sidebar-item:hover { background-color: #1F242C !important; color: #FFF !important; }
+    
+    /* Cartões de KPI perfeitos */
+    .kpi-card, .dashboard-card, .panel-box, .funnel-card, .table-card { background-color: var(--bg-surface) !important; border: 1px solid var(--border-default) !important; border-radius: 10px !important; box-shadow: none !important; }
+    .kpi-card { padding: 20px !important; border-top: 1px solid var(--border-default) !important; }
+    .kpi-card::before, .kpi-card::after { display: none !important; } /* Anula faixas coloridas */
+    div[style*="linear-gradient"] { background: transparent !important; } 
+    
+    /* Botão Ouro Técnico */
+    .btn-primary, button[onclick*="abrirMesa"], #btnAbrirMesa { background-color: #D9A62E !important; color: #0A0A0A !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; padding: 8px 16px !important; }
+    
+    /* Tipografia de Títulos e Valores */
+    h1, h2, h3, .kpi-value { color: var(--text-primary) !important; font-weight: 700 !important; }
+    p, .kpi-title, th { color: var(--text-secondary) !important; text-transform: none !important; }
+    .kpi-value { font-size: 28px !important; margin: 8px 0 !important; }
+    
+    table td { color: var(--text-primary) !important; border-bottom: 1px solid var(--border-default) !important; }
+    table th { border-bottom: 1px solid var(--border-default) !important; }
+</style>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. Mover Topbar para dentro do main-content (Conserta Layout)
+        const topbar = document.querySelector('.topbar');
+        const main = document.querySelector('.main-content');
+        if (topbar && main) main.appendChild(topbar);
+
+        // 2. Injetar Novo Logótipo na Sidebar
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && !document.getElementById('novo-strike-logo')) {
+            sidebar.insertAdjacentHTML('afterbegin', `
+            <div id="novo-strike-logo" style="padding: 0 24px 32px 24px; display: flex; align-items: center; gap: 12px;">
+                <svg width="24" height="24" viewBox="0 0 100 100" fill="none"><path d="M72 24 H34 C24 24 24 45 42 48 L56 51" stroke="#E8EEF6" stroke-width="14" stroke-linecap="round"/><path d="M48 50 L58 53 C76 56 76 76 66 76 H28" stroke="#7D8CA6" stroke-width="14" stroke-linecap="round"/><line x1="14" y1="76" x2="86" y2="24" stroke="#D9A62E" stroke-width="6" stroke-linecap="round"/></svg>
+                <span style="color: #FFF; font-weight: 800; font-size: 18px; letter-spacing: 0.2em;">STRIKE</span>
+            </div>`);
+        }
+        
+        // 3. Limpar Emojis e forçar minúsculas sem partir eventos de cliques
+        document.querySelectorAll('.kpi-title, .sidebar-item').forEach(el => {
+            let texto = el.innerHTML;
+            texto = texto.replace(/MESA EM OPERAÇÃO/g, "Mesa em operação")
+                         .replace(/PIPELINE DE PROPOSTAS/g, "Pipeline de propostas")
+                         .replace(/TAXA DE CONVERSÃO/g, "Taxa de conversão")
+                         .replace(/MATCHES DE PORTFÓLIO/g, "Matches de portfólio")
+                         .replace(/RISCO DOCUMENTAL/g, "Risco documental")
+                         .replace(/[]/g, "");
+            el.innerHTML = texto;
+        });
+            
+        // Forçar Dark Mode Globalmente
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.setAttribute('data-theme', 'dark');
+    });
+</script>
 <!-- FIM PATCH DESIGN CLAUDE -->
 
 </body>
 </html>
+```
+
+## Arquivo: static/strike_tokens_2.css
+```css
+
+/* Correção de acabamento - Painéis inferiores e topo */
+.panel-box, .table-card, div[style*="background: white"], div[style*="background: #fff"], div[style*="background:#fff"] {
+    background-color: var(--bg-surface) !important;
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-default) !important;
+    color: var(--text-primary) !important;
+}
+
+.panel-box *, .table-card * {
+    color: var(--text-primary) !important;
+}
+
+.panel-box p, .table-card p, .panel-box th, .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+table td {
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+/* Alinhamento dos botões do topo */
+.topbar, .master-top-actions {
+    position: absolute !important;
+    top: 32px !important;
+    right: 40px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    background: transparent !important;
+    width: auto !important;
+    z-index: 999 !important;
+}
+
+.topbar-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+}
+
+.topbar-actions button, .master-top-actions button {
+    position: static !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* Botão principal em tom dourado */
+button[onclick*="abrirMesa"], #btnAbrirMesa, .btn-primary {
+    background-color: var(--accent-action) !important;
+    color: var(--text-on-accent) !important;
+    font-weight: 700 !important;
+    border: none !important;
+}
+
+/* -------------------------------------------------------------
+   FORÇAR FIDELIDADE COMPLETA COM O LAYOUT DE REFERÊNCIA
+   ------------------------------------------------------------- */
+
+/* 1. Painéis inferiores: anular fundo branco forçado por seletores genéricos ou inline */
+.main-content div[style*="background"],
+.main-content .card,
+.main-content .table-card,
+.main-content .panel-box,
+div[style*="background: #ffffff"],
+div[style*="background:#ffffff"],
+div[style*="background: white"],
+div[style*="background:white"] {
+    background: #12151A !important;
+    background-color: #12151A !important;
+    border: 1px solid #303844 !important;
+    color: #E8EEF6 !important;
+}
+
+/* Forçar cores de texto dentro dos painéis inferiores */
+.main-content div[style*="background"] h1,
+.main-content div[style*="background"] h2,
+.main-content div[style*="background"] h3,
+.main-content div[style*="background"] h4,
+.main-content div[style*="background"] span,
+.main-content div[style*="background"] p,
+.main-content div[style*="background"] td,
+.main-content div[style*="background"] th {
+    color: #E8EEF6 !important;
+}
+
+.main-content div[style*="background"] .text-muted,
+.main-content div[style*="background"] th,
+.main-content div[style*="background"] p {
+    color: #A9B4C6 !important;
+}
+
+/* 2. Menu Lateral: alinhamento, tipografia e espaçamento idênticos à referência */
+.sidebar {
+    background-color: #0D0F12 !important;
+    border-right: 1px solid #232932 !important;
+    padding: 20px 14px !important;
+    box-sizing: border-box !important;
+}
+
+.sidebar-title,
+.sidebar-section-title,
+.sidebar h6,
+.sidebar small {
+    color: #8493AD !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+    margin: 18px 0 6px 8px !important;
+    display: block !important;
+}
+
+.sidebar-item,
+.sidebar a,
+.sidebar button {
+    display: flex !important;
+    align-items: center !important;
+    color: #A9B4C6 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    margin-bottom: 3px !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.sidebar-item:hover,
+.sidebar a:hover {
+    background-color: #1F242C !important;
+    color: #E8EEF6 !important;
+}
+
+.sidebar-item.active,
+.sidebar a.active,
+.sidebar .active {
+    background-color: #1F242C !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+
+/* 3. Ajuste dos botões de topo (desagrupar sobreposição) */
+.topbar,
+.topbar-actions,
+.master-top-actions {
+    position: absolute !important;
+    top: 24px !important;
+    right: 36px !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    z-index: 1000 !important;
+    width: auto !important;
+    background: transparent !important;
+}
+
+.topbar button,
+.topbar-actions button,
+.master-top-actions button {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Botão Dourado de Ação */
+button[onclick*="abrirMesa"],
+#btnAbrirMesa,
+.btn-primary {
+    background-color: #D9A62E !important;
+    color: #0A0A0A !important;
+    border: none !important;
+    font-weight: 700 !important;
+}
+
+/* Mapeamento de compatibilidade com o HTML legado */
+:root, body, body.dark-mode, [data-theme="dark"] {
+    --bg-page: #0A0B0D !important;
+    --bg-card: #12151A !important;
+    --border-color: #303844 !important;
+    --text-heading: #E8EEF6 !important;
+    --text-body: #A9B4C6 !important;
+    --text-muted: #8493AD !important;
+    background-color: #0A0B0D !important;
+    color: #E8EEF6 !important;
+}
+
+/* Forçar os containers inferiores a respeitar o background escuro */
+.card, .panel, .panel-box, .table-card,
+div[style*="background: var(--bg-card)"],
+div[class*="card"] {
+    background-color: #12151A !important;
+    background: #12151A !important;
+    border-color: #303844 !important;
+    color: #E8EEF6 !important;
+}
+
+/* =============================================================
+   CORREÇÃO DEFINITIVA DE FIDELIDADE (LAYOUT CLAUDE)
+   ============================================================= */
+
+/* 1. Alinhamento e separação da Topbar vs Ações do Dashboard */
+.topbar {
+    position: static !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    padding: 16px 36px 0 36px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.topbar-brand {
+    display: none !important;
+}
+
+.topbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-left: auto !important;
+}
+
+.topbar-actions button {
+    background-color: var(--bg-surface, #12151A) !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    border: 1px solid var(--border-default, #303844) !important;
+    border-radius: var(--radius-control, 6px) !important;
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* 2. Botão Secundário: Atualizar */
+button[onclick*="carregarDashboardCompleto"] {
+    background-color: var(--bg-surface, #12151A) !important;
+    border: 1px solid var(--border-default, #303844) !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    border-radius: var(--radius-control, 6px) !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+/* 3. Botão Principal: Abrir Mesa (Dourado Oficial STRIKE) */
+button[onclick*="trocarAbaSistema('mesa')"],
+button[onclick*="trocarAbaSistema"] {
+    background-color: var(--accent-action, #D9A62E) !important;
+    color: var(--text-on-accent, #0A0A0A) !important;
+    border: none !important;
+    border-radius: var(--radius-control, 6px) !important;
+    padding: 8px 18px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+button[onclick*="trocarAbaSistema('mesa')"]:hover,
+button[onclick*="trocarAbaSistema"]:hover {
+    background-color: var(--accent-action-hover, #E6B84A) !important;
+}
+
+/* 4. Valores dos Cards de KPI: anular roxo/azul inline */
+.kpi-card .kpi-value,
+.kpi-value[style*="color"] {
+    color: var(--text-primary, #E8EEF6) !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    margin: 6px 0 !important;
+}
+
+.kpi-card .kpi-subtitle {
+    color: var(--text-muted, #8493AD) !important;
+    font-size: 12px !important;
+}
+
+.kpi-card .kpi-title {
+    color: var(--text-secondary, #A9B4C6) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+}
+
+/* 5. Painéis de Tabela e Calibração Comercial */
+#pane-dashboard .panel-box,
+#pane-dashboard .table-card,
+#pane-dashboard div[style*="background"] {
+    background-color: var(--bg-surface, #12151A) !important;
+    border: 1px solid var(--border-default, #303844) !important;
+    border-radius: var(--radius-card, 10px) !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    box-shadow: none !important;
+}
+
+/* 6. Funil de Disputa */
+.funnel-card {
+    background-color: var(--bg-surface, #12151A) !important;
+    border: 1px solid var(--border-default, #303844) !important;
+    border-radius: var(--radius-card, 10px) !important;
+}
+
+.funnel-bar-track {
+    background-color: var(--bg-subtle, #1F242C) !important;
+}
+
+.funnel-bar-fill {
+    background-color: var(--interactive, #78AEF0) !important;
+}
+
+/* -------------------------------------------------------------
+   CORREÇÃO DE TAMANHO DE FUNDO E SEPARAÇÃO DOS BOTÕES
+   ------------------------------------------------------------- */
+
+/* 1. Remover fundo e borda da linha de cabeçalho do Painel Executivo */
+#pane-dashboard > div:first-child,
+div[style*="justify-content: space-between"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+}
+
+/* 2. Dar respiro ao topo do conteúdo para os botões do sistema não colidirem */
+.main-content {
+    padding-top: 72px !important;
+    position: relative !important;
+}
+
+/* 3. Topbar do Sistema (Modo Claro / Sair) fixada no canto superior direito */
+.topbar,
+.master-top-actions {
+    position: absolute !important;
+    top: 18px !important;
+    right: 36px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: transparent !important;
+    border: none !important;
+    z-index: 1000 !important;
+    width: auto !important;
+}
+
+.topbar-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    position: static !important;
+}
+
+.topbar-actions button,
+.master-top-actions button {
+    position: static !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* 4. Ações do Dashboard (↻ Atualizar e Abrir Mesa) alinhadas lado a lado */
+div[style*="justify-content: space-between"] > div:last-child {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    position: static !important;
+}
+
+div[style*="justify-content: space-between"] button {
+    position: static !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* -------------------------------------------------------------
+   SEPARAÇÃO E ALINHAMENTO DEFINITIVO: TOPBAR VS AÇÕES DO PAINEL
+   ------------------------------------------------------------- */
+
+/* 1. Fixar a Topbar no topo superior direito com coordenadas isoladas */
+.topbar,
+.master-top-actions,
+header.topbar {
+    position: absolute !important;
+    top: 14px !important;
+    right: 32px !important;
+    left: auto !important;
+    bottom: auto !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    z-index: 2000 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: auto !important;
+    width: auto !important;
+}
+
+.topbar-actions {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    position: static !important;
+}
+
+/* 2. Botões da Topbar (Modo Claro e Sair) */
+.topbar button,
+.topbar-actions button,
+.master-top-actions button {
+    position: static !important;
+    margin: 0 !important;
+    height: 32px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--text-primary, #E8EEF6) !important;
+    background-color: var(--bg-surface, #12151A) !important;
+    border: 1px solid var(--border-default, #303844) !important;
+    border-radius: var(--radius-control, 6px) !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* 3. Empurrar a área de trabalho para baixo para desobstruir os botões */
+.main-content {
+    padding-top: 64px !important;
+    position: relative !important;
+}
+
+/* 4. Bloco de cabeçalho do Painel Executivo */
+#pane-dashboard > div:first-child,
+div[style*="justify-content: space-between"] {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 8px !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* 5. Ações internas do Dashboard (Atualizar e Abrir Mesa) */
+div[style*="justify-content: space-between"] > div:last-child {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    position: static !important;
+}
+
+button[onclick*="carregarDashboardCompleto"] {
+    position: static !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+}
+
+button[onclick*="trocarAbaSistema('mesa')"],
+button[onclick*="trocarAbaSistema"] {
+    position: static !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background-color: var(--accent-action, #D9A62E) !important;
+    color: var(--text-on-accent, #0A0A0A) !important;
+}
+
+/* -------------------------------------------------------------
+   ELEVAÇÃO MÁXIMA DA TOPBAR (MODO CLARO / SAIR)
+   ------------------------------------------------------------- */
+.topbar,
+.master-top-actions,
+header.topbar {
+    position: fixed !important;
+    top: 12px !important;
+    right: 28px !important;
+    z-index: 99999 !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.topbar-actions {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.topbar button,
+.topbar-actions button,
+.master-top-actions button {
+    height: 30px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+}
+
+/* Margem de segurança reforçada no conteúdo principal */
+.main-content {
+    padding-top: 56px !important;
+}
+
+/* -------------------------------------------------------------
+   FIXAÇÃO ESTRUTURAL DA TOPBAR (MODO CLARO E SAIR)
+   ------------------------------------------------------------- */
+body > .topbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: 48px !important;
+    background: #0A0B0D !important;
+    border-bottom: 1px solid #232932 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 24px !important;
+    z-index: 99999 !important;
+    box-sizing: border-box !important;
+}
+
+body > .topbar .topbar-brand {
+    display: none !important;
+}
+
+body > .topbar .topbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+}
+
+body > .topbar .btn-theme-toggle,
+body > .topbar .btn-logout {
+    height: 30px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    background: #12151A !important;
+    border: 1px solid #303844 !important;
+    color: #E8EEF6 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+}
+
+/* Descer toda a aplicação para não ficar por trás da barra fixa */
+.app-container {
+    padding-top: 48px !important;
+    display: flex !important;
+    min-height: 100vh !important;
+    box-sizing: border-box !important;
+}
+
+/* Garantir que o conteúdo principal e seus botões fiquem no fluxo natural */
+.main-content {
+    padding-top: 24px !important;
+    position: relative !important;
+}
+
+#pane-dashboard div[style*="justify-content: space-between"] {
+    position: relative !important;
+    margin-bottom: 20px !important;
+}
+```

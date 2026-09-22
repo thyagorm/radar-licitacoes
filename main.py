@@ -1,7 +1,7 @@
 from routers.dashboard import router as dashboard_router
 from routers.empresa_router import router as empresa_router
 from routers.preferencias_router import router as preferencias_router
-from routers.processos_router import router as processos_router
+from routers.processos_router import router as processos_router, router_compat
 from services.scheduler_service import iniciar_agendador, parar_agendador
 from routers import alerts_router
 """
@@ -84,6 +84,7 @@ app.include_router(dashboard_router)
 app.include_router(empresa_router)
 app.include_router(preferencias_router)
 app.include_router(processos_router)
+app.include_router(router_compat)
 app.include_router(alerts_router.router, prefix="/api/alerts", tags=["Alertas & Notificações"])
 app.include_router(pncp_router.router, prefix="/api/pncp", tags=["Editais PNCP"])
 app.include_router(edital_analyzer.router, prefix="/api/analyzer", tags=["analyzer"])
@@ -115,7 +116,7 @@ async def root():
         "message": "🎯 Radar de Licitações",
         "version": settings.api_version,
         "docs": "/docs",
-        "dashboard": "/static/index.html"
+        "dashboard": "/static/dashboard.html"
     }
 
 
