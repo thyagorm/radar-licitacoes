@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRIKE - Dossiê do Pregão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/strike_consolidated.css?v=770">
+    <style>
+        body, .detalhes-layout-container, .detalhes-main-wrapper, .detalhes-content {
+            background-color: #EBF0F5 !important;
+            font-family: 'Inter', sans-serif !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* SIDEBAR E TOPBAR */
+        .sidebar {
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            background-color: #070B14 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            height: calc(100vh - 52px) !important;
+            overflow-y: auto !important;
+            scrollbar-width: none !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-sizing: border-box !important;
+        }
+        .sidebar::-webkit-scrollbar { display: none !important; }
+        .sidebar.collapsed {
+            margin-left: -260px !important;
+            width: 0 !important;
+            min-width: 0 !important;
+            max-width: 0 !important;
+            overflow: hidden !important;
+            border-right: none !important;
+        }
+        .sidebar-header {
+            padding: 24px 16px 16px 16px !important;
+            text-align: center !important;
+            border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+        }
+        .sidebar-section-title {
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            color: #475569 !important;
+            text-transform: uppercase !important;
+            padding: 16px 20px 6px 20px !important;
+            letter-spacing: 0.06em !important;
+            white-space: nowrap !important;
+        }
+        .sidebar-item {
+            display: flex !important;
+            align-items: center !important;
+            padding: 9px 16px !important;
+            margin: 2px 12px !important;
+            border-radius: 6px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            color: #94A3B8 !important;
+            cursor: pointer !important;
+            transition: background 0.15s ease, color 0.15s ease !important;
+            white-space: nowrap !important;
+        }
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.04) !important;
+            color: #F8FAFC !important;
+        }
+        .sidebar-item.active {
+            background-color: #1E293B !important;
+            color: #FFFFFF !important;
+            font-weight: 600 !important;
+        }
+
+        .detalhes-layout-container {
+            display: flex;
+            min-height: calc(100vh - 52px);
+        }
+        .detalhes-content {
+            flex: 1;
+            padding: 28px 36px 48px 36px !important;
+            margin-top: 10px !important;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* BOTÃO VOLTAR */
+        .btn-voltar {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            background: #FFFFFF !important;
+            border: 1px solid #94A3B8 !important;
+            color: #0F172A !important;
+            padding: 7px 14px !important;
+            border-radius: 6px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            text-decoration: none !important;
+            margin-bottom: 20px !important;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08) !important;
+            transition: all 0.15s ease !important;
+        }
+        .btn-voltar:hover {
+            background: #0F172A !important;
+            color: #FFFFFF !important;
+            border-color: #0F172A !important;
+        }
+
+        .btn-portal-destaque {
+            background: #0F172A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #0F172A !important;
+            padding: 8px 16px !important;
+            border-radius: 6px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15) !important;
+        }
+        .btn-portal-destaque:hover { background: #1E293B !important; }
+
+        /* ABAS SUPERIORES */
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #CBD5E1;
+            padding-bottom: 0px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748B;
+            cursor: pointer;
+            position: relative;
+            bottom: -2px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+        .tab-btn:hover { color: #0F172A; }
+        .tab-btn.active {
+            color: #0F172A;
+            border-bottom: 2px solid #0F172A;
+        }
+
+        /* STAT BOXES & SEÇÕES */
+        .dossie-grid-topo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-box {
+            background: #FFFFFF !important;
+            border: 1px solid #CBD5E1 !important;
+            border-top: 3px solid #0F172A !important;
+            border-radius: 6px !important;
+            padding: 14px 18px !important;
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05) !important;
+        }
+        .stat-label {
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            color: #475569 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            margin-bottom: 6px !important;
+        }
+        .stat-value {
+            font-size: 14px !important;
+            font-weight: 800 !important;
+            color: #0F172A !important;
+        }
+
+        .dossie-grid-corpo {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px;
+        }
+        .dossie-section {
+            background: #FFFFFF !important;
+            border: 1px solid #CBD5E1 !important;
+            border-radius: 6px !important;
+            padding: 18px 22px !important;
+            margin-bottom: 16px !important;
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04) !important;
+        }
+        .dossie-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E2E8F0;
+            border-left: 3px solid #2563EB;
+            padding-left: 10px;
+        }
+        .dossie-section-title {
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            color: #0F172A !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            margin: 0 !important;
+        }
+
+        /* CHECKLIST CLICÁVEL COM LINKS */
+        .checklist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: #FAFAFA;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .checklist-item:hover {
+            border-color: #94A3B8;
+            background: #F1F5F9;
+        }
+        .checklist-item-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .checklist-link-icon {
+            font-size: 11px;
+            color: #2563EB;
+        }
+
+        /* DIRETRIZ ESTRATÉGICA EDITÁVEL */
+        .btn-edit-diretriz {
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
+            color: #334155;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-edit-diretriz:hover {
+            background: #0F172A;
+            color: #FFFFFF;
+        }
+        .textarea-diretriz {
+            width: 100%;
+            height: 90px;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 12px;
+            color: #0F172A;
+            resize: vertical;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .textarea-diretriz:focus {
+            border-color: #0F172A;
+        }
+
+        /* TABELA DE ITENS DO PREGÃO */
+        .tabela-itens {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFFFF;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #CBD5E1;
+        }
+        .tabela-itens th {
+            background: #0F172A;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 12px 14px;
+            text-align: left;
+        }
+        .tabela-itens td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 12px;
+            color: #334155;
+        }
+        .tabela-itens tr:last-child td { border-bottom: none; }
+
+        /* BADGES */
+        .badge-hab-ok {
+            background: #DCFCE7 !important;
+            color: #166534 !important;
+            border: 1px solid #BBF7D0 !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
+            padding: 2px 8px !important;
+            border-radius: 4px !important;
+        }
+        .badge-status-disputa {
+            background: #0F172A !important;
+            color: #FFFFFF !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            padding: 4px 10px !important;
+            border-radius: 4px !important;
+        }
+        .badge-status-analise {
+            background: #E0E7FF !important;
+            color: #3730A3 !important;
+            border: 1px solid #C7D2FE !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            padding: 4px 10px !important;
+            border-radius: 4px !important;
+        }
+    
+        /* TABELA DE ITENS EDITÁVEIS */
+        .itens-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+        }
+        .btn-acao-itens {
+            background: #0F172A;
+            color: #FFFFFF;
+            border: 1px solid #0F172A;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-acao-itens:hover {
+            background: #1E293B;
+        }
+        .btn-cancelar-itens {
+            background: #FFFFFF;
+            color: #475569;
+            border: 1px solid #CBD5E1;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+        .input-item-edit {
+            width: 100%;
+            padding: 5px 8px;
+            font-size: 12px;
+            font-family: inherit;
+            border: 1px solid #94A3B8;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background: #FFFFFF;
+            color: #0F172A;
+            font-weight: 600;
+        }
+        .input-item-edit:focus {
+            border-color: #2563EB;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+        .val-total-destaque {
+            font-size: 12px;
+            font-weight: 800;
+            color: #0F172A;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- TOPBAR CORPORATIVA -->
+    <header class="topbar" style="background-color: #0F172A; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 1000;">
+        <div style="display: flex !important; align-items: center !important; gap: 12px !important;">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar/Exibir Menu" style="background: transparent; border: none; color: #FFF; cursor: pointer; display: flex; align-items: center; padding: 6px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <span style="display: inline-block !important; color: #94A3B8 !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0.02em !important;">STRIKE &bull; Dossiê do Pregão</span>
+        </div>
+        <div class="topbar-center-brand">STRIKE</div>
+        <div style="width: 140px;"></div>
+    </header>
+
+    <div class="detalhes-layout-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/static/img/strike-logo.png" alt="STRIKE" style="max-width: 130px; height: auto; display: block; margin: 0 auto;" onerror="this.onerror=null; this.src='/static/strike-logo.png';">
+            </div>
+
+            <div class="sidebar-section-title">Visão Geral</div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Dashboard</span>
+            </div>
+
+            <div class="sidebar-section-title">Operacional de Licitações</div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Mural de Editais (PNCP)</span>
+            </div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Radar de Matches</span>
+            </div>
+            <div class="sidebar-item active" onclick="window.location.href='/static/mesa.html'">
+                <span>Mesa de Operação</span>
+            </div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Alertas</span>
+            </div>
+
+            <div class="sidebar-section-title">Gestão & Estratégia</div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Estratégia & Critérios</span>
+            </div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Notificações</span>
+            </div>
+            <div class="sidebar-item" onclick="window.location.href='/static/dashboard.html'">
+                <span>Empresa & Certidões</span>
+            </div>
+        </aside>
+
+        <!-- ÁREA CENTRAL -->
+        <main class="detalhes-content">
+            <a href="/static/mesa.html" class="btn-voltar">&larr; Voltar para a Mesa de Operação</a>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h1 id="det-pregao" style="font-size: 24px; font-weight: 800; color: #0F172A; margin: 0;">PE 90107/2026</h1>
+                        <span id="det-status" class="badge-status-disputa">Em Disputa</span>
+                    </div>
+                    <p id="det-orgao" style="font-size: 13px; color: #64748B; margin: 6px 0 0 0; font-weight: 500;">
+                        Comissão Regional de Obtenção da Marinha (COM-RJ) &bull; Rio de Janeiro - RJ
+                    </p>
+                </div>
+                <div>
+                    <a id="det-link-portal" href="https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras" target="_blank" class="btn-portal-destaque">
+                        Acessar Portal Oficial ↗
+                    </a>
+                </div>
+            </div>
+
+            <!-- ABAS DO DOSSIÊ -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" id="tab-btn-visao" onclick="trocarAba('visao')">Visão Geral & Parâmetros</button>
+                <button class="tab-btn" id="tab-btn-itens" onclick="trocarAba('itens')">Itens do Pregão (04)</button>
+            </div>
+
+            <!-- ABA 1: VISÃO GERAL -->
+            <div id="aba-visao">
+                <div class="dossie-grid-topo">
+                    <div class="stat-box">
+                        <div class="stat-label">Número do Processo</div>
+                        <div class="stat-value" id="det-processo">23525.014069/2026-63</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Portal / UASG</div>
+                        <div class="stat-value" id="det-portal">Compras.gov (763600)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Data e Hora Sessão</div>
+                        <div class="stat-value" id="det-datahora">26/09/2026 às 09:00</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Disputa / Critério</div>
+                        <div class="stat-value">Aberto &bull; Menor Preço</div>
+                    </div>
+                </div>
+
+                <div class="dossie-grid-corpo">
+                    <!-- COLUNA ESQUERDA -->
+                    <div>
+                        <div class="dossie-section">
+                            <div class="dossie-section-header">
+                                <span class="dossie-section-title">Documentos & Termos do Edital</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 6px; margin-bottom: 10px;">
+                                <div>
+                                    <strong style="color: #0F172A; display: block; font-size: 13px;">Edital Retificado Completo</strong>
+                                    <span style="color: #64748B; font-size: 11px;">Publicado em 14/09/2026 &bull; PDF (1.4 MB)</span>
+                                </div>
+                                <button class="btn-edit-diretriz" onclick="alert('Download do Edital iniciado')">Baixar</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 6px;">
+                                <div>
+                                    <strong style="color: #0F172A; display: block; font-size: 13px;">Termo de Referência (TR)</strong>
+                                    <span style="color: #64748B; font-size: 11px;">Especificações técnicas e quantitativos &bull; PDF (820 KB)</span>
+                                </div>
+                                <button class="btn-edit-diretriz" onclick="alert('Download do TR iniciado')">Baixar</button>
+                            </div>
+                        </div>
+
+                        <!-- DIRETRIZ ESTRATÉGICA EDITÁVEL -->
+                        <div class="dossie-section">
+                            <div class="dossie-section-header">
+                                <span class="dossie-section-title">Diretriz Estratégica da Mesa</span>
+                                <button class="btn-edit-diretriz" id="btn-toggle-diretriz" onclick="alternarEdicaoDiretriz()">Editar</button>
+                            </div>
+                            <div id="diretriz-display" style="font-size: 12px; color: #334155; line-height: 1.6; font-weight: 500;">
+                                Limite estrito de lance travado no piso mínimo calibrado. Em certames com disputa aberta, priorizar reduções no final da prorrogação automática. Respeitar a margem operacional mínima de 15%.
+                            </div>
+                            <div id="diretriz-edit-wrapper" style="display: none; margin-top: 8px;">
+                                <textarea id="diretriz-input" class="textarea-diretriz"></textarea>
+                                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+                                    <button class="btn-voltar" style="margin-bottom: 0; padding: 5px 12px;" onclick="cancelarEdicaoDiretriz()">Cancelar</button>
+                                    <button class="btn-portal-destaque" style="padding: 5px 14px;" onclick="salvarDiretriz()">Salvar Alteração</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLUNA DIREITA: CHECKLIST LINKÁVEL -->
+                    <div>
+                        <div class="dossie-section">
+                            <div class="dossie-section-header">
+                                <span class="dossie-section-title">Checklist de Habilitação</span>
+                                <span style="font-size: 11px; color: #64748B; font-weight: 600;">Clique para checar</span>
+                            </div>
+                            
+                            <a href="/static/dashboard.html?aba=conta" class="checklist-item" title="Verificar SICAF e certidões no módulo Conta">
+                                <span class="checklist-item-title">
+                                    SICAF / Nível III (Regularidade Fiscal)
+                                    <span class="checklist-link-icon">↗</span>
+                                </span>
+                                <span class="badge-hab-ok">Conforme</span>
+                            </a>
+
+                            <a href="https://solucoes.receita.fazenda.gov.br/servicos/certidaointernet/pj/emitir" target="_blank" class="checklist-item" title="Consultar Certidão Conjunta Federal">
+                                <span class="checklist-item-title">
+                                    Certidão Negativa Federal (PGFN/RFB)
+                                    <span class="checklist-link-icon">↗</span>
+                                </span>
+                                <span class="badge-hab-ok">Válida</span>
+                            </a>
+
+                            <a href="https://www.tst.jus.br/certidao1" target="_blank" class="checklist-item" title="Consultar CNDT no Tribunal Superior do Trabalho">
+                                <span class="checklist-item-title">
+                                    Certidão Negativa Trabalhista (CNDT)
+                                    <span class="checklist-link-icon">↗</span>
+                                </span>
+                                <span class="badge-hab-ok">Válida</span>
+                            </a>
+
+                            <a href="https://consultas.anvisa.gov.br/#/medicamentos/" target="_blank" class="checklist-item" title="Consultar Registro ANVISA dos Itens">
+                                <span class="checklist-item-title">
+                                    Registro Sanitário ANVISA / AFE
+                                    <span class="checklist-link-icon">↗</span>
+                                </span>
+                                <span class="badge-hab-ok">Atestado</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- ABA 2: ITENS DO PREGÃO COM EDIÇÃO TOTAL -->
+            <div id="aba-itens" style="display: none;">
+                <div class="itens-toolbar">
+                    <div>
+                        <strong style="color: #0F172A; font-size: 13px;">Composição de Custos, Marcas e Lances</strong>
+                        <span id="label-total-geral" style="margin-left: 16px; font-size: 12px; color: #475569; font-weight: 600;">Total Licitado: <strong style="color: #0F172A;" id="valor-total-geral">R$ 0,00</strong></span>
+                    </div>
+                    <div>
+                        <button id="btn-cancelar-itens" class="btn-cancelar-itens" style="display: none;" onclick="cancelarEdicaoItens()">Cancelar</button>
+                        <button id="btn-editar-itens" class="btn-acao-itens" onclick="alternarModoEdicaoItens()">Editar Itens</button>
+                    </div>
+                </div>
+                <div class="dossie-section" style="padding: 0; overflow: hidden; border-radius: 0 0 6px 6px;">
+                    <table class="tabela-itens">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Item</th>
+                                <th>Descrição do Medicamento / Produto</th>
+                                <th style="width: 140px;">Marca / Fabricante</th>
+                                <th style="width: 90px;">Qtd</th>
+                                <th style="width: 110px;">Custo Unit.</th>
+                                <th style="width: 110px;">Piso Mín.</th>
+                                <th style="width: 110px;">Ref. Edital</th>
+                                <th style="width: 130px;">Valor Total (Ref)</th>
+                                <th style="width: 80px; text-align: center;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-itens-tbody">
+                            <!-- Injetado dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) sidebar.classList.toggle('collapsed');
+        }
+
+        // ALTERNÂNCIA DE ABAS
+        function trocarAba(aba) {
+            const btnVisao = document.getElementById('tab-btn-visao');
+            const btnItens = document.getElementById('tab-btn-itens');
+            const abaVisao = document.getElementById('aba-visao');
+            const abaItens = document.getElementById('aba-itens');
+
+            if (aba === 'visao') {
+                btnVisao.classList.add('active');
+                btnItens.classList.remove('active');
+                abaVisao.style.display = 'block';
+                abaItens.style.display = 'none';
+            } else {
+                btnItens.classList.add('active');
+                btnVisao.classList.remove('active');
+                abaVisao.style.display = 'none';
+                abaItens.style.display = 'block';
+            }
+        }
+
+        // GESTÃO DA DIRETRIZ ESTRATÉGICA
+        const urlParams = new URLSearchParams(window.location.search);
+        const pregaoId = urlParams.get('pregao') || 'PE90107-2026';
+        const storageKey = 'diretriz_' + pregaoId;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const salva = localStorage.getItem(storageKey);
+            if (salva) {
+                document.getElementById('diretriz-display').innerText = salva;
+            }
+        });
+
+        function alternarEdicaoDiretriz() {
+            const display = document.getElementById('diretriz-display');
+            const wrapper = document.getElementById('diretriz-edit-wrapper');
+            const input = document.getElementById('diretriz-input');
+            const btn = document.getElementById('btn-toggle-diretriz');
+
+            input.value = display.innerText.trim();
+            display.style.display = 'none';
+            wrapper.style.display = 'block';
+            btn.style.display = 'none';
+            input.focus();
+        }
+
+        function cancelarEdicaoDiretriz() {
+            document.getElementById('diretriz-display').style.display = 'block';
+            document.getElementById('diretriz-edit-wrapper').style.display = 'none';
+            document.getElementById('btn-toggle-diretriz').style.display = 'inline-block';
+        }
+
+        function salvarDiretriz() {
+            const novoTexto = document.getElementById('diretriz-input').value.trim();
+            if (novoTexto) {
+                localStorage.setItem(storageKey, novoTexto);
+                document.getElementById('diretriz-display').innerText = novoTexto;
+            }
+            cancelarEdicaoDiretriz();
+        }
+
+        
+        // GESTÃO DOS ITENS DO PREGÃO COM MARCA E VALOR TOTAL
+        let modoEdicaoAtivo = false;
+        
+        // Dados base padrão caso não existam no localStorage
+        const itensPadraoPE90107 = [
+            { item: '01', desc: 'Amoxicilina + Clavulanato 500/125mg', sub: 'Comprimido Revestido • Caixa c/ 30', marca: 'EMS', qtd: 12000, custo: 2.50, piso: 3.10, ref: 4.20, status: 'Apto' },
+            { item: '02', desc: 'Dipirona Sódica 500mg/mL', sub: 'Solução Injetável 2mL • Ampola', marca: 'Eurofarma', qtd: 45000, custo: 0.95, piso: 1.15, ref: 1.60, status: 'Apto' },
+            { item: '03', desc: 'Omeprazol Sódico 40mg Pó Liofilizado', sub: 'Frasco-ampola + Diluente', marca: 'Cristália', qtd: 8500, custo: 7.90, piso: 9.80, ref: 13.50, status: 'Apto' },
+            { item: '04', desc: 'Ceftriaxona Dissódica 1g IV', sub: 'Frasco-ampola c/ diluente', marca: 'Blau Farmacêutica', qtd: 6200, custo: 11.80, piso: 13.40, ref: 16.80, status: 'Apto' }
+        ];
+
+        const itensPadraoPE040 = [
+            { item: '01', desc: 'Paracetamol 500mg', sub: 'Comprimido simples • Caixa c/ 500', marca: 'Medley', qtd: 20000, custo: 0.18, piso: 0.25, ref: 0.38, status: 'Apto' },
+            { item: '02', desc: 'Ibuprofeno 600mg', sub: 'Comprimido revestido • Caixa c/ 200', marca: 'Neo Química', qtd: 15000, custo: 0.35, piso: 0.48, ref: 0.65, status: 'Apto' }
+        ];
+
+        const storageItensKey = 'itens_' + (pregaoId || 'PE90107-2026');
+        let itensData = [];
+
+        function inicializarItens() {
+            const salvo = localStorage.getItem(storageItensKey);
+            if (salvo) {
+                try {
+                    itensData = JSON.parse(salvo);
+                } catch(e) {
+                    itensData = (pregaoId === 'PE040-2026' || pregaoId === 'PE 040/2026') ? [...itensPadraoPE040] : [...itensPadraoPE90107];
+                }
+            } else {
+                itensData = (pregaoId === 'PE040-2026' || pregaoId === 'PE 040/2026') ? [...itensPadraoPE040] : [...itensPadraoPE90107];
+            }
+            renderizarTabelaItens();
+        }
+
+        function formatarMoeda(v) {
+            return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function renderizarTabelaItens() {
+            const tbody = document.getElementById('lista-itens-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            let somaTotalGeral = 0;
+
+            itensData.forEach((it, idx) => {
+                const totalItem = it.qtd * it.ref;
+                somaTotalGeral += totalItem;
+
+                const tr = document.createElement('tr');
+
+                if (!modoEdicaoAtivo) {
+                    tr.innerHTML = `
+                        <td><strong>#${it.item}</strong></td>
+                        <td>
+                            <strong style="color: #0F172A;">${it.desc}</strong>
+                            <div style="color: #64748B; font-size: 11px;">${it.sub || ''}</div>
+                        </td>
+                        <td><span style="font-weight: 600; color: #0F172A; background: #F1F5F9; border: 1px solid #CBD5E1; padding: 2px 8px; border-radius: 4px; font-size: 11px;">${it.marca || 'Não inf.'}</span></td>
+                        <td><strong>${it.qtd.toLocaleString('pt-BR')}</strong></td>
+                        <td>${formatarMoeda(it.custo)}</td>
+                        <td style="color: #15803D; font-weight: 700;">${formatarMoeda(it.piso)}</td>
+                        <td>${formatarMoeda(it.ref)}</td>
+                        <td class="val-total-destaque">${formatarMoeda(totalItem)}</td>
+                        <td style="text-align: center;"><span class="badge-hab-ok">${it.status || 'Apto'}</span></td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td><strong>#${it.item}</strong></td>
+                        <td>
+                            <input type="text" class="input-item-edit" value="${it.desc}" id="edit-desc-${idx}">
+                            <input type="text" class="input-item-edit" value="${it.sub || ''}" id="edit-sub-${idx}" style="margin-top: 4px; font-size: 11px; color: #64748B;" placeholder="Detalhes / embalagem">
+                        </td>
+                        <td>
+                            <input type="text" class="input-item-edit" value="${it.marca || ''}" id="edit-marca-${idx}" placeholder="Ex: EMS">
+                        </td>
+                        <td>
+                            <input type="number" class="input-item-edit" value="${it.qtd}" id="edit-qtd-${idx}" oninput="recalcularTotalLinha(${idx})">
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" class="input-item-edit" value="${it.custo}" id="edit-custo-${idx}">
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" class="input-item-edit" value="${it.piso}" id="edit-piso-${idx}">
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" class="input-item-edit" value="${it.ref}" id="edit-ref-${idx}" oninput="recalcularTotalLinha(${idx})">
+                        </td>
+                        <td class="val-total-destaque" id="total-linha-${idx}">
+                            ${formatarMoeda(totalItem)}
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="text" class="input-item-edit" style="text-align:center; padding: 4px;" value="${it.status || 'Apto'}" id="edit-status-${idx}">
+                        </td>
+                    `;
+                }
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('valor-total-geral').innerText = formatarMoeda(somaTotalGeral);
+            const abaBtn = document.getElementById('tab-btn-itens');
+            if (abaBtn) abaBtn.innerText = `Itens do Pregão (${itensData.length < 10 ? '0' + itensData.length : itensData.length})`;
+        }
+
+        function recalcularTotalLinha(idx) {
+            const qtd = parseFloat(document.getElementById(`edit-qtd-${idx}`).value) || 0;
+            const ref = parseFloat(document.getElementById(`edit-ref-${idx}`).value) || 0;
+            const elTotal = document.getElementById(`total-linha-${idx}`);
+            if (elTotal) elTotal.innerText = formatarMoeda(qtd * ref);
+        }
+
+        function alternarModoEdicaoItens() {
+            const btnEditar = document.getElementById('btn-editar-itens');
+            const btnCancelar = document.getElementById('btn-cancelar-itens');
+
+            if (!modoEdicaoAtivo) {
+                modoEdicaoAtivo = true;
+                btnEditar.innerText = 'Salvar Alterações';
+                btnEditar.style.background = '#15803D';
+                btnEditar.style.borderColor = '#15803D';
+                btnCancelar.style.display = 'inline-block';
+                renderizarTabelaItens();
+            } else {
+                // Salvar dados editados
+                itensData.forEach((it, idx) => {
+                    it.desc = document.getElementById(`edit-desc-${idx}`).value;
+                    it.sub = document.getElementById(`edit-sub-${idx}`).value;
+                    it.marca = document.getElementById(`edit-marca-${idx}`).value;
+                    it.qtd = parseFloat(document.getElementById(`edit-qtd-${idx}`).value) || 0;
+                    it.custo = parseFloat(document.getElementById(`edit-custo-${idx}`).value) || 0;
+                    it.piso = parseFloat(document.getElementById(`edit-piso-${idx}`).value) || 0;
+                    it.ref = parseFloat(document.getElementById(`edit-ref-${idx}`).value) || 0;
+                    it.status = document.getElementById(`edit-status-${idx}`).value;
+                });
+
+                localStorage.setItem(storageItensKey, JSON.stringify(itensData));
+                modoEdicaoAtivo = false;
+                btnEditar.innerText = 'Editar Itens';
+                btnEditar.style.background = '#0F172A';
+                btnEditar.style.borderColor = '#0F172A';
+                btnCancelar.style.display = 'none';
+                renderizarTabelaItens();
+            }
+        }
+
+        function cancelarEdicaoItens() {
+            modoEdicaoAtivo = false;
+            const btnEditar = document.getElementById('btn-editar-itens');
+            const btnCancelar = document.getElementById('btn-cancelar-itens');
+            btnEditar.innerText = 'Editar Itens';
+            btnEditar.style.background = '#0F172A';
+            btnEditar.style.borderColor = '#0F172A';
+            btnCancelar.style.display = 'none';
+            inicializarItens();
+        }
+
+        window.addEventListener('DOMContentLoaded', inicializarItens);
+
+        // CARREGAMENTO SE FOR O PREGÃO 040/2026
+        if (pregaoId === 'PE040-2026' || pregaoId === 'PE 040/2026') {
+            document.getElementById('det-pregao').innerText = 'PE 040/2026';
+            document.getElementById('det-status').innerText = 'Em Análise';
+            document.getElementById('det-status').className = 'badge-status-analise';
+            document.getElementById('det-orgao').innerText = 'Prefeitura Municipal de Santo Antônio do Monte • Minas Gerais - MG';
+            document.getElementById('det-processo').innerText = 'Processo nº 118/2026';
+            document.getElementById('det-portal').innerText = 'BBMNet';
+            document.getElementById('det-datahora').innerText = '28/09/2026 às 10:00';
+            document.getElementById('det-link-portal').href = 'https://www.novobbmnet.com.br';
+            document.getElementById('tab-btn-itens').innerText = 'Itens do Pregão (02)';
+
+            // gerenciado dinamicamente por inicializarItens()
+        }
+    </script>
+</body>
+</html>

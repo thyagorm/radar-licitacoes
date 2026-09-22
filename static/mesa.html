@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRIKE - Mesa de Operação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/strike_consolidated.css?v=770">
+    <style>
+        /* Ajustes específicos para garantir visibilidade do cabeçalho */
+        .mesa-main-wrapper {
+            margin-top: 20px !important;
+            padding-top: 30px !important;
+            flex: 1;
+            padding: 24px 32px 40px 32px;
+            overflow-y: auto;
+            background-color: #F8FAFC;
+        }
+        .mesa-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 22px;
+            padding-top: 4px;
+        }
+        .val-total-col {
+            font-weight: 700;
+            color: #0F172A;
+            font-size: 12px;
+        }
+        .btn-detalhes-edital {
+            background: #0F172A;
+            color: #FFFFFF;
+            border: none;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.15s ease;
+        }
+        .btn-detalhes-edital:hover {
+            background: #1E293B;
+        }
+        .btn-link-portal {
+            background: #F1F5F9;
+            color: #475569;
+            border: 1px solid #CBD5E1;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 6px;
+        }
+        .btn-link-portal:hover {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
+    
+        
+        /* Estilos fiéis da sidebar */
+        .sidebar {
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            background-color: #070B14 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            height: calc(100vh - 52px) !important;
+            overflow-y: auto !important;
+            scrollbar-width: none !important; /* Firefox */
+            box-sizing: border-box !important;
+        }
+        .sidebar::-webkit-scrollbar {
+            display: none !important; /* Chrome, Safari, Edge */
+        }
+        .sidebar-header {
+            padding: 24px 16px 16px 16px !important;
+            text-align: center !important;
+            border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+        }
+        .sidebar-section-title {
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            color: #475569 !important;
+            text-transform: uppercase !important;
+            padding: 16px 20px 6px 20px !important;
+            letter-spacing: 0.06em !important;
+            white-space: nowrap !important;
+        }
+        .sidebar-item {
+            display: flex !important;
+            align-items: center !important;
+            padding: 9px 16px !important;
+            margin: 2px 12px !important;
+            border-radius: 6px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            color: #94A3B8 !important;
+            cursor: pointer !important;
+            transition: background 0.15s ease, color 0.15s ease !important;
+            white-space: nowrap !important;
+        }
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.04) !important;
+            color: #F8FAFC !important;
+        }
+        .sidebar-item.active {
+            background-color: #1E293B !important;
+            color: #FFFFFF !important;
+            font-weight: 600 !important;
+        }
+    
+    </style>
+</head>
+<body style="background-color: #F8FAFC; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
+
+    <!-- TOPBAR CORPORATIVA -->
+    <header class="topbar" style="background-color: #0F172A; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 1000;">
+        <div style="display: flex !important; align-items: center !important; gap: 12px !important;">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar/Exibir Menu" style="background: transparent; border: none; color: #FFF; cursor: pointer; display: flex; align-items: center; padding: 6px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <span style="display: inline-block !important; color: #94A3B8 !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0.02em !important;">STRIKE &bull; Mesa de Operação</span>
+        </div>
+        <div class="topbar-center-brand">STRIKE</div>
+        <div style="width: 140px;"></div>
+    </header>
+
+    <div style="display: flex; min-height: calc(100vh - 52px);">
+        <!-- SIDEBAR -->
+                <!-- SIDEBAR -->
+        <aside class="sidebar">
+    <div class="sidebar-header" style="padding: 20px 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+    <img src="/static/img/strike-logo.png" alt="STRIKE" style="max-width: 130px; height: auto; display: block; margin: 0 auto;" onerror="this.onerror=null; this.src='/static/strike-logo.png';">
+</div>
+            <div class="sidebar-section-title">Visão Geral</div>
+            <div class="sidebar-item" data-tab="dashboard" onclick="window.location.href='/static/dashboard.html'">
+                <span> Dashboard</span>
+            </div>
+
+            <div class="sidebar-section-title">Operacional de Licitações</div>
+            <div class="sidebar-item" data-tab="licitacoes" onclick="window.location.href='/static/dashboard.html'">
+                <span> Mural de Editais (PNCP)</span>
+            </div>
+            <div class="sidebar-item" data-tab="matches" onclick="window.location.href='/static/dashboard.html'">
+                <span> Radar de Matches</span>
+            </div>
+            <div class="sidebar-item active" data-tab="mesa">
+                <span> Mesa de Operação</span>
+            </div>
+            <div class="sidebar-item" data-tab="alertas" onclick="window.location.href='/static/dashboard.html'">
+                <span> Alertas</span>
+            </div>
+
+            <div class="sidebar-section-title">Gestão & Estratégia</div>
+            <div class="sidebar-item" data-tab="preferencias" onclick="window.location.href='/static/dashboard.html'">
+                <span> Estratégia & Critérios</span>
+            </div>
+            <div class="sidebar-item" data-tab="notificacoes" onclick="window.location.href='/static/dashboard.html'">
+                <span> Notificações</span>
+            </div>
+            <div class="sidebar-item" data-tab="conta" onclick="window.location.href='/static/dashboard.html'">
+                <span> Empresa & Certidões</span>
+            </div>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="mesa-main-wrapper">
+            <!-- CABEÇALHO DA MESA -->
+            <div class="mesa-page-header" style="display: flex !important; visibility: visible !important; opacity: 1 !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 24px !important; margin-top: 10px !important; position: relative !important; z-index: 10 !important;">
+                <div style="display: block !important;">
+                    <h1 style="display: block !important; visibility: visible !important; font-size: 24px !important; font-weight: 800 !important; color: #0F172A !important; margin: 0 0 6px 0 !important; letter-spacing: -0.02em !important;">Mesa de Operação</h1>
+                    <p style="display: block !important; visibility: visible !important; font-size: 13px !important; color: #475569 !important; margin: 0 !important; font-weight: 500 !important;">Esteira tática de certames, controle de piso mínimo e margem em tempo real.</p>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div class="mesa-filter-tabs">
+                        <button class="mesa-tab-btn active" onclick="filtrarMesa('todos', this)">Todos</button>
+                        <button class="mesa-tab-btn" onclick="filtrarMesa('analise', this)">Em Análise</button>
+                        <button class="mesa-tab-btn" onclick="filtrarMesa('disputa', this)">Em Disputa</button>
+                    </div>
+                    <button class="btn-novo-edital" onclick="abrirModalNovoEdital()">+ Adicionar Edital</button>
+                </div>
+            </div>
+
+            <!-- TABELA MESTRE EXPANSÍVEL -->
+            <div class="mesa-card-container">
+                <table class="mesa-master-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 36px;"></th>
+                            <th>Status</th>
+                            <th>Pregão / Processo</th>
+                            <th>Órgão Comprador / UF</th>
+                            <th>Portal / UASG</th>
+                            <th>Data/Hora Sessão</th>
+                            <th>Itens</th>
+                            <th style="text-align: right; min-width: 170px;">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- PREGÃO 1 (COMPRAS.GOV COM UASG) -->
+                        <tr class="master-row row-disputa" onclick="toggleMesaDrawer('drawer-1', this)">
+                            <td class="toggle-icon-cell"><span class="arrow-icon">▶</span></td>
+                            <td><span class="badge-status-disputa">Em Disputa</span></td>
+                            <td>
+                                <div class="pregao-cod">PE 90107/2026</div>
+                                <div class="proc-cod">Proc. 23525.014069/2026-63</div>
+                            </td>
+                            <td>
+                                <div class="orgao-nome">Comissão Regional de Obtenção da Marinha (COM-RJ)</div>
+                                <div class="orgao-sub">Rio de Janeiro - RJ</div>
+                            </td>
+                            <td>
+                                <div class="portal-badge gov">Compras.gov.br</div>
+                                <div class="uasg-badge">UASG: 763600</div>
+                            </td>
+                            <td>
+                                <div class="data-hora">26/09/2026 às 09:00</div>
+                                <div class="tempo-restante">Hoje • Aberto</div>
+                            </td>
+                            <td><span class="itens-count">04 itens</span></td>
+                            <td style="text-align: right;" onclick="event.stopPropagation()">
+                                <a href="https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras" target="_blank" class="btn-link-portal" title="Abrir portal oficial">Portal ↗</a>
+                                <button class="btn-detalhes-edital" onclick="abrirDetalhesEdital('PE 90107/2026')">Detalhes ↗</button>
+                            </td>
+                        </tr>
+                        <!-- GAVETA ITENS 1 -->
+                        <tr id="drawer-1" class="drawer-row" style="display: none;">
+                            <td colspan="8">
+                                <div class="drawer-content">
+                                    <div class="drawer-header-info">
+                                        <div>
+                                            <span class="drawer-title">Grade Técnica de Itens em Disputa</span>
+                                            <span class="drawer-hint" style="margin-left: 10px;">Calibração de lance, piso e margem</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-size: 11px; color: #64748B;">Total Previsto no Lance: <strong style="color: #0F172A;" id="total-edital-1">R$ 184.700,00</strong></span>
+                                        </div>
+                                    </div>
+                                    <table class="mesa-items-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Descrição do Produto</th>
+                                                <th>Qtd</th>
+                                                <th>Custo Unit.</th>
+                                                <th>Piso Mínimo</th>
+                                                <th>Lance Sugerido</th>
+                                                <th>Total (Lance)</th>
+                                                <th>Margem (%)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>#01</strong></td>
+                                                <td>
+                                                    <div class="prod-desc">Amoxicilina + Clavulanato 500/125mg</div>
+                                                    <div class="prod-sub">Comprimido Revestido • Caixa c/ 30</div>
+                                                </td>
+                                                <td>12.000</td>
+                                                <td>R$ 2,50</td>
+                                                <td class="piso-val">R$ 3,10</td>
+                                                <td><input type="text" class="input-lance-tatico" value="3.45" oninput="recalcularItem(this, 12000, 2.50, 'total-item-1', 'margem-item-1')"></td>
+                                                <td class="val-total-col" id="total-item-1">R$ 41.400,00</td>
+                                                <td><span class="margin-badge high" id="margem-item-1">27.5%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>#02</strong></td>
+                                                <td>
+                                                    <div class="prod-desc">Dipirona Sódica 500mg/mL</div>
+                                                    <div class="prod-sub">Solução Injetável 2mL • Ampola</div>
+                                                </td>
+                                                <td>45.000</td>
+                                                <td>R$ 0,95</td>
+                                                <td class="piso-val">R$ 1,15</td>
+                                                <td><input type="text" class="input-lance-tatico" value="1.32" oninput="recalcularItem(this, 45000, 0.95, 'total-item-2', 'margem-item-2')"></td>
+                                                <td class="val-total-col" id="total-item-2">R$ 59.400,00</td>
+                                                <td><span class="margin-badge mid" id="margem-item-2">28.0%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>#03</strong></td>
+                                                <td>
+                                                    <div class="prod-desc">Omeprazol Sódico 40mg Pó Liofilizado</div>
+                                                    <div class="prod-sub">Frasco-ampola + Diluente</div>
+                                                </td>
+                                                <td>8.500</td>
+                                                <td>R$ 7,90</td>
+                                                <td class="piso-val">R$ 9,80</td>
+                                                <td><input type="text" class="input-lance-tatico" value="10.90" oninput="recalcularItem(this, 8500, 7.90, 'total-item-3', 'margem-item-3')"></td>
+                                                <td class="val-total-col" id="total-item-3">R$ 92.650,00</td>
+                                                <td><span class="margin-badge high" id="margem-item-3">27.5%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>#04</strong></td>
+                                                <td>
+                                                    <div class="prod-desc">Ceftriaxona Dissódica 1g IV</div>
+                                                    <div class="prod-sub">Frasco-ampola c/ diluente</div>
+                                                </td>
+                                                <td>6.200</td>
+                                                <td>R$ 11,80</td>
+                                                <td class="piso-val">R$ 13,40</td>
+                                                <td><input type="text" class="input-lance-tatico alert-piso" value="13.50" oninput="recalcularItem(this, 6200, 11.80, 'total-item-4', 'margem-item-4')"></td>
+                                                <td class="val-total-col" id="total-item-4">R$ 83.700,00</td>
+                                                <td><span class="margin-badge low" id="margem-item-4">12.5%</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- PREGÃO 2 (EM ANÁLISE) -->
+                        <tr class="master-row row-analise" onclick="toggleMesaDrawer('drawer-2', this)">
+                            <td class="toggle-icon-cell"><span class="arrow-icon">▶</span></td>
+                            <td><span class="badge-status-analise">Em Análise</span></td>
+                            <td>
+                                <div class="pregao-cod">PE 040/2026</div>
+                                <div class="proc-cod">Processo nº 118/2026</div>
+                            </td>
+                            <td>
+                                <div class="orgao-nome">Prefeitura Municipal de Santo Antônio do Monte</div>
+                                <div class="orgao-sub">Minas Gerais - MG</div>
+                            </td>
+                            <td>
+                                <div class="portal-badge bbm">BBMNet</div>
+                            </td>
+                            <td>
+                                <div class="data-hora">28/09/2026 às 10:00</div>
+                                <div class="tempo-restante">Faltam 6 dias</div>
+                            </td>
+                            <td><span class="itens-count">02 itens</span></td>
+                            <td style="text-align: right;" onclick="event.stopPropagation()">
+                                <a href="https://www.novobbmnet.com.br" target="_blank" class="btn-link-portal" title="Abrir portal BBMNet">Portal ↗</a>
+                                <button class="btn-detalhes-edital" onclick="abrirDetalhesEdital('PE 040/2026')">Detalhes ↗</button>
+                            </td>
+                        </tr>
+                        <!-- GAVETA ITENS 2 -->
+                        <tr id="drawer-2" class="drawer-row" style="display: none;">
+                            <td colspan="8">
+                                <div class="drawer-content">
+                                    <div class="drawer-header-info">
+                                        <div>
+                                            <span class="drawer-title">Precificação & Calibração de Margem</span>
+                                            <span class="drawer-hint" style="margin-left: 10px;">Defina o piso mínimo aceitável antes de liberar para disputa</span>
+                                        </div>
+                                    </div>
+                                    <table class="mesa-items-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Descrição do Produto</th>
+                                                <th>Qtd</th>
+                                                <th>Custo Unit.</th>
+                                                <th>Piso Mínimo</th>
+                                                <th>Lance Alvo</th>
+                                                <th>Total (Lance)</th>
+                                                <th>Margem (%)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>#01</strong></td>
+                                                <td>
+                                                    <div class="prod-desc">Paracetamol 500mg</div>
+                                                    <div class="prod-sub">Comprimido simples • Caixa c/ 500</div>
+                                                </td>
+                                                <td>20.000</td>
+                                                <td>R$ 0,18</td>
+                                                <td class="piso-val">R$ 0,25</td>
+                                                <td><input type="text" class="input-lance-tatico" value="0.32" oninput="recalcularItem(this, 20000, 0.18, 'total-item-2-1', 'margem-item-2-1')"></td>
+                                                <td class="val-total-col" id="total-item-2-1">R$ 6.400,00</td>
+                                                <td><span class="margin-badge high" id="margem-item-2-1">43.7%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>#02</strong></td>
+                                                <td>
+                                                    <div class="prod-desc">Ibuprofeno 600mg</div>
+                                                    <div class="prod-sub">Comprimido revestido • Caixa c/ 200</div>
+                                                </td>
+                                                <td>15.000</td>
+                                                <td>R$ 0,35</td>
+                                                <td class="piso-val">R$ 0,48</td>
+                                                <td><input type="text" class="input-lance-tatico" value="0.55" oninput="recalcularItem(this, 15000, 0.35, 'total-item-2-2', 'margem-item-2-2')"></td>
+                                                <td class="val-total-col" id="total-item-2-2">R$ 8.250,00</td>
+                                                <td><span class="margin-badge mid" id="margem-item-2-2">36.3%</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL ADICIONAR EDITAL -->
+    <div id="modalNovoEdital" class="mesa-modal">
+        <div class="mesa-modal-dialog">
+            <div class="mesa-modal-header">
+                <h3>Adicionar Edital na Mesa</h3>
+                <button class="modal-close" onclick="fecharModalNovoEdital()">✕</button>
+            </div>
+            <div class="mesa-modal-body">
+                <p style="font-size: 13px; color: #475569; margin-bottom: 16px;">Como deseja dar entrada neste certame?</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="metodo-card" onclick="alert('Selecione o arquivo PDF do edital para extração dos itens.')">
+                        <div style="font-size: 28px; margin-bottom: 8px;">📄</div>
+                        <strong>Importar via PDF</strong>
+                        <span>Extrair itens e dados via IA</span>
+                    </div>
+                    <div class="metodo-card" onclick="alert('Abrir formulário de cadastro manual simplificado.')">
+                        <div style="font-size: 28px; margin-bottom: 8px;">✍️</div>
+                        <strong>Entrada Manual</strong>
+                        <span>Inserir pregão, portal e itens</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) sidebar.classList.toggle('collapsed');
+    }
+
+    function toggleMesaDrawer(drawerId, rowEl) {
+        const drawer = document.getElementById(drawerId);
+        const arrow = rowEl.querySelector('.arrow-icon');
+        if (!drawer) return;
+        
+        if (drawer.style.display === 'none' || drawer.style.display === '') {
+            drawer.style.display = 'table-row';
+            rowEl.classList.add('expanded');
+            if (arrow) arrow.style.transform = 'rotate(90deg)';
+        } else {
+            drawer.style.display = 'none';
+            rowEl.classList.remove('expanded');
+            if (arrow) arrow.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function filtrarMesa(status, btn) {
+        document.querySelectorAll('.mesa-tab-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        
+        const rowsDisputa = document.querySelectorAll('.row-disputa');
+        const rowsAnalise = document.querySelectorAll('.row-analise');
+        
+        if (status === 'todos') {
+            rowsDisputa.forEach(r => r.style.display = '');
+            rowsAnalise.forEach(r => r.style.display = '');
+        } else if (status === 'disputa') {
+            rowsDisputa.forEach(r => r.style.display = '');
+            rowsAnalise.forEach(r => {
+                r.style.display = 'none';
+                const next = r.nextElementSibling;
+                if (next && next.classList.contains('drawer-row')) next.style.display = 'none';
+            });
+        } else if (status === 'analise') {
+            rowsAnalise.forEach(r => r.style.display = '');
+            rowsDisputa.forEach(r => {
+                r.style.display = 'none';
+                const next = r.nextElementSibling;
+                if (next && next.classList.contains('drawer-row')) next.style.display = 'none';
+            });
+        }
+    }
+
+    function recalcularItem(inputEl, qtd, custoUnit, idTotal, idMargem) {
+        const valLance = parseFloat(inputEl.value.replace(',', '.')) || 0;
+        const total = valLance * qtd;
+        const totalEl = document.getElementById(idTotal);
+        const margemEl = document.getElementById(idMargem);
+        
+        if (totalEl) {
+            totalEl.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+        
+        if (margemEl && valLance > 0) {
+            const margem = ((valLance - custoUnit) / valLance) * 100;
+            margemEl.innerText = margem.toFixed(1) + '%';
+            if (margem < 15) {
+                margemEl.className = 'margin-badge low';
+            } else if (margem < 25) {
+                margemEl.className = 'margin-badge mid';
+            } else {
+                margemEl.className = 'margin-badge high';
+            }
+        }
+    }
+
+    function abrirDetalhesEdital(pregao) {
+        const cod = encodeURIComponent(pregao.replace('/', '-'));
+        window.location.href = '/static/detalhes.html?pregao=' + cod;
+    }
+
+    function abrirModalNovoEdital() {
+        const m = document.getElementById('modalNovoEdital');
+        if (m) m.classList.add('active');
+    }
+    function fecharModalNovoEdital() {
+        const m = document.getElementById('modalNovoEdital');
+        if (m) m.classList.remove('active');
+    }
+    window.addEventListener('click', function(e) {
+        const m = document.getElementById('modalNovoEdital');
+        if (e.target === m) fecharModalNovoEdital();
+    });
+    </script>
+</body>
+</html>

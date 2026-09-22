@@ -54,8 +54,7 @@
         }
 
         .topbar {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 1px solid #334155;
+            background: #070B14 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
             padding: 12px 24px;
             display: flex;
             align-items: center;
@@ -282,7 +281,47 @@
         line-height: 1.35;
     }
 
-</style>
+
+        /* Suporte ao colapso suave da sidebar no Dashboard */
+        .sidebar {
+            transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1), width 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .sidebar.collapsed {
+            margin-left: -260px !important;
+            width: 0 !important;
+            min-width: 0 !important;
+            max-width: 0 !important;
+            overflow: hidden !important;
+            border-right: none !important;
+        }
+        .app-container.sidebar-collapsed main, 
+        body.sidebar-collapsed main {
+            margin-left: 0 !important;
+            width: 100% !important;
+        }
+
+    
+        /* FORÇAR TOPBAR PRETA SÓLIDA CORPORATIVA */
+        .topbar, header.topbar, div.topbar {
+            background: #070B14 !important;
+            background-color: #070B14 !important;
+            background-image: none !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+    
+        /* CORREÇÃO VISUAL DA SIDEBAR E SCROLL */
+        .sidebar {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+        .sidebar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+    </style>
 
 
 
@@ -293,23 +332,37 @@
 </head>
 <body>
 
-    <div class="topbar">
-        <div class="topbar-brand">
-            <span></span>
-            <span>Radar de Licitações</span>
-        </div>
-        <div class="topbar-actions">
-            <button id="btnThemeToggle" class="btn-theme-toggle" onclick="alternarTemaVisual()" title="Alternar Modo Claro/Escuro">
-                
+    <div class="topbar" style="background-color: #070B14 !important; height: 52px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 0 20px !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important; position: sticky !important; top: 0 !important; z-index: 1000 !important; box-sizing: border-box !important;">
+        <!-- LADO ESQUERDO: HAMBÚRGUER + INDICADOR -->
+        <div style="display: flex !important; align-items: center !important; gap: 12px !important;">
+            <button id="sidebarToggle" class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar/Exibir Menu" style="background: transparent; border: none; color: #FFF; cursor: pointer; display: flex; align-items: center; padding: 6px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
             </button>
-            <button class="btn-logout" onclick="fazerLogout()">
+            <span id="topbar-context-title" style="display: inline-block !important; color: #94A3B8 !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0.02em !important;">STRIKE &bull; Dashboard</span>
+        </div>
+
+        <!-- CENTRO: LOGO MARCA STRIKE -->
+        <div class="topbar-center-brand" style="color: #FFFFFF !important; font-weight: 700 !important; letter-spacing: 0.15em !important; font-size: 14px !important;">STRIKE</div>
+
+        <!-- LADO DIREITO: BOTÃO DE SAIR -->
+        <div class="topbar-actions" style="display: flex !important; align-items: center !important; gap: 12px !important;">
+            <button class="btn-logout" onclick="if(typeof fazerLogout === 'function') { fazerLogout(); } else { window.location.href='/'; }" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #CBD5E1; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                 👤 Sair
             </button>
         </div>
     </div>
 
+
+
     <div class="app-container">
         <aside class="sidebar">
+<div class="sidebar-header" style="padding: 24px 16px 16px 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <img src="/static/img/strike-logo.png" alt="STRIKE" style="max-width: 130px; height: auto; display: block; margin: 0 auto;" onerror="this.onerror=null; this.src='/static/strike-logo.png';">
+    </div>
             <div class="sidebar-section-title">Visão Geral</div>
             <div class="sidebar-item active" data-tab="dashboard">
                 <span> Dashboard</span>
@@ -322,7 +375,7 @@
             <div class="sidebar-item" data-tab="matches">
                 <span> Radar de Matches</span>
             </div>
-            <div class="sidebar-item" data-tab="mesa">
+            <div class="sidebar-item" data-tab="mesa" onclick="window.location.href='/static/mesa.html'">
                 <span> Mesa de Operação</span>
             </div>
             <div class="sidebar-item" data-tab="alertas">
@@ -352,7 +405,7 @@
                     </div>
                     <div class="pane-header-actions">
                         <button onclick="carregarDashboardCompleto()">↻ Atualizar</button>
-                        <button onclick="trocarAbaSistema('mesa')">Abrir Mesa ↗</button>
+                        <a href="/static/mesa.html" style="display: inline-flex; align-items: center; background: #0F172A; color: #FFFFFF; border: 1px solid #0F172A; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);">Mesa de Operação</a>
                     </div>
                 </div>
 
@@ -1693,7 +1746,19 @@
                 .trim();
         }
 
-    </script>
+    
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
+        const container = document.querySelector('.app-container') || document.body;
+        if (sidebar) {
+            sidebar.classList.toggle('collapsed');
+        }
+        if (container) {
+            container.classList.toggle('sidebar-collapsed');
+        }
+    }
+
+</script>
 
         /<script>
 
