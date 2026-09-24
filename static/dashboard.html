@@ -496,6 +496,42 @@ html, body {
 }
 </style>
 
+
+<style id="strike-inputs-theme-default">
+/* Padronização de inputs e selects para o tema claro moderno */
+#pane-preferencias input,
+#pane-preferencias select,
+#pane-conta input,
+#pane-conta select,
+#pane-alertas input,
+#pane-alertas select {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 6px !important;
+}
+
+#pane-preferencias input:focus,
+#pane-preferencias select:focus,
+#pane-conta input:focus,
+#pane-conta select:focus {
+    border-color: #2563EB !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Manter o destaque das cores dos valores de stop-loss e margem com boa legibilidade */
+#inputStopLoss, #prefStopLoss, input[name="stop_loss"], input[id*="StopLoss"] {
+    color: #DC2626 !important; /* Vermelho legível no fundo branco */
+    font-weight: 700 !important;
+}
+
+#inputMargemAlvo, #prefMargemAlvo, input[name="margem_alvo"], input[id*="MargemAlvo"] {
+    color: #16A34A !important; /* Verde legível no fundo branco */
+    font-weight: 700 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -698,7 +734,7 @@ html, body {
                         <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Captação contínua e triagem de certames públicos em tempo real.</p>
                     </div>
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <span id="contadorEditaisBadge" style="font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: var(--table-stripe); border: 1px solid var(--border-color); color: var(--text-muted);">
+                        <span id="contadorEditaisBadge" style="font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); color: var(--text-muted);">
                             0 editais
                         </span>
                         <button type="button" onclick="carregarLicitacoesPncp()" style="background: var(--color-primary); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
@@ -708,13 +744,13 @@ html, body {
                 </div>
 
                 <!-- Barra de Busca Rápida + Gatilho de Avançados -->
-                <div class="kpi-card" style="padding: 10px 14px; margin-bottom: 8px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <input type="text" id="filtroPncpTermo" placeholder="Buscar medicamento, material, equipamento ou órgão..." onkeyup="if(event.key==='Enter') carregarLicitacoesPncp()" style="width: 100%; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; display: flex !important; flex-direction: row !important; align-items: center !important; gap: 12px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                    <div style="flex: 1; min-width: 240px;">
+                        <input type="text" id="filtroPncpTermo" placeholder="Buscar medicamento, material, equipamento ou órgão..." onkeyup="if(event.key==='Enter') carregarLicitacoesPncp()" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; background: #F8FAFC; color: #0F172A; outline: none;">
                     </div>
-                    <div style="width: 110px;">
-                        <select id="filtroPncpUf" onchange="carregarLicitacoesPncp()" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
-                            <option value="">Todas UFs</option>
+                    <div style="width: 130px; flex-shrink: 0;">
+                        <select id="filtroPncpUf" onchange="carregarLicitacoesPncp()" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; background: #F8FAFC; color: #0F172A; outline: none; cursor: pointer;">
+                            <option value="">Todas as UFs</option>
                             <option value="RJ">RJ</option>
                             <option value="SP">SP</option>
                             <option value="MG">MG</option>
@@ -728,20 +764,20 @@ html, body {
                             <option value="PE">PE</option>
                         </select>
                     </div>
-                    <button type="button" onclick="toggleFiltrosAvancados()" id="btnToggleFiltros" style="background: var(--table-stripe); color: var(--text-body); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                         Filtros Avançados
+                    <button type="button" onclick="toggleFiltrosAvancados()" id="btnToggleFiltros" style="background: #F1F5F9; color: #334155; border: 1px solid #CBD5E1; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
+                        ⚙️ Filtros Avançados
                     </button>
-                    <button type="button" onclick="carregarLicitacoesPncp()" style="background: var(--color-primary); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                    <button type="button" onclick="carregarLicitacoesPncp()" style="background: #2563EB; color: #FFFFFF; border: none; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
                         🔍 Filtrar
                     </button>
                 </div>
 
                 <!-- Painel Retrátil de Filtros Avançados -->
-                <div id="painelFiltrosAvancados" class="kpi-card" style="display: none; padding: 14px 16px; margin-bottom: 12px; background: var(--table-stripe); border: 1px solid var(--border-color);">
+                <div id="painelFiltrosAvancados" class="kpi-card" style="display: none; padding: 14px 16px; margin-bottom: 12px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 10px;">
                         <div>
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 3px;">Modalidade</label>
-                            <select id="filtroPncpModalidade" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                            <select id="filtroPncpModalidade" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 <option value="">Todas as Modalidades</option>
                                 <option value="PREGAO_ELETRONICO">Pregão Eletrônico</option>
                                 <option value="DISPENSA">Dispensa Eletrônica</option>
@@ -750,15 +786,15 @@ html, body {
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 3px;">Valor Mínimo (R$)</label>
-                            <input type="number" id="filtroPncpValorMin" placeholder="Ex: 10000" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                            <input type="number" id="filtroPncpValorMin" placeholder="Ex: 10000" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 3px;">Valor Máximo (R$)</label>
-                            <input type="number" id="filtroPncpValorMax" placeholder="Ex: 5000000" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                            <input type="number" id="filtroPncpValorMax" placeholder="Ex: 5000000" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 3px;">Ordenação</label>
-                            <select id="filtroPncpOrdenacao" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                            <select id="filtroPncpOrdenacao" style="width: 100%; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 <option value="recentes">Mais Recentes</option>
                                 <option value="valor_maior">Maior Valor Estimado</option>
                                 <option value="valor_menor">Menor Valor Estimado</option>
@@ -1046,7 +1082,7 @@ html, body {
                         </div>
                         <div style="margin-top: 10px;">
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Tipo de Julgamento Preferencial</label>
-                            <select id="prefTipoJulgamento" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: var(--bg-card); color: var(--text-body);">
+                            <select id="prefTipoJulgamento" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 <option value="ITEM">Menor Preço por Item / Lote Único</option>
                                 <option value="GLOBAL">Menor Preço Global / Grupo</option>
                                 <option value="TODOS" selected>Qualquer Critério de Menor Preço</option>
@@ -1070,11 +1106,11 @@ html, body {
                         </div>
                         <div style="margin-bottom: 12px;">
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">UFs Prioritárias de Atuação</label>
-                            <input type="text" id="prefUfs" value="RJ, SP, MG, PR" placeholder="RJ, SP, MG, PR" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; text-transform: uppercase; background: var(--bg-card); color: var(--text-body);">
+                            <input type="text" id="prefUfs" value="RJ, SP, MG, PR" placeholder="RJ, SP, MG, PR" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; text-transform: uppercase; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Desempate ME/EPP (LC 123/2006)</label>
-                            <select id="prefRegraMeEpp" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: var(--bg-card); color: var(--text-body);">
+                            <select id="prefRegraMeEpp" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 <option value="SIM" selected>Simular e Cobrir Lance de Empate (até 5%)</option>
                                 <option value="NAO">Ignorar Desempate Automático</option>
                             </select>
@@ -1086,13 +1122,13 @@ html, body {
                             📦 Catálogo de Itens & Palavras-Chave do Portfólio
                         </h3>
                         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Termos cruzados automaticamente com os editais do PNCP em tempo real.</p>
-                        <textarea id="prefPalavrasChave" rows="3" placeholder="Ex: amoxicilina, paracetamol 500mg, seringa descartavel luer lock, luva cirurgica estéril, propofol..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; margin-bottom: 16px; background: var(--bg-card); color: var(--text-body);"></textarea>
+                        <textarea id="prefPalavrasChave" rows="3" placeholder="Ex: amoxicilina, paracetamol 500mg, seringa descartavel luer lock, luva cirurgica estéril, propofol..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; margin-bottom: 16px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;"></textarea>
 
                         <h3 style="font-size: 14px; font-weight: 700; color: var(--color-danger); margin-bottom: 4px;">
                             🚫 Filtro Anti-Ruído (Blacklist de Objeto)
                         </h3>
                         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Editais contendo esses termos serão automaticamente descartados do radar.</p>
-                        <textarea id="prefBlacklist" rows="2" placeholder="Ex: merenda escolar, asfalto, locação de ambulância, manutenção predial, fardamento..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: var(--bg-card); color: var(--text-body);"></textarea>
+                        <textarea id="prefBlacklist" rows="2" placeholder="Ex: merenda escolar, asfalto, locação de ambulância, manutenção predial, fardamento..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;"></textarea>
                     </div>
                 </div>
             </div>
@@ -1145,15 +1181,15 @@ html, body {
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                     <div style="grid-column: span 2;">
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Razão Social</label>
-                                        <input type="text" id="empRazaoSocial" placeholder="Razão Social Completa" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empRazaoSocial" placeholder="Razão Social Completa" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Nome Fantasia</label>
-                                        <input type="text" id="empNomeFantasia" placeholder="Nome Comercial" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empNomeFantasia" placeholder="Nome Comercial" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Porte (LC 123/2006)</label>
-                                        <select id="empPorte" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <select id="empPorte" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                             <option value="ME">Microempresa (ME)</option>
                                             <option value="EPP" selected>Empresa de Pequeno Porte (EPP)</option>
                                             <option value="GERAL">Médio / Grande Porte</option>
@@ -1162,7 +1198,7 @@ html, body {
 
                                     <div style="grid-column: span 2;">
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Ramo de Atuação / Segmento Comercial Principal</label>
-                                        <select id="empRamoAtuacao" style="width: 100%; padding: 7px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; font-weight: 600; background: var(--bg-card); color: var(--text-body);">
+                                        <select id="empRamoAtuacao" style="width: 100%; padding: 7px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; font-weight: 600; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                             <option value="">Selecione o segmento...</option>
                                             <option value="FARMACO">Medicamentos, Fármacos e Vacinas</option>
                                             <option value="HOSPITALAR">Materiais Médicos, Cirúrgicos e Descartáveis (OPME)</option>
@@ -1176,28 +1212,28 @@ html, body {
                                     </div>
                                     <div style="grid-column: span 2;">
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">CNAE Principal ou Objeto Social</label>
-                                        <input type="text" id="empCnaePrincipal" placeholder="Ex: 46.44-3-01 - Comércio atacadista de medicamentos" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empCnaePrincipal" placeholder="Ex: 46.44-3-01 - Comércio atacadista de medicamentos" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
 
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">CNPJ</label>
-                                        <input type="text" id="empCnpj" placeholder="00.000.000/0001-00" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empCnpj" placeholder="00.000.000/0001-00" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Inscrição Estadual (IE)</label>
-                                        <input type="text" id="empIE" placeholder="Isento ou Nº" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empIE" placeholder="Isento ou Nº" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div style="grid-column: span 2;">
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Endereço Completo</label>
-                                        <input type="text" id="empEndereco" placeholder="Logradouro, Nº, Bairro, CEP" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empEndereco" placeholder="Logradouro, Nº, Bairro, CEP" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Cidade / UF</label>
-                                        <input type="text" id="empCidadeUf" placeholder="Rio de Janeiro / RJ" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empCidadeUf" placeholder="Rio de Janeiro / RJ" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Telefone / WhatsApp</label>
-                                        <input type="text" id="empTelefone" placeholder="(21) 99999-9999" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empTelefone" placeholder="(21) 99999-9999" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                 </div>
                             </div>
@@ -1209,19 +1245,19 @@ html, body {
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Procurador / Representante</label>
-                                        <input type="text" id="empRepNome" placeholder="Nome Completo" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empRepNome" placeholder="Nome Completo" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">CPF do Representante</label>
-                                        <input type="text" id="empRepCpf" placeholder="000.000.000-00" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empRepCpf" placeholder="000.000.000-00" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Banco & Agência</label>
-                                        <input type="text" id="empBancoAgencia" placeholder="Ex: Itaú - Ag 1234" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empBancoAgencia" placeholder="Ex: Itaú - Ag 1234" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                     <div>
                                         <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 2px;">Conta Corrente / PIX</label>
-                                        <input type="text" id="empContaPix" placeholder="CC: 12345-6 / PIX" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: var(--bg-card); color: var(--text-body);">
+                                        <input type="text" id="empContaPix" placeholder="CC: 12345-6 / PIX" style="width: 100%; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                     </div>
                                 </div>
                             </div>
@@ -1242,7 +1278,7 @@ html, body {
                                         <span style="font-size: 11px; font-weight: 600; display: block;">CND Federal / INSS</span>
                                         <span id="badgeCndFederal" style="font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px;">-</span>
                                     </div>
-                                    <input type="date" id="valCndFederal" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: var(--bg-card); color: var(--text-body);">
+                                    <input type="date" id="valCndFederal" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 </div>
 
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--table-stripe); border-radius: 4px; border: 1px solid var(--border-color); gap: 8px;">
@@ -1250,7 +1286,7 @@ html, body {
                                         <span style="font-size: 11px; font-weight: 600; display: block;">CRF FGTS (Caixa)</span>
                                         <span id="badgeCrfFgts" style="font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px;">-</span>
                                     </div>
-                                    <input type="date" id="valCrfFgts" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: var(--bg-card); color: var(--text-body);">
+                                    <input type="date" id="valCrfFgts" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 </div>
 
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--table-stripe); border-radius: 4px; border: 1px solid var(--border-color); gap: 8px;">
@@ -1258,7 +1294,7 @@ html, body {
                                         <span style="font-size: 11px; font-weight: 600; display: block;">CNDT Trabalhista</span>
                                         <span id="badgeCndt" style="font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px;">-</span>
                                     </div>
-                                    <input type="date" id="valCndt" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: var(--bg-card); color: var(--text-body);">
+                                    <input type="date" id="valCndt" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 </div>
 
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--table-stripe); border-radius: 4px; border: 1px solid var(--border-color); gap: 8px;">
@@ -1266,7 +1302,7 @@ html, body {
                                         <span style="font-size: 11px; font-weight: 600; display: block;">CND Estadual (SEFAZ)</span>
                                         <span id="badgeCndEstadual" style="font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px;">-</span>
                                     </div>
-                                    <input type="date" id="valCndEstadual" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: var(--bg-card); color: var(--text-body);">
+                                    <input type="date" id="valCndEstadual" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 </div>
 
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--table-stripe); border-radius: 4px; border: 1px solid var(--border-color); gap: 8px;">
@@ -1274,7 +1310,7 @@ html, body {
                                         <span style="font-size: 11px; font-weight: 600; display: block;">CND Municipal</span>
                                         <span id="badgeCndMunicipal" style="font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px;">-</span>
                                     </div>
-                                    <input type="date" id="valCndMunicipal" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: var(--bg-card); color: var(--text-body);">
+                                    <input type="date" id="valCndMunicipal" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                                 </div>
 
                                 <div id="listaDocumentosExtras" style="display: flex; flex-direction: column; gap: 6px; margin-top: 2px;"></div>
@@ -1541,7 +1577,7 @@ html, body {
                     <span class="doc-extra-badge" style="font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; align-self: flex-start;">-</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px;">
-                    <input type="date" class="doc-extra-data" value="${dataVal}" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: var(--bg-card); color: var(--text-body);">
+                    <input type="date" class="doc-extra-data" value="${dataVal}" onchange="atualizarBadgesCertidoes()" style="width: 130px; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 11px; background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1;">
                     <button type="button" onclick="this.closest('.doc-extra-item').remove(); atualizarBadgesCertidoes();" title="Remover documento" style="background: transparent; border: none; color: var(--color-danger); font-weight: bold; cursor: pointer; font-size: 14px;">&times;</button>
                 </div>
             `;
