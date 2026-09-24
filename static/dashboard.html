@@ -329,6 +329,173 @@
 
 
     
+
+
+
+
+<style>
+main, .main-content, #main-content, .content-area {
+    padding-top: 16px !important;
+    margin-top: 0 !important;
+}
+.tab-pane {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="strike-layout-master">
+/* Topbar firme em linha única */
+.topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    height: 56px !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+}
+
+.topbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.topbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Área principal e abas */
+.app-container {
+    display: flex !important;
+    min-height: calc(100vh - 56px) !important;
+    align-items: stretch !important;
+}
+
+.main-content, main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    padding: 20px 24px !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+}
+
+/* Isolamento real de abas: inativas desaparecem do fluxo */
+.tab-pane {
+    display: none !important;
+}
+
+.tab-pane.active {
+    display: block !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+</style>
+
+
+<style id="strike-sidebar-layout-fix">
+/* Suporte ao recolhimento da barra lateral */
+.sidebar {
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s ease, padding 0.25s ease !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.sidebar.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-right: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Área principal sempre fixa no topo sem folgas */
+.app-container {
+    display: flex !important;
+    align-items: stretch !important;
+    min-height: calc(100vh - 56px) !important;
+}
+
+.main-content, main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    padding: 16px 24px !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+}
+
+/* Abas ativas no topo absoluto e inativas sem espaço residual */
+.tab-pane {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.tab-pane.active {
+    display: block !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+</style>
+
+
+<style id="strike-scroll-zero-fix">
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.main-content, main {
+    padding-top: 15px !important;
+    margin-top: 0 !important;
+}
+
+/* Garante que o painel ativo começa colado no topo */
+.tab-pane {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.tab-pane.active {
+    display: block !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.tab-pane.active > *:first-child {
+    margin-top: 0 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -350,7 +517,20 @@
 
         <!-- LADO DIREITO: BOTÃO DE SAIR -->
         <div class="topbar-actions" style="display: flex !important; align-items: center !important; gap: 12px !important;">
-            <button class="btn-logout" onclick="if(typeof fazerLogout === 'function') { fazerLogout(); } else { window.location.href='/'; }" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #CBD5E1; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            
+<div id="seletor-cliente-consultor" style="display: inline-flex; align-items: center; gap: 8px; background: #1E293B; border: 1px solid #334155; padding: 4px 12px; border-radius: 6px; margin: 0 15px;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+    <label style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; white-space: nowrap;">Cliente Ativo:</label>
+    <select id="selectEmpresaAtiva" onchange="trocarClienteConsultor(this.value)" style="border: none; background: transparent; font-size: 12px; font-weight: 600; color: #F8FAFC; outline: none; cursor: pointer;">
+        <option value="todas" style="color: #0F172A; background: #FFF;">Visão Geral (Todas as Empresas)</option>
+        <option value="1" style="color: #0F172A; background: #FFF;">Construtora Delta • Obras</option>
+        <option value="2" style="color: #0F172A; background: #FFF;">FarmaRio Distribuidora • Medicamentos</option>
+        <option value="3" style="color: #0F172A; background: #FFF;">MedSupply Hospitalar • Medicamentos</option>
+        <option value="4" style="color: #0F172A; background: #FFF;">CleanService Predial • Serviços</option>
+    </select>
+</div>
+
+<button class="btn-logout" onclick="if(typeof fazerLogout === 'function') { fazerLogout(); } else { window.location.href='/'; }" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #CBD5E1; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                 👤 Sair
             </button>
         </div>
@@ -395,19 +575,11 @@
         </aside>
 
         <main class="main-content">
-            
-            <!-- 1. DASHBOARD -->
             <div id="pane-dashboard" class="tab-pane active">
-                <div class="pane-header">
-                    <div class="pane-header-title">
-                        <h2>Painel Executivo</h2>
-                        <p>Monitorização em tempo real de certames, propostas e conformidade documental.</p>
-                    </div>
-                    <div class="pane-header-actions">
-                        <button onclick="carregarDashboardCompleto()">↻ Atualizar</button>
-                        <a href="/static/mesa.html" style="display: inline-flex; align-items: center; background: #0F172A; color: #FFFFFF; border: 1px solid #0F172A; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);">Mesa de Operação</a>
-                    </div>
-                </div>
+            <!-- 1. DASHBOARD OVERVIEW -->
+            
+
+                
 
                 <div class="kpi-grid">
                     <div class="kpi-card blue">
@@ -516,6 +688,9 @@
             <!-- 2. MURAL DE EDITAIS (PNCP) REFORMULADO E COMPACTO -->
             
             <!-- MURAL DE EDITAIS COM FILTROS AVANÇADOS -->
+            
+            <!-- FIM PANE DASHBOARD -->
+
             <div id="pane-licitacoes" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                     <div>
@@ -838,7 +1013,6 @@
                     </div>
                 </div>
             </div>
-            </div>
 
             <div id="pane-preferencias" class="tab-pane">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
@@ -1154,23 +1328,59 @@
             if (btn) btn.innerHTML = isDark ? "☀" : "";
         }
 
-        function trocarAbaSistema(nome) {
-    if (history.pushState) { history.pushState(null, null, '#' + nome); }
-            document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-            document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
+                function trocarAbaSistema(nome) {
+            // Ocultar todas as abas
+            document.querySelectorAll('.tab-pane').forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
 
-            const pane = document.getElementById("pane-" + nome);
-            if (pane) pane.classList.add("active");
+            // Mapear ID
+            let idAlvo = "pane-" + nome;
+            if (nome === "conta" || nome === "empresa" || nome === "certidoes") idAlvo = "pane-conta";
+            if (nome === "estrategia" || nome === "preferencias" || nome === "criterios") idAlvo = "pane-preferencias";
+            if (nome === "notificacoes" || nome === "alertas") idAlvo = "pane-alertas";
 
-            const nav = document.querySelector(`.sidebar-item[data-tab="${nome}"]`);
-            if (nav) nav.classList.add("active");
+            const pane = document.getElementById(idAlvo);
+            if (pane) {
+                pane.classList.add('active');
+                pane.style.display = 'block';
+            }
 
-            if (nome === "dashboard") carregarDashboardCompleto();
-            if (nome === "mesa") carregarProcessosMesa(statusMesaAtual);
-            if (nome === "matches") carregarMeusMatches();
-            if (nome === "licitacoes") carregarLicitacoesPncp();
-            if (nome === "conta") carregarDadosEmpresaConfig();
-            if (nome === "preferencias") carregarPreferenciasConfig();
+            const nav = document.querySelector(`.sidebar-item[data-tab="${nome}"]`) || 
+                        document.querySelector(`.sidebar-item[onclick*="${nome}"]`);
+            if (nav) nav.classList.add('active');
+
+            // Função agressiva de scroll zero
+            function forcarScrollTopo() {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+                
+                const mainEl = document.querySelector('.main-content') || document.querySelector('main');
+                if (mainEl) mainEl.scrollTop = 0;
+                
+                if (pane) {
+                    pane.scrollTop = 0;
+                    if (typeof pane.scrollIntoView === 'function') {
+                        pane.scrollIntoView({ block: 'start', inline: 'nearest' });
+                    }
+                }
+            }
+
+            forcarScrollTopo();
+            requestAnimationFrame(forcarScrollTopo);
+            setTimeout(forcarScrollTopo, 30);
+
+            // Chamadas de carregamento de dados
+            if (nome === "dashboard" && typeof carregarDashboardCompleto === "function") carregarDashboardCompleto();
+            if (nome === "mesa" && typeof carregarProcessosMesa === "function") carregarProcessosMesa(typeof statusMesaAtual !== "undefined" ? statusMesaAtual : "ATIVA");
+            if (nome === "matches" && typeof carregarMeusMatches === "function") carregarMeusMatches();
+            if (nome === "licitacoes" && typeof carregarLicitacoesPncp === "function") carregarLicitacoesPncp();
+            if ((nome === "conta" || nome === "empresa") && typeof carregarDadosEmpresaConfig === "function") carregarDadosEmpresaConfig();
+            if ((nome === "preferencias" || nome === "estrategia") && typeof carregarPreferenciasConfig === "function") carregarPreferenciasConfig();
+            if ((nome === "notificacoes" || nome === "alertas") && typeof carregarConfiguracaoAlertas === "function") carregarConfiguracaoAlertas();
         }
 
         function alternarSubTabEmpresa(subaba, btn) {
@@ -1765,7 +1975,7 @@
 
 </script>
 
-        /<script>
+        <script>
 
         // --- CONTROLE DE WHATSAPP E E-MAIL ---
         async function carregarConfiguracaoAlertas() {
@@ -2057,7 +2267,35 @@ Assunto: " Radar de Licitações - Teste de Notificação Ativa"`);
 
 <!-- PATCH DESIGN CLAUDE (100% FIDELIDADE) -->
 
-<!-- FIM PATCH DESIGN CLAUDE -->
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    function resetarScrollTodosContainers() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
+        const containers = document.querySelectorAll('main, .main-content, .app-container, #pane-preferencias, #pane-conta, #pane-alertas');
+        containers.forEach(el => {
+            el.scrollTop = 0;
+        });
+    }
+
+    // Intercetar cliques nos botões da barra lateral
+    const itens = document.querySelectorAll('.sidebar-item');
+    itens.forEach(item => {
+        item.addEventListener('click', function(e) {
+            setTimeout(resetarScrollTodosContainers, 10);
+            setTimeout(resetarScrollTodosContainers, 100);
+        });
+    });
+});
+</script>
 
 </body>
 </html>
