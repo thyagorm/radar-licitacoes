@@ -122,6 +122,45 @@
             font-weight: 600 !important;
         }
     
+    
+        /* BADGES DE STATUS CROMÁTICOS POR FASE */
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .badge-status-disputa {
+            background-color: #FEF3C7 !important;
+            color: #B45309 !important;
+            border: 1px solid #FCD34D !important;
+        }
+        .badge-status-analise, .badge-status-triagem {
+            background-color: #EFF6FF !important;
+            color: #1D4ED8 !important;
+            border: 1px solid #BFDBFE !important;
+        }
+        .badge-status-proposta {
+            background-color: #F5F3FF !important;
+            color: #6D28D9 !important;
+            border: 1px solid #DDD6FE !important;
+        }
+        .badge-status-habilitacao {
+            background-color: #F0FDFA !important;
+            color: #0F766E !important;
+            border: 1px solid #99F6E4 !important;
+        }
+        .badge-status-concluida {
+            background-color: #ECFDF5 !important;
+            color: #047857 !important;
+            border: 1px solid #A7F3D0 !important;
+        }
+
     </style>
 </head>
 <body style="background-color: #F8FAFC; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
@@ -139,6 +178,17 @@
             <span style="display: inline-block !important; color: #94A3B8 !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0.02em !important;">STRIKE &bull; Mesa de Operação</span>
         </div>
         <div class="topbar-center-brand">STRIKE</div>
+        <!-- SELETOR GLOBAL DE CNPJ (TOPBAR) -->
+        <div style="display: flex; align-items: center; gap: 8px; margin-left: auto; margin-right: 20px;">
+            <label for="selectEmpresaAtiva" style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em;">Empresa:</label>
+            <select id="selectEmpresaAtiva" onchange="trocarClienteConsultor(this.value)" style="background: #0F172A; color: #F8FAFC; border: 1px solid rgba(255, 255, 255, 0.15); padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none; cursor: pointer;">
+                <option value="todas">Todas as Empresas (Visão Global)</option>
+                <option value="1">Construtora Delta (12.345.678/0001-90)</option>
+                <option value="2">FarmaRio Distribuidora (98.765.432/0001-10)</option>
+                <option value="3">MedSupply Hospitalar (45.678.910/0001-23)</option>
+                <option value="4">CleanService Predial (33.222.111/0001-55)</option>
+            </select>
+        </div>
         <div style="width: 140px;"></div>
     </header>
 
@@ -151,56 +201,68 @@
 </div>
             <div class="sidebar-section-title">Visão Geral</div>
             <div class="sidebar-item" data-tab="dashboard" onclick="window.location.href='/static/dashboard.html'">
-                <span> Dashboard</span>
+                <span>Dashboard</span>
             </div>
 
             <div class="sidebar-section-title">Operacional de Licitações</div>
             <div class="sidebar-item" data-tab="licitacoes" onclick="window.location.href='/static/dashboard.html'">
-                <span> Mural de Editais (PNCP)</span>
+                <span>Mural de Editais (PNCP)</span>
             </div>
             <div class="sidebar-item" data-tab="matches" onclick="window.location.href='/static/dashboard.html'">
-                <span> Radar de Matches</span>
+                <span>Radar de Matches</span>
             </div>
             <div class="sidebar-item active" data-tab="mesa">
-                <span> Mesa de Operação</span>
+                <span>Mesa de Operação</span>
             </div>
             <div class="sidebar-item" data-tab="alertas" onclick="window.location.href='/static/dashboard.html'">
-                <span> Alertas</span>
+                <span>Alertas</span>
             </div>
 
             <div class="sidebar-section-title">Gestão & Estratégia</div>
             <div class="sidebar-item" data-tab="preferencias" onclick="window.location.href='/static/dashboard.html'">
-                <span> Estratégia & Critérios</span>
+                <span>Estratégia & Critérios</span>
             </div>
             <div class="sidebar-item" data-tab="notificacoes" onclick="window.location.href='/static/dashboard.html'">
-                <span> Notificações</span>
+                <span>Notificações</span>
             </div>
             <div class="sidebar-item" data-tab="conta" onclick="window.location.href='/static/dashboard.html'">
-                <span> Empresa & Certidões</span>
+                <span>Empresa & Certidões</span>
             </div>
         </aside>
 
         <!-- CONTEÚDO PRINCIPAL -->
         <main class="mesa-main-wrapper">
-            <!-- CABEÇALHO DA MESA -->
-            <div class="mesa-page-header" style="display: flex !important; visibility: visible !important; opacity: 1 !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 24px !important; margin-top: 10px !important; position: relative !important; z-index: 10 !important;">
-                <div style="display: block !important;">
-                    <h1 style="display: block !important; visibility: visible !important; font-size: 24px !important; font-weight: 800 !important; color: #0F172A !important; margin: 0 0 6px 0 !important; letter-spacing: -0.02em !important;">Mesa de Operação</h1>
-                    <p style="display: block !important; visibility: visible !important; font-size: 13px !important; color: #475569 !important; margin: 0 !important; font-weight: 500 !important;">Esteira tática de certames, controle de piso mínimo e margem em tempo real.</p>
+                                    <!-- CABEÇALHO LIMPO DA MESA -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 16px;">
+                <div>
+                    <h1 style="font-size: 20px; font-weight: 700; color: #0F172A; margin: 0; letter-spacing: -0.02em;">Mesa de Operação</h1>
+                    <p style="font-size: 13px; color: #64748B; margin: 2px 0 0 0;">Gestão do ciclo de vida das licitações e prazos operacionais.</p>
                 </div>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <div class="mesa-filter-tabs">
-                        <button class="mesa-tab-btn active" onclick="filtrarMesa('todos', this)">Todos</button>
-                        <button class="mesa-tab-btn" onclick="filtrarMesa('analise', this)">Em Análise</button>
-                        <button class="mesa-tab-btn" onclick="filtrarMesa('disputa', this)">Em Disputa</button>
-                    </div>
-                    <button class="btn-novo-edital" onclick="abrirModalNovoEdital()">+ Adicionar Edital</button>
+
+                <div>
+                    <button class="btn-primary" style="background: #0F172A; color: #FFFFFF; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                        + Adicionar Edital
+                    </button>
                 </div>
             </div>
 
-            <!-- TABELA MESTRE EXPANSÍVEL -->
-            <div class="mesa-card-container">
-                <table class="mesa-master-table">
+            <!-- FILTRO ÚNICO DE ETAPAS (MINIMALISTA) -->
+            <div style="display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid #E2E8F0; padding-bottom: 8px;">
+                <button class="tab-filtro active" onclick="filtrarFaseMesa('TODAS', this)" style="border: none; background: #0F172A; color: #FFFFFF; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Todas
+                </button>
+                <button class="tab-filtro" onclick="filtrarFaseMesa('TRIAGEM', this)" style="border: none; background: transparent; color: #64748B; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Triagem & Decisão
+                </button>
+                <button class="tab-filtro" onclick="filtrarFaseMesa('PROPOSTA', this)" style="border: none; background: transparent; color: #64748B; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Montagem de Proposta
+                </button>
+                <button class="tab-filtro" onclick="filtrarFaseMesa('DISPUTA', this)" style="border: none; background: transparent; color: #64748B; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Em Disputa
+                </button>
+                <button class="tab-filtro" onclick="filtrarFaseMesa('HABILITACAO', this)" style="border: none; background: transparent; color: #64748B; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Habilitação & Recursos
+                </button>
+                <button class="tab-filtro" onclick="filtrarFaseMesa('CONCLUIDAS', this)" style="border: none; background: transparent; color: #64748B; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Concluídas
+                </button>
+            </div>
+
+            <table class="mesa-master-table">
                     <thead>
                         <tr>
                             <th style="width: 36px;"></th>
@@ -210,199 +272,13 @@
                             <th>Portal / UASG</th>
                             <th>Data/Hora Sessão</th>
                             <th>Itens</th>
-                            <th style="text-align: right; min-width: 170px;">Ação</th>
+                            <th style="text-align: center; min-width: 160px;">Ação</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- PREGÃO 1 (COMPRAS.GOV COM UASG) -->
-                        <tr class="master-row row-disputa" onclick="toggleMesaDrawer('drawer-1', this)">
-                            <td class="toggle-icon-cell"><span class="arrow-icon">▶</span></td>
-                            <td><span class="badge-status-disputa">Em Disputa</span></td>
-                            <td>
-                                <div class="pregao-cod">PE 90107/2026</div>
-                                <div class="proc-cod">Proc. 23525.014069/2026-63</div>
-                            </td>
-                            <td>
-                                <div class="orgao-nome">Comissão Regional de Obtenção da Marinha (COM-RJ)</div>
-                                <div class="orgao-sub">Rio de Janeiro - RJ</div>
-                            </td>
-                            <td>
-                                <div class="portal-badge gov">Compras.gov.br</div>
-                                <div class="uasg-badge">UASG: 763600</div>
-                            </td>
-                            <td>
-                                <div class="data-hora">26/09/2026 às 09:00</div>
-                                <div class="tempo-restante">Hoje • Aberto</div>
-                            </td>
-                            <td><span class="itens-count">04 itens</span></td>
-                            <td style="text-align: right;" onclick="event.stopPropagation()">
-                                <a href="https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras" target="_blank" class="btn-link-portal" title="Abrir portal oficial">Portal ↗</a>
-                                <button class="btn-detalhes-edital" onclick="abrirDetalhesEdital('PE 90107/2026')">Detalhes ↗</button>
-                            </td>
-                        </tr>
-                        <!-- GAVETA ITENS 1 -->
-                        <tr id="drawer-1" class="drawer-row" style="display: none;">
-                            <td colspan="8">
-                                <div class="drawer-content">
-                                    <div class="drawer-header-info">
-                                        <div>
-                                            <span class="drawer-title">Grade Técnica de Itens em Disputa</span>
-                                            <span class="drawer-hint" style="margin-left: 10px;">Calibração de lance, piso e margem</span>
-                                        </div>
-                                        <div>
-                                            <span style="font-size: 11px; color: #64748B;">Total Previsto no Lance: <strong style="color: #0F172A;" id="total-edital-1">R$ 184.700,00</strong></span>
-                                        </div>
-                                    </div>
-                                    <table class="mesa-items-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Descrição do Produto</th>
-                                                <th>Qtd</th>
-                                                <th>Custo Unit.</th>
-                                                <th>Piso Mínimo</th>
-                                                <th>Lance Sugerido</th>
-                                                <th>Total (Lance)</th>
-                                                <th>Margem (%)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>#01</strong></td>
-                                                <td>
-                                                    <div class="prod-desc">Amoxicilina + Clavulanato 500/125mg</div>
-                                                    <div class="prod-sub">Comprimido Revestido • Caixa c/ 30</div>
-                                                </td>
-                                                <td>12.000</td>
-                                                <td>R$ 2,50</td>
-                                                <td class="piso-val">R$ 3,10</td>
-                                                <td><input type="text" class="input-lance-tatico" value="3.45" oninput="recalcularItem(this, 12000, 2.50, 'total-item-1', 'margem-item-1')"></td>
-                                                <td class="val-total-col" id="total-item-1">R$ 41.400,00</td>
-                                                <td><span class="margin-badge high" id="margem-item-1">27.5%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#02</strong></td>
-                                                <td>
-                                                    <div class="prod-desc">Dipirona Sódica 500mg/mL</div>
-                                                    <div class="prod-sub">Solução Injetável 2mL • Ampola</div>
-                                                </td>
-                                                <td>45.000</td>
-                                                <td>R$ 0,95</td>
-                                                <td class="piso-val">R$ 1,15</td>
-                                                <td><input type="text" class="input-lance-tatico" value="1.32" oninput="recalcularItem(this, 45000, 0.95, 'total-item-2', 'margem-item-2')"></td>
-                                                <td class="val-total-col" id="total-item-2">R$ 59.400,00</td>
-                                                <td><span class="margin-badge mid" id="margem-item-2">28.0%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#03</strong></td>
-                                                <td>
-                                                    <div class="prod-desc">Omeprazol Sódico 40mg Pó Liofilizado</div>
-                                                    <div class="prod-sub">Frasco-ampola + Diluente</div>
-                                                </td>
-                                                <td>8.500</td>
-                                                <td>R$ 7,90</td>
-                                                <td class="piso-val">R$ 9,80</td>
-                                                <td><input type="text" class="input-lance-tatico" value="10.90" oninput="recalcularItem(this, 8500, 7.90, 'total-item-3', 'margem-item-3')"></td>
-                                                <td class="val-total-col" id="total-item-3">R$ 92.650,00</td>
-                                                <td><span class="margin-badge high" id="margem-item-3">27.5%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#04</strong></td>
-                                                <td>
-                                                    <div class="prod-desc">Ceftriaxona Dissódica 1g IV</div>
-                                                    <div class="prod-sub">Frasco-ampola c/ diluente</div>
-                                                </td>
-                                                <td>6.200</td>
-                                                <td>R$ 11,80</td>
-                                                <td class="piso-val">R$ 13,40</td>
-                                                <td><input type="text" class="input-lance-tatico alert-piso" value="13.50" oninput="recalcularItem(this, 6200, 11.80, 'total-item-4', 'margem-item-4')"></td>
-                                                <td class="val-total-col" id="total-item-4">R$ 83.700,00</td>
-                                                <td><span class="margin-badge low" id="margem-item-4">12.5%</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <!-- PREGÃO 2 (EM ANÁLISE) -->
-                        <tr class="master-row row-analise" onclick="toggleMesaDrawer('drawer-2', this)">
-                            <td class="toggle-icon-cell"><span class="arrow-icon">▶</span></td>
-                            <td><span class="badge-status-analise">Em Análise</span></td>
-                            <td>
-                                <div class="pregao-cod">PE 040/2026</div>
-                                <div class="proc-cod">Processo nº 118/2026</div>
-                            </td>
-                            <td>
-                                <div class="orgao-nome">Prefeitura Municipal de Santo Antônio do Monte</div>
-                                <div class="orgao-sub">Minas Gerais - MG</div>
-                            </td>
-                            <td>
-                                <div class="portal-badge bbm">BBMNet</div>
-                            </td>
-                            <td>
-                                <div class="data-hora">28/09/2026 às 10:00</div>
-                                <div class="tempo-restante">Faltam 6 dias</div>
-                            </td>
-                            <td><span class="itens-count">02 itens</span></td>
-                            <td style="text-align: right;" onclick="event.stopPropagation()">
-                                <a href="https://www.novobbmnet.com.br" target="_blank" class="btn-link-portal" title="Abrir portal BBMNet">Portal ↗</a>
-                                <button class="btn-detalhes-edital" onclick="abrirDetalhesEdital('PE 040/2026')">Detalhes ↗</button>
-                            </td>
-                        </tr>
-                        <!-- GAVETA ITENS 2 -->
-                        <tr id="drawer-2" class="drawer-row" style="display: none;">
-                            <td colspan="8">
-                                <div class="drawer-content">
-                                    <div class="drawer-header-info">
-                                        <div>
-                                            <span class="drawer-title">Precificação & Calibração de Margem</span>
-                                            <span class="drawer-hint" style="margin-left: 10px;">Defina o piso mínimo aceitável antes de liberar para disputa</span>
-                                        </div>
-                                    </div>
-                                    <table class="mesa-items-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Descrição do Produto</th>
-                                                <th>Qtd</th>
-                                                <th>Custo Unit.</th>
-                                                <th>Piso Mínimo</th>
-                                                <th>Lance Alvo</th>
-                                                <th>Total (Lance)</th>
-                                                <th>Margem (%)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>#01</strong></td>
-                                                <td>
-                                                    <div class="prod-desc">Paracetamol 500mg</div>
-                                                    <div class="prod-sub">Comprimido simples • Caixa c/ 500</div>
-                                                </td>
-                                                <td>20.000</td>
-                                                <td>R$ 0,18</td>
-                                                <td class="piso-val">R$ 0,25</td>
-                                                <td><input type="text" class="input-lance-tatico" value="0.32" oninput="recalcularItem(this, 20000, 0.18, 'total-item-2-1', 'margem-item-2-1')"></td>
-                                                <td class="val-total-col" id="total-item-2-1">R$ 6.400,00</td>
-                                                <td><span class="margin-badge high" id="margem-item-2-1">43.7%</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#02</strong></td>
-                                                <td>
-                                                    <div class="prod-desc">Ibuprofeno 600mg</div>
-                                                    <div class="prod-sub">Comprimido revestido • Caixa c/ 200</div>
-                                                </td>
-                                                <td>15.000</td>
-                                                <td>R$ 0,35</td>
-                                                <td class="piso-val">R$ 0,48</td>
-                                                <td><input type="text" class="input-lance-tatico" value="0.55" oninput="recalcularItem(this, 15000, 0.35, 'total-item-2-2', 'margem-item-2-2')"></td>
-                                                <td class="val-total-col" id="total-item-2-2">R$ 8.250,00</td>
-                                                <td><span class="margin-badge mid" id="margem-item-2-2">36.3%</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                    <tbody id="tabelaMesaBody">
+                        <tr>
+                            <td colspan="8" style="text-align:center; padding: 40px; color: #64748B;">
+                                Carregando processos operacionais...
                             </td>
                         </tr>
                     </tbody>
@@ -416,18 +292,18 @@
         <div class="mesa-modal-dialog">
             <div class="mesa-modal-header">
                 <h3>Adicionar Edital na Mesa</h3>
-                <button class="modal-close" onclick="fecharModalNovoEdital()">✕</button>
+                <button class="modal-close" onclick="fecharModalNovoEdital()"></button>
             </div>
             <div class="mesa-modal-body">
                 <p style="font-size: 13px; color: #475569; margin-bottom: 16px;">Como deseja dar entrada neste certame?</p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div class="metodo-card" onclick="alert('Selecione o arquivo PDF do edital para extração dos itens.')">
-                        <div style="font-size: 28px; margin-bottom: 8px;">📄</div>
+                        <div style="font-size: 28px; margin-bottom: 8px;"></div>
                         <strong>Importar via PDF</strong>
                         <span>Extrair itens e dados via IA</span>
                     </div>
                     <div class="metodo-card" onclick="alert('Abrir formulário de cadastro manual simplificado.')">
-                        <div style="font-size: 28px; margin-bottom: 8px;">✍️</div>
+                        <div style="font-size: 28px; margin-bottom: 8px;"></div>
                         <strong>Entrada Manual</strong>
                         <span>Inserir pregão, portal e itens</span>
                     </div>
@@ -436,10 +312,7 @@
         </div>
     </div>
 
-    <script>
-    
-
-    function toggleMesaDrawer(drawerId, rowEl) {
+    <script>function toggleMesaDrawer(drawerId, rowEl) {
         const drawer = document.getElementById(drawerId);
         const arrow = rowEl.querySelector('.arrow-icon');
         if (!drawer) return;
@@ -456,24 +329,24 @@
     }
 
     function filtrarMesa(status, btn) {
-        document.querySelectorAll('.mesa-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.mesa-tab-btn').forEach(b =>b.classList.remove('active'));
         if (btn) btn.classList.add('active');
         
         const rowsDisputa = document.querySelectorAll('.row-disputa');
         const rowsAnalise = document.querySelectorAll('.row-analise');
         
         if (status === 'todos') {
-            rowsDisputa.forEach(r => r.style.display = '');
-            rowsAnalise.forEach(r => r.style.display = '');
+            rowsDisputa.forEach(r =>r.style.display = '');
+            rowsAnalise.forEach(r =>r.style.display = '');
         } else if (status === 'disputa') {
-            rowsDisputa.forEach(r => r.style.display = '');
+            rowsDisputa.forEach(r =>r.style.display = '');
             rowsAnalise.forEach(r => {
                 r.style.display = 'none';
                 const next = r.nextElementSibling;
                 if (next && next.classList.contains('drawer-row')) next.style.display = 'none';
             });
         } else if (status === 'analise') {
-            rowsAnalise.forEach(r => r.style.display = '');
+            rowsAnalise.forEach(r =>r.style.display = '');
             rowsDisputa.forEach(r => {
                 r.style.display = 'none';
                 const next = r.nextElementSibling;
@@ -492,7 +365,7 @@
             totalEl.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
         
-        if (margemEl && valLance > 0) {
+        if (margemEl && valLance >0) {
             const margem = ((valLance - custoUnit) / valLance) * 100;
             margemEl.innerText = margem.toFixed(1) + '%';
             if (margem < 15) {
@@ -569,5 +442,206 @@
         });
     });
     </script>
+
+<script>let faseAtualMesa = 'TODAS';
+
+function filtrarFaseMesa(fase, btn) {
+    faseAtualMesa = fase;
+
+    // Atualizar estilo visual das abas
+    document.querySelectorAll('.tab-filtro').forEach(b => {
+        b.style.background = 'transparent';
+        b.style.color = '#64748B';
+    });
+    if (btn) {
+        btn.style.background = '#0F172A';
+        btn.style.color = '#FFFFFF';
+    }
+
+    aplicarFiltrosTabelaMesa();
+}
+
+function trocarClienteConsultor(clienteId) {
+    localStorage.setItem('strike_empresa_ativa', clienteId);
+    aplicarFiltrosTabelaMesa();
+}
+
+function aplicarFiltrosTabelaMesa() {
+    const selectTopo = document.getElementById('selectEmpresaAtiva');
+    const empresaSelecionada = selectTopo ? selectTopo.value : (localStorage.getItem('strike_empresa_ativa') || 'todas');
+
+    const masterRows = document.querySelectorAll('tbody >tr.master-row');
+
+    masterRows.forEach(row => {
+        const rowFase = row.getAttribute('data-fase') || 'DISPUTA';
+        const rowEmpresa = row.getAttribute('data-empresa') || 'todas';
+        const drawerId = row.getAttribute('data-drawer-id');
+        const drawerRow = drawerId ? document.getElementById(drawerId) : null;
+
+        const matchFase = (faseAtualMesa === 'TODAS' || rowFase === faseAtualMesa);
+        const matchEmpresa = (empresaSelecionada === 'todas' || rowEmpresa === empresaSelecionada);
+
+        if (matchFase && matchEmpresa) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+            if (drawerRow) {
+                drawerRow.style.display = 'none';
+                const arrow = row.querySelector('.arrow-icon');
+                if (arrow) arrow.textContent = '';
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const salva = localStorage.getItem('strike_empresa_ativa');
+    const select = document.getElementById('selectEmpresaAtiva');
+    if (salva && select) {
+        select.value = salva;
+    }
+    aplicarFiltrosTabelaMesa();
+});
+</script>
+
+
+<script>
+let processosCarregadosMesa = [];
+
+
+async function descartarProcessoMesa(id, numero) {
+    if (!confirm(`Deseja realmente remover o edital ${numero} da Mesa de Operação?`)) {
+        return;
+    }
+    try {
+        let res = await fetch(`/api/processos/${id}`, { method: 'DELETE' });
+        if (!res.ok) {
+            res = await fetch(`/processos/${id}`, { method: 'DELETE' });
+        }
+        const data = await res.json();
+        if (data.sucesso !== false) {
+            processosCarregadosMesa = processosCarregadosMesa.filter(p => p.id !== id);
+            renderizarLinhasMesa();
+        } else {
+            alert(data.mensagem || "Não foi possível remover o edital.");
+        }
+    } catch (e) {
+        console.error("Erro ao excluir:", e);
+        alert("Erro de conexão ao remover o edital.");
+    }
+}
+
+async function carregarProcessosMesaAPI() {
+    const tbody = document.getElementById("tabelaMesaBody");
+    if (!tbody) return;
+
+    try {
+        const res = await fetch('/api/processos');
+        if (!res.ok) throw new Error("Falha ao consultar API /processos");
+        const data = await res.json();
+        processosCarregadosMesa = data.processos || [];
+        renderizarLinhasMesa();
+    } catch (err) {
+        console.error("Erro ao carregar mesa:", err);
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 30px; color: #EF4444;">Erro ao conectar com o banco de dados.</td></tr>`;
+    }
+}
+
+function renderizarLinhasMesa() {
+    const tbody = document.getElementById("tabelaMesaBody");
+    if (!tbody) return;
+
+    const selectTopo = document.getElementById('selectEmpresaAtiva');
+    const empresaSelecionada = selectTopo ? selectTopo.value : (localStorage.getItem('strike_empresa_ativa') || 'todas');
+
+    const filtrados = processosCarregadosMesa.filter(p => {
+        const pEmpresa = String(p.empresa_id || '1');
+        const matchEmpresa = (empresaSelecionada === 'todas' || pEmpresa === empresaSelecionada);
+        
+        let pFase = 'DISPUTA';
+        if (p.status === 'EM_ANALISE') pFase = 'ANALISE';
+        if (p.status === 'GANHA') pFase = 'HOMOLOGADA';
+        if (p.status === 'PERDIDA' || p.status === 'DESCARTADA') pFase = 'ENCERRADA';
+
+        const matchFase = (faseAtualMesa === 'TODAS' || faseAtualMesa === pFase || (faseAtualMesa === 'DISPUTA' && p.status === 'ATIVA'));
+        return matchEmpresa && matchFase;
+    });
+
+    if (filtrados.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 35px; color: #64748B;">Nenhum processo operacional localizado para este filtro.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtrados.map((p, idx) => {
+        const drawerId = `drawer-dyn-${p.id}`;
+        const valorFormatado = (p.valor_estimado || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const codigo = p.codigo_interno || `#${p.id}`;
+        const numero = p.numero_edital || '-';
+        const orgao = p.orgao_nome || 'Órgão Licitante';
+        const uf = p.uf || 'BR';
+        const abertura = p.data_abertura || 'A definir';
+        const link = p.link_edital && p.link_edital.startsWith('http') ? p.link_edital : '#';
+        const empresaId = p.empresa_id || 1;
+
+        let statusBadge = `<span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; background-color: #ECFDF5; color: #059669; border: 1px solid #A7F3D0;">Ativa</span>`;
+        if (p.status === 'EM_ANALISE') {
+            statusBadge = `<span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; background-color: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE;">Em Análise</span>`;
+        } else if (p.status === 'GANHA') {
+            statusBadge = `<span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; background-color: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">Homologado</span>`;
+        }
+
+        return `
+            <tr class="master-row" data-fase="${p.status}" data-empresa="${empresaId}" data-drawer-id="${drawerId}" onclick="toggleMesaDrawer('${drawerId}', this)">
+                <td class="toggle-icon-cell"><span class="arrow-icon">▶</span></td>
+                <td>${statusBadge}</td>
+                <td>
+                    <div class="pregao-cod" style="font-weight:700; color:#0F172A;">${numero}</div>
+                    <div class="proc-cod" style="font-size:11px; color:#64748B;">Cód: ${codigo}</div>
+                </td>
+                <td>
+                    <div class="orgao-nome" style="font-weight:600; color:#1E293B;">${orgao}</div>
+                    <div class="orgao-sub" style="font-size:11px; color:#64748B;">${uf}</div>
+                </td>
+                <td>
+                    <div class="portal-badge gov" style="font-size:11px;">${p.origem || 'PNCP'}</div>
+                    <div style="font-size:11px; color:#475569; margin-top:2px;">${valorFormatado}</div>
+                </td>
+                <td>
+                    <div class="data-hora" style="font-size:12px; font-weight:600;">${abertura}</div>
+                </td>
+                <td>
+                    <span class="itens-count" style="font-size:11px; background:#F1F5F9; padding:2px 6px; border-radius:4px;">1 Lote</span>
+                </td>
+                <td style="text-align: center;" onclick="event.stopPropagation()">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        ${link !== '#' ? `<a href="${link}" target="_blank" class="btn-link-portal" style="padding: 4px 8px; font-size: 11px; text-decoration:none;">Portal ↗</a>` : ''}
+                        <button class="btn-detalhes-edital" onclick="alert('Objeto: ' + ${JSON.stringify(p.objeto || 'Não informado')})" style="padding: 4px 10px; font-size: 11px; cursor: pointer; border-radius: 4px;">Detalhes ↗</button>
+                        <button onclick="descartarProcessoMesa(${p.id}, '${numero}')" title="Excluir edital da mesa" style="width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; padding: 0; font-size: 13px; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; border-radius: 4px; cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#FCA5A5'" onmouseout="this.style.background='#FEE2E2'">🗑</button>
+                    </div>
+                </td>
+            </tr>
+            <tr id="${drawerId}" class="drawer-row" data-fase="${p.status}" data-empresa="${empresaId}" style="display: none; background-color: #F8FAFC;">
+                <td colspan="8" style="padding: 16px 24px; border-bottom: 1px solid #E2E8F0;">
+                    <div style="font-size: 12px; color: #334155; line-height: 1.5;">
+                        <strong style="color: #0F172A; display: block; margin-bottom: 4px;">Objeto Licitatório:</strong>
+                        ${p.objeto || 'Sem descrição cadastrada.'}
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join("");
+}
+
+// Substituir aplicação de filtros pela re-renderização dinâmica
+const originalAplicarFiltros = typeof aplicarFiltrosTabelaMesa === 'function' ? aplicarFiltrosTabelaMesa : null;
+aplicarFiltrosTabelaMesa = function() {
+    renderizarLinhasMesa();
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    carregarProcessosMesaAPI();
+});
+</script>
+
 </body>
 </html>

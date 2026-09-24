@@ -532,16 +532,6 @@ html, body {
 }
 </style>
 
-<script>
-function trocarClienteConsultor(valor) {
-    if (typeof carregarProcessosMesa === 'function') {
-        carregarProcessosMesa(typeof statusMesaAtual !== 'undefined' ? statusMesaAtual : 'TODAS');
-    }
-    if (typeof carregarDashboardCompleto === 'function') {
-        carregarDashboardCompleto();
-    }
-}
-</script>
 </head>
 <body>
 
@@ -577,7 +567,7 @@ function trocarClienteConsultor(valor) {
 </div>
 
 <button class="btn-logout" onclick="if(typeof fazerLogout === 'function') { fazerLogout(); } else { window.location.href='/'; }" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #CBD5E1; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                👤 Sair
+                 Sair
             </button>
         </div>
     </div>
@@ -775,7 +765,7 @@ function trocarClienteConsultor(valor) {
                         </select>
                     </div>
                     <button type="button" onclick="toggleFiltrosAvancados()" id="btnToggleFiltros" style="background: #F1F5F9; color: #334155; border: 1px solid #CBD5E1; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
-                        ⚙️ Filtros Avançados
+                         Filtros Avançados
                     </button>
                     <button type="button" onclick="carregarLicitacoesPncp()" style="background: #2563EB; color: #FFFFFF; border: none; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
                         🔍 Filtrar
@@ -885,67 +875,38 @@ function trocarClienteConsultor(valor) {
                 </div>
             </div>
 
-                        <!-- 4. MESA DE OPERAÇÃO MULTI-CNPJ -->
+            <!-- 4. MESA DE OPERAÇÃO -->
             <div id="pane-mesa" class="tab-pane">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <h2 style="font-size: 20px; font-weight: 700; color: #0F172A; margin: 0;">Mesa de Operação Multi-CNPJ</h2>
-                            <span id="badgeMesaContexto" style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #E0E7FF; color: #3730A3;">Todas as Empresas</span>
-                        </div>
-                        <p style="font-size: 13px; color: #64748B; margin-top: 4px; margin-bottom: 0;">Controlo do ciclo de vida das licitações, prazos e tarefas operacionais por cliente.</p>
+                        <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading);"> Mesa de Operação</h2>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Gestão da esteira de propostas, cotações e disputas.</p>
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button type="button" onclick="abrirModalNovoProcessoMesa()" style="background: #10B981; color: #FFFFFF; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                            ➕ Nova Licitação
-                        </button>
-                        <button type="button" onclick="carregarProcessosMesa(statusMesaAtual)" style="background: #2563EB; color: #FFFFFF; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                            🔄 Actualizar
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Barra de Pipeline / Etapas do Processo -->
-                <div style="display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px;">
-                    <button class="btn-filtro-etapa active" onclick="filtrarEtapaMesa('TODAS', this)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #CBD5E1; background: #0F172A; color: #FFFFFF;">
-                        Todas as Etapas (<span id="contMesaTodas">0</span>)
-                    </button>
-                    <button class="btn-filtro-etapa" onclick="filtrarEtapaMesa('TRIAGEM', this)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155;">
-                        1. Triagem & Decisão (<span id="contMesaTriagem">0</span>)
-                    </button>
-                    <button class="btn-filtro-etapa" onclick="filtrarEtapaMesa('PROPOSTA', this)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155;">
-                        2. Proposta & Documentação (<span id="contMesaProposta">0</span>)
-                    </button>
-                    <button class="btn-filtro-etapa" onclick="filtrarEtapaMesa('DISPUTA', this)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155;">
-                        3. Em Disputa (<span id="contMesaDisputa">0</span>)
-                    </button>
-                    <button class="btn-filtro-etapa" onclick="filtrarEtapaMesa('HABILITACAO', this)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155;">
-                        4. Habilitação & Recursos (<span id="contMesaHabilitacao">0</span>)
-                    </button>
-                    <button class="btn-filtro-etapa" onclick="filtrarEtapaMesa('CONCLUIDAS', this)" style="padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155;">
-                        5. Concluídas (<span id="contMesaConcluidas">0</span>)
+                    <button onclick="carregarProcessosMesa(statusMesaAtual)" style="background: var(--color-primary); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer;">
+                        🔄 Atualizar Mesa
                     </button>
                 </div>
-
-                <!-- Tabela Operacional de Licitações -->
-                <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;">
+                <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                    <button id="tabMesaAtiva" onclick="filtrarMesaPorStatus('ATIVA', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--color-primary); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;"> Ativas</button>
+                    <button id="tabMesaAnalise" onclick="filtrarMesaPorStatus('EM_ANALISE', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--border-color); color: var(--text-body); font-size: 12px; font-weight: 700; cursor: pointer;">📝 Em Análise</button>
+                    <button id="tabMesaGanha" onclick="filtrarMesaPorStatus('GANHA', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--border-color); color: var(--text-body); font-size: 12px; font-weight: 700; cursor: pointer;">🏆 Ganhas</button>
+                    <button id="tabMesaPerdida" onclick="filtrarMesaPorStatus('PERDIDA', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--border-color); color: var(--text-body); font-size: 12px; font-weight: 700; cursor: pointer;">📉 Perdidas</button>
+                </div>
+                <div class="table-container">
+                    <table class="table-modern">
                         <thead>
-                            <tr style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; color: #475569; font-weight: 600;">
-                                <th style="padding: 10px 14px;">Cliente (CNPJ)</th>
-                                <th style="padding: 10px 14px;">Processo / Edital</th>
-                                <th style="padding: 10px 14px;">Órgão Licitante</th>
-                                <th style="padding: 10px 14px;">Etapa Actual</th>
-                                <th style="padding: 10px 14px;">Data Limite / Disputa</th>
-                                <th style="padding: 10px 14px;">Valor Estimado / Teto</th>
-                                <th style="padding: 10px 14px;">Responsável</th>
-                                <th style="padding: 10px 14px; text-align: center;">Gestão</th>
+                            <tr>
+                                <th>Edital / Órgão</th>
+                                <th>UF</th>
+                                <th>Valor Estimado</th>
+                                <th>Valor Proposta</th>
+                                <th style="text-align: center;">Margem</th>
+                                <th style="text-align: center;">Status</th>
+                                <th style="text-align: center;">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="tabelaMesaProcessosBody" style="color: #1E293B;">
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 28px; color: #64748B;">A carregar processos da mesa de operação...</td>
-                            </tr>
+                        <tbody id="tabelaMesaProcessosBody">
+                            <tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">A carregar certames...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1188,7 +1149,7 @@ function trocarClienteConsultor(valor) {
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                     <div>
                         <h2 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin: 0;"> Gestão da Empresa & Habilitação</h2>
-                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Configurações institucionais, ramo de atividade, certidões e equipa.</p>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Configurações institucionais, ramo de atividade, certidões e equipe.</p>
                     </div>
                 </div>
 
@@ -1200,7 +1161,7 @@ function trocarClienteConsultor(valor) {
                         💳 Pagamento da Plataforma
                     </button>
                     <button class="subtab-btn" onclick="alternarSubTabEmpresa('usuarios', this)" style="padding: 7px 16px; border-radius: 6px; border: none; background: var(--border-color); color: var(--text-body); font-size: 12px; font-weight: 700; cursor: pointer;">
-                        👥 Membros da Equipa
+                        👥 Membros da Equipe
                     </button>
                 </div>
 
@@ -1369,7 +1330,7 @@ function trocarClienteConsultor(valor) {
 
                 <div id="subpane-empresa-usuarios" class="subpane-empresa" style="display: none;">
                     <div class="table-container" style="padding: 20px;">
-                        <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading); margin-bottom: 12px;">Membros da Equipa</h3>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--text-heading); margin-bottom: 12px;">Membros da Equipe</h3>
                         <table class="table-modern">
                             <thead>
                                 <tr>
@@ -2370,167 +2331,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-</script>
-
-
-<script>
-let statusMesaAtual = 'TODAS';
-
-const listaEmpresasMapa = {
-    "1": "Construtora Delta",
-    "2": "FarmaRio Distribuidora",
-    "3": "MedSupply Hospitalar",
-    "4": "CleanService Predial"
-};
-
-function filtrarEtapaMesa(etapa, botao) {
-    statusMesaAtual = etapa;
-    document.querySelectorAll('.btn-filtro-etapa').forEach(b => {
-        b.style.background = '#FFFFFF';
-        b.style.color = '#334155';
-    });
-    if (botao) {
-        botao.style.background = '#0F172A';
-        botao.style.color = '#FFFFFF';
-    }
-    carregarProcessosMesa(etapa);
-}
-
-function carregarProcessosMesa(etapa = 'TODAS') {
-    const select = document.getElementById('selectEmpresaAtiva');
-    const clienteId = select ? select.value : 'todas';
-    
-    const badgeContexto = document.getElementById('badgeMesaContexto');
-    if (badgeContexto) {
-        if (clienteId === 'todas') {
-            badgeContexto.textContent = 'Todas as Empresas (Visão Global)';
-            badgeContexto.style.background = '#E0E7FF';
-            badgeContexto.style.color = '#3730A3';
-        } else {
-            badgeContexto.textContent = 'Filtro: ' + (listaEmpresasMapa[clienteId] || 'CNPJ Selecionado');
-            badgeContexto.style.background = '#DCFCE7';
-            badgeContexto.style.color = '#166534';
-        }
-    }
-
-    const tbody = document.getElementById('tabelaMesaProcessosBody');
-    if (!tbody) return;
-
-    // Simulação dos dados operacionais enriquecidos por cliente
-    const processosMock = [
-        {
-            id: 1,
-            empresa_id: "2",
-            empresa_nome: "FarmaRio Distribuidora",
-            processo: "PE 045/2026",
-            objeto: "Amoxicilina 500mg e antibióticos hospitalares",
-            orgao: "SMS Rio de Janeiro",
-            etapa: "DISPUTA",
-            etapa_label: "3. Em Disputa",
-            etapa_cor: "#F59E0B",
-            data_limite: "Hoje às 10:00",
-            valor: "R$ 420.000,00",
-            responsavel: "Carlos Silva"
-        },
-        {
-            id: 2,
-            empresa_id: "3",
-            empresa_nome: "MedSupply Hospitalar",
-            processo: "PE 102/2026",
-            objeto: "Seringas e agulhas descartáveis",
-            orgao: "Hospital Federal de Bonsucesso",
-            etapa: "PROPOSTA",
-            etapa_label: "2. Montagem de Proposta",
-            etapa_cor: "#3B82F6",
-            data_limite: "26/09/2026",
-            valor: "R$ 180.500,00",
-            responsavel: "Mariana Costa"
-        },
-        {
-            id: 3,
-            empresa_id: "1",
-            empresa_nome: "Construtora Delta",
-            processo: "CP 012/2026",
-            objeto: "Reforma estrutural de unidade de saúde",
-            orgao: "SEINFRA Niterói",
-            etapa: "TRIAGEM",
-            etapa_label: "1. Triagem & Decisão",
-            etapa_cor: "#64748B",
-            data_limite: "30/09/2026",
-            valor: "R$ 1.250.000,00",
-            responsavel: "Roberto Lima"
-        },
-        {
-            id: 4,
-            empresa_id: "2",
-            empresa_nome: "FarmaRio Distribuidora",
-            processo: "PE 038/2026",
-            objeto: "Dipirona 500mg Solução Injetável",
-            orgao: "FUSVE Vassouras",
-            etapa: "HABILITACAO",
-            etapa_label: "4. Habilitação & Recursos",
-            etapa_cor: "#8B5CF6",
-            data_limite: "Prazo Recursal (27/09)",
-            valor: "R$ 95.000,00",
-            responsavel: "Carlos Silva"
-        }
-    ];
-
-    // Filtragem por empresa selecionada na topbar
-    let filtrados = processosMock;
-    if (clienteId !== 'todas') {
-        filtrados = filtrados.filter(p => p.empresa_id === clienteId);
-    }
-
-    // Filtragem por etapa
-    if (etapa !== 'TODAS') {
-        filtrados = filtrados.filter(p => p.etapa === etapa);
-    }
-
-    // Actualizar contadores
-    document.getElementById('contMesaTodas').textContent = processosMock.filter(p => clienteId === 'todas' || p.empresa_id === clienteId).length;
-    document.getElementById('contMesaTriagem').textContent = processosMock.filter(p => (clienteId === 'todas' || p.empresa_id === clienteId) && p.etapa === 'TRIAGEM').length;
-    document.getElementById('contMesaProposta').textContent = processosMock.filter(p => (clienteId === 'todas' || p.empresa_id === clienteId) && p.etapa === 'PROPOSTA').length;
-    document.getElementById('contMesaDisputa').textContent = processosMock.filter(p => (clienteId === 'todas' || p.empresa_id === clienteId) && p.etapa === 'DISPUTA').length;
-    document.getElementById('contMesaHabilitacao').textContent = processosMock.filter(p => (clienteId === 'todas' || p.empresa_id === clienteId) && p.etapa === 'HABILITACAO').length;
-    document.getElementById('contMesaConcluidas').textContent = processosMock.filter(p => (clienteId === 'todas' || p.empresa_id === clienteId) && p.etapa === 'CONCLUIDAS').length;
-
-    if (filtrados.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px; color: #64748B;">Nenhum processo nesta etapa para o cliente seleccionado.</td></tr>';
-        return;
-    }
-
-    tbody.innerHTML = filtrados.map(p => `
-        <tr style="border-bottom: 1px solid #F1F5F9;">
-            <td style="padding: 10px 14px;">
-                <span style="font-weight: 700; color: #1E293B; display: block;">${p.empresa_nome}</span>
-                <span style="font-size: 11px; color: #64748B;">ID Cliente #${p.empresa_id}</span>
-            </td>
-            <td style="padding: 10px 14px;">
-                <strong style="color: #2563EB;">${p.processo}</strong>
-                <div style="color: #64748B; font-size: 11px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.objeto}">${p.objeto}</div>
-            </td>
-            <td style="padding: 10px 14px; color: #334155;">${p.orgao}</td>
-            <td style="padding: 10px 14px;">
-                <span style="background: ${p.etapa_cor}15; color: ${p.etapa_cor}; border: 1px solid ${p.etapa_cor}40; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">
-                    ${p.etapa_label}
-                </span>
-            </td>
-            <td style="padding: 10px 14px; font-weight: 600; color: #0F172A;">${p.data_limite}</td>
-            <td style="padding: 10px 14px; font-weight: 700; color: #0F172A;">${p.valor}</td>
-            <td style="padding: 10px 14px; color: #475569;">👤 ${p.responsavel}</td>
-            <td style="padding: 10px 14px; text-align: center;">
-                <button type="button" onclick="alert('A gerir processo ' + '${p.processo}')" style="background: #F1F5F9; color: #1E293B; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer;">
-                    ⚙️ Abrir
-                </button>
-            </td>
-        </tr>
-    `).join('');
-}
-
-function abrirModalNovoProcessoMesa() {
-    alert("Formulário de Registo Operacional de Licitação por CNPJ em carregamento.");
-}
 </script>
 
 </body>
