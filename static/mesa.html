@@ -162,6 +162,10 @@
         }
 
     </style>
+<style>
+.mesa-modal.active, #modalEntradaManual.active, #modalNovoEdital.active { display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 99999 !important; }
+.mesa-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.65); align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+</style>
 </head>
 <body style="background-color: #F8FAFC; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
 
@@ -240,9 +244,14 @@
                 </div>
 
                 <div>
-                    <button class="btn-primary" style="background: #0F172A; color: #FFFFFF; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                        + Adicionar Edital
-                    </button>
+                    <div style="display: inline-flex; align-items: center; gap: 8px;">
+                <button type="button" id="btnRefreshMesa" onclick="atualizarMesaManual()" title="Atualizar Mesa de Operação" style="width: 36px; height: 36px; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155; font-size: 16px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onmouseover="this.style.background='#F8FAFC'; this.style.color='#0F172A';" onmouseout="this.style.background='#FFFFFF'; this.style.color='#334155';">
+                    <span id="refreshIcon" style="display: inline-block; transition: transform 0.5s ease;">↻</span>
+                </button>
+                <button type="button" class="btn-adicionar-edital" onclick="abrirModalNovoEdital()" style="padding: 9px 16px; border-radius: 6px; background-color: #EAB308; color: #0F172A; font-weight: 700; font-size: 13px; border: none; cursor: pointer; display: inline-flex; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.15s;" onmouseover="this.style.backgroundColor='#CA8A04'" onmouseout="this.style.backgroundColor='#EAB308'">
+                    + Adicionar Edital
+                </button>
+            </div>
                 </div>
             </div>
 
@@ -287,32 +296,92 @@
         </main>
     </div>
 
-    <!-- MODAL ADICIONAR EDITAL -->
+    <!-- MODAL ADICIONAR EDITAL (SELEÇÃO) -->
     <div id="modalNovoEdital" class="mesa-modal">
-        <div class="mesa-modal-dialog">
-            <div class="mesa-modal-header">
-                <h3>Adicionar Edital na Mesa</h3>
-                <button class="modal-close" onclick="fecharModalNovoEdital()"></button>
+        <div class="mesa-modal-dialog" style="background: #FFFFFF; border-radius: 10px; max-width: 480px; width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); overflow: hidden; padding: 24px;">
+            <div class="mesa-modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">
+                <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #0F172A;">Adicionar Edital na Mesa</h3>
+                <button class="modal-close" onclick="fecharModalNovoEdital()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748B;">&times;</button>
             </div>
-            <div class="mesa-modal-body">
-                <p style="font-size: 13px; color: #475569; margin-bottom: 16px;">Como deseja dar entrada neste certame?</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div class="metodo-card" onclick="alert('Selecione o arquivo PDF do edital para extração dos itens.')">
-                        <div style="font-size: 28px; margin-bottom: 8px;"></div>
-                        <strong>Importar via PDF</strong>
-                        <span>Extrair itens e dados via IA</span>
+            <div class="mesa-modal-body" style="padding-top: 16px;">
+                <p style="font-size: 13px; color: #475569; margin-bottom: 18px;">Como deseja dar entrada neste certame?</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="metodo-card" onclick="iniciarUploadPDF()" style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.2s; background: #F8FAFC;" onmouseover="this.style.borderColor='#3B82F6'; this.style.background='#EFF6FF';" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC';">
+                        <div style="font-size: 30px; margin-bottom: 8px;">📄</div>
+                        <strong style="display: block; font-size: 14px; color: #0F172A; margin-bottom: 4px;">Importar via PDF</strong>
+                        <span style="font-size: 11px; color: #64748B;">Extrair dados e itens via IA</span>
                     </div>
-                    <div class="metodo-card" onclick="alert('Abrir formulário de cadastro manual simplificado.')">
-                        <div style="font-size: 28px; margin-bottom: 8px;"></div>
-                        <strong>Entrada Manual</strong>
-                        <span>Inserir pregão, portal e itens</span>
+                    <div class="metodo-card" onclick="abrirModalManual()" style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.2s; background: #F8FAFC;" onmouseover="this.style.borderColor='#3B82F6'; this.style.background='#EFF6FF';" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC';">
+                        <div style="font-size: 30px; margin-bottom: 8px;">✍️</div>
+                        <strong style="display: block; font-size: 14px; color: #0F172A; margin-bottom: 4px;">Entrada Manual</strong>
+                        <span style="font-size: 11px; color: #64748B;">Inserir pregão, órgão e portal</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>function toggleMesaDrawer(drawerId, rowEl) {
+    <!-- INPUT ESCONDIDO PARA UPLOAD PDF -->
+    <input type="file" id="inputUploadPDFEdital" accept=".pdf" style="display: none;" onchange="enviarPDFEdital(this)">
+
+    <!-- MODAL ENTRADA MANUAL -->
+    <div id="modalEntradaManual" class="mesa-modal">
+        <div class="mesa-modal-dialog" style="background: #FFFFFF; border-radius: 10px; max-width: 540px; width: 92%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); overflow: hidden; padding: 24px;">
+            <div class="mesa-modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">
+                <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #0F172A;">Cadastro Manual de Edital</h3>
+                <button class="modal-close" onclick="fecharModalManual()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748B;">&times;</button>
+            </div>
+            <form id="formManualEdital" onsubmit="salvarEditalManual(event)" style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">Número do Pregão / Processo *</label>
+                    <input type="text" id="manual_numero" required placeholder="Ex: PE 045/2026" style="width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px;">
+                </div>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">Órgão Comprador *</label>
+                        <input type="text" id="manual_orgao" required placeholder="Ex: Prefeitura Municipal..." style="width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">UF *</label>
+                        <input type="text" id="manual_uf" maxlength="2" required placeholder="RJ" style="width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px; text-transform: uppercase;">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">Portal / Plataforma</label>
+                        <input type="text" id="manual_portal" placeholder="Ex: Compras.gov, BBMNet" style="width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">Data e Hora da Sessão</label>
+                        <input type="datetime-local" id="manual_data" style="width: 100%; box-sizing: border-box; padding: 7px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px;">
+                    </div>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">Objeto Resumido</label>
+                    <textarea id="manual_objeto" rows="2" placeholder="Descrição dos materiais ou medicamentos..." style="width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px; resize: vertical;"></textarea>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px;">Link do Edital ou Portal</label>
+                    <input type="url" id="manual_link" placeholder="https://..." style="width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px;">
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+                    <button type="button" onclick="fecharModalManual()" style="padding: 8px 16px; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #475569; font-size: 13px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                    <button type="submit" id="btnSalvarManual" style="padding: 8px 18px; border-radius: 6px; border: none; background: #0F172A; color: #FFFFFF; font-size: 13px; font-weight: 700; cursor: pointer;">Salvar na Mesa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <script>
+function alternarGavetaDetalhes(drawerId) {
+    const drawer = document.getElementById(drawerId);
+    if (!drawer) return;
+    const fechado = drawer.style.display === 'none' || drawer.style.display === '';
+    drawer.style.display = fechado ? 'table-row' : 'none';
+}
+
+function toggleMesaDrawer(drawerId, rowEl) {
         const drawer = document.getElementById(drawerId);
         const arrow = rowEl.querySelector('.arrow-icon');
         if (!drawer) return;
@@ -383,14 +452,7 @@
         window.location.href = '/static/detalhes.html?pregao=' + cod;
     }
 
-    function abrirModalNovoEdital() {
-        const m = document.getElementById('modalNovoEdital');
-        if (m) m.classList.add('active');
-    }
-    function fecharModalNovoEdital() {
-        const m = document.getElementById('modalNovoEdital');
-        if (m) m.classList.remove('active');
-    }
+    
     window.addEventListener('click', function(e) {
         const m = document.getElementById('modalNovoEdital');
         if (e.target === m) fecharModalNovoEdital();
@@ -615,7 +677,7 @@ function renderizarLinhasMesa() {
                 <td style="text-align: center;" onclick="event.stopPropagation()">
                     <div style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                         ${link !== '#' ? `<a href="${link}" target="_blank" class="btn-link-portal" style="padding: 4px 8px; font-size: 11px; text-decoration:none;">Portal ↗</a>` : ''}
-                        <button class="btn-detalhes-edital" onclick="alert('Objeto: ' + ${JSON.stringify(p.objeto || 'Não informado')})" style="padding: 4px 10px; font-size: 11px; cursor: pointer; border-radius: 4px;">Detalhes ↗</button>
+                        <a href="/detalhes?processo_id=${p.id}&pregao=${encodeURIComponent(numero)}" class="btn-detalhes-edital" style="padding: 4px 10px; font-size: 11px; cursor: pointer; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center;" onclick="event.stopPropagation()">Detalhes ↗</a>
                         <button onclick="descartarProcessoMesa(${p.id}, '${numero}')" title="Excluir edital da mesa" style="width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; padding: 0; font-size: 13px; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; border-radius: 4px; cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#FCA5A5'" onmouseout="this.style.background='#FEE2E2'">🗑</button>
                     </div>
                 </td>
@@ -643,5 +705,146 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<script>
+
+async function atualizarMesaManual() {
+    const icon = document.getElementById('refreshIcon');
+    if (icon) icon.style.transform = 'rotate(360deg)';
+    if (typeof carregarProcessosMesaAPI === 'function') {
+        await carregarProcessosMesaAPI();
+    }
+    setTimeout(() => {
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }, 500);
+}
+</script>
+
+<script>
+function abrirModalNovoEdital() {
+    const modal = document.getElementById('modalNovoEdital');
+    if (modal) {
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+    }
+}
+
+function fecharModalNovoEdital() {
+    const modal = document.getElementById('modalNovoEdital');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+    }
+}
+</script>
+<script>
+function abrirModalManual() {
+    fecharModalNovoEdital();
+    const m = document.getElementById('modalEntradaManual');
+    if (m) {
+        m.classList.add('active');
+        m.style.display = 'flex';
+    }
+}
+
+function fecharModalManual() {
+    const m = document.getElementById('modalEntradaManual');
+    if (m) {
+        m.classList.remove('active');
+        m.style.display = 'none';
+    }
+}
+
+function iniciarUploadPDF() {
+    const fileInput = document.getElementById('inputUploadPDFEdital');
+    if (fileInput) fileInput.click();
+}
+
+async function enviarPDFEdital(input) {
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    fecharModalNovoEdital();
+    
+    const formData = new FormData();
+    formData.append('arquivo', file);
+    formData.append('file', file);
+    
+    try {
+        const btn = document.getElementById('btnRefreshMesa');
+        if (btn) btn.disabled = true;
+        alert(`Arquivo "${file.name}" selecionado! Enviando para análise de IA...`);
+        
+        let res = await fetch('/api/pncp/importar-pdf', { method: 'POST', body: formData });
+        if (!res.ok) {
+            res = await fetch('/promover-pncp', { method: 'POST', body: formData });
+        }
+        
+        await carregarProcessosMesaAPI();
+        alert('Edital processado com sucesso!');
+    } catch (e) {
+        console.error('Erro no upload:', e);
+        alert('Falha ao processar o PDF. Tente via Entrada Manual.');
+    } finally {
+        input.value = '';
+        const btn = document.getElementById('btnRefreshMesa');
+        if (btn) btn.disabled = false;
+    }
+}
+
+async function salvarEditalManual(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSalvarManual');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Salvando...';
+    }
+
+    const payload = {
+        numero_edital: document.getElementById('manual_numero').value.trim(),
+        orgao_nome: document.getElementById('manual_orgao').value.trim(),
+        uf: document.getElementById('manual_uf').value.trim().toUpperCase() || 'BR',
+        segmento: 'MEDICAMENTOS',
+        valor_estimado: 0.0,
+        data_abertura: document.getElementById('manual_data').value || new Date().toISOString(),
+        objeto: document.getElementById('manual_objeto').value.trim() || 'Sem descrição informada.',
+        link_edital: document.getElementById('manual_link').value.trim() || '#',
+        notas: (document.getElementById('manual_portal').value.trim() ? 'Portal: ' + document.getElementById('manual_portal').value.trim() : '')
+    };
+
+    try {
+        let res = await fetch('/api/mesa/cadastrar-manual', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            res = await fetch('/cadastrar-manual', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        }
+
+        const data = await res.json();
+        if (res.ok && data.sucesso !== false) {
+            fecharModalManual();
+            document.getElementById('formManualEdital').reset();
+            await carregarProcessosMesaAPI();
+            alert('Edital cadastrado com sucesso na Mesa!');
+        } else {
+            alert(data.detail || data.mensagem || 'Não foi possível salvar o processo.');
+        }
+    } catch (err) {
+        console.error('Erro ao salvar edital manual:', err);
+        alert('Erro de conexão ao cadastrar o edital.');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'Salvar na Mesa';
+        }
+    }
+}
+</script>
 </body>
 </html>

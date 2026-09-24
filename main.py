@@ -1,3 +1,4 @@
+from routers import auth
 from routers.dashboard import router as dashboard_router
 from routers.empresa_router import router as empresa_router
 from routers.preferencias_router import router as preferencias_router
@@ -10,6 +11,7 @@ Sistema inteligente de monitoramento de contratações públicas
 """
 import logging
 from contextlib import asynccontextmanager
+from fastapi.responses import FileResponse
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -80,6 +82,7 @@ async def ao_iniciar_aplicacao():
 async def ao_encerrar_aplicacao():
     parar_agendador()
 
+app.include_router(auth.router)
 app.include_router(dashboard_router)
 app.include_router(empresa_router)
 app.include_router(preferencias_router)
@@ -109,6 +112,11 @@ async def health_check():
 
 
 # Root endpoint
+
+@app.get("/detalhes")
+async def pagina_detalhes():
+    return FileResponse("static/detalhes.html")
+
 @app.get("/")
 async def root():
     """Root endpoint - redireciona para o dashboard"""
@@ -128,3 +136,5 @@ if __name__ == "__main__":
         port=8080,
         reload=False
     )
+
+

@@ -8,8 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/strike_consolidated.css?v=770">
-    <style>
-        body, .detalhes-layout-container, .detalhes-main-wrapper, .detalhes-content {
+    <style>body, .detalhes-layout-container, .detalhes-main-wrapper, .detalhes-content {
             background-color: #EBF0F5 !important;
             font-family: 'Inter', sans-serif !important;
             margin: 0;
@@ -454,7 +453,7 @@
 
         <!-- ÁREA CENTRAL -->
         <main class="detalhes-content">
-            <a href="/static/mesa.html" class="btn-voltar">&larr; Voltar para a Mesa de Operação</a>
+            <a href="/mesa" class="btn-voltar">&larr; Voltar para a Mesa de Operação</a>
 
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
                 <div>
@@ -462,13 +461,11 @@
                         <h1 id="det-pregao" style="font-size: 24px; font-weight: 800; color: #0F172A; margin: 0;">PE 90107/2026</h1>
                         <span id="det-status" class="badge-status-disputa">Em Disputa</span>
                     </div>
-                    <p id="det-orgao" style="font-size: 13px; color: #64748B; margin: 6px 0 0 0; font-weight: 500;">
-                        Comissão Regional de Obtenção da Marinha (COM-RJ) &bull; Rio de Janeiro - RJ
+                    <p id="det-orgao" style="font-size: 13px; color: #64748B; margin: 6px 0 0 0; font-weight: 500;">Comissão Regional de Obtenção da Marinha (COM-RJ) &bull; Rio de Janeiro - RJ
                     </p>
                 </div>
                 <div>
-                    <a id="det-link-portal" href="https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras" target="_blank" class="btn-portal-destaque">
-                        Acessar Portal Oficial ↗
+                    <a id="det-link-portal" href="https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras" target="_blank" class="btn-portal-destaque">Acessar Portal Oficial ↗
                     </a>
                 </div>
             </div>
@@ -529,8 +526,7 @@
                                 <span class="dossie-section-title">Diretriz Estratégica da Mesa</span>
                                 <button class="btn-edit-diretriz" id="btn-toggle-diretriz" onclick="alternarEdicaoDiretriz()">Editar</button>
                             </div>
-                            <div id="diretriz-display" style="font-size: 12px; color: #334155; line-height: 1.6; font-weight: 500;">
-                                Limite estrito de lance travado no piso mínimo calibrado. Em certames com disputa aberta, priorizar reduções no final da prorrogação automática. Respeitar a margem operacional mínima de 15%.
+                            <div id="diretriz-display" style="font-size: 12px; color: #334155; line-height: 1.6; font-weight: 500;">Limite estrito de lance travado no piso mínimo calibrado. Em certames com disputa aberta, priorizar reduções no final da prorrogação automática. Respeitar a margem operacional mínima de 15%.
                             </div>
                             <div id="diretriz-edit-wrapper" style="display: none; margin-top: 8px;">
                                 <textarea id="diretriz-input" class="textarea-diretriz"></textarea>
@@ -551,32 +547,28 @@
                             </div>
                             
                             <a href="/static/dashboard.html?aba=conta" class="checklist-item" title="Verificar SICAF e certidões no módulo Conta">
-                                <span class="checklist-item-title">
-                                    SICAF / Nível III (Regularidade Fiscal)
+                                <span class="checklist-item-title">SICAF / Nível III (Regularidade Fiscal)
                                     <span class="checklist-link-icon">↗</span>
                                 </span>
                                 <span class="badge-hab-ok">Conforme</span>
                             </a>
 
                             <a href="https://solucoes.receita.fazenda.gov.br/servicos/certidaointernet/pj/emitir" target="_blank" class="checklist-item" title="Consultar Certidão Conjunta Federal">
-                                <span class="checklist-item-title">
-                                    Certidão Negativa Federal (PGFN/RFB)
+                                <span class="checklist-item-title">Certidão Negativa Federal (PGFN/RFB)
                                     <span class="checklist-link-icon">↗</span>
                                 </span>
                                 <span class="badge-hab-ok">Válida</span>
                             </a>
 
                             <a href="https://www.tst.jus.br/certidao1" target="_blank" class="checklist-item" title="Consultar CNDT no Tribunal Superior do Trabalho">
-                                <span class="checklist-item-title">
-                                    Certidão Negativa Trabalhista (CNDT)
+                                <span class="checklist-item-title">Certidão Negativa Trabalhista (CNDT)
                                     <span class="checklist-link-icon">↗</span>
                                 </span>
                                 <span class="badge-hab-ok">Válida</span>
                             </a>
 
                             <a href="https://consultas.anvisa.gov.br/#/medicamentos/" target="_blank" class="checklist-item" title="Consultar Registro ANVISA dos Itens">
-                                <span class="checklist-item-title">
-                                    Registro Sanitário ANVISA / AFE
+                                <span class="checklist-item-title">Registro Sanitário ANVISA / AFE
                                     <span class="checklist-link-icon">↗</span>
                                 </span>
                                 <span class="badge-hab-ok">Atestado</span>
@@ -623,9 +615,6 @@
     </div>
 
     <script>
-        
-
-        // ALTERNÂNCIA DE ABAS
         function trocarAba(aba) {
             const btnVisao = document.getElementById('tab-btn-visao');
             const btnItens = document.getElementById('tab-btn-itens');
@@ -645,263 +634,234 @@
             }
         }
 
-        // GESTÃO DA DIRETRIZ ESTRATÉGICA
+        // LEITURA DE PARÂMETROS DA URL
         const urlParams = new URLSearchParams(window.location.search);
-        const pregaoId = urlParams.get('pregao') || 'PE90107-2026';
-        const storageKey = 'diretriz_' + pregaoId;
+        const processoId = urlParams.get('processo_id') || urlParams.get('id');
+        const pregaoParam = urlParams.get('pregao') || '';
+        const storageKey = 'diretriz_' + (processoId || pregaoParam || 'default');
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const salva = localStorage.getItem(storageKey);
-            if (salva) {
-                document.getElementById('diretriz-display').innerText = salva;
-            }
-        });
+        let itensData = [];
+        let modoEdicao = false;
+
+        function formatarMoeda(v) {
+            return Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
 
         function alternarEdicaoDiretriz() {
             const display = document.getElementById('diretriz-display');
             const wrapper = document.getElementById('diretriz-edit-wrapper');
             const input = document.getElementById('diretriz-input');
             const btn = document.getElementById('btn-toggle-diretriz');
+            if (!display || !wrapper || !input) return;
 
             input.value = display.innerText.trim();
             display.style.display = 'none';
             wrapper.style.display = 'block';
-            btn.style.display = 'none';
+            if (btn) btn.style.display = 'none';
             input.focus();
         }
 
         function cancelarEdicaoDiretriz() {
-            document.getElementById('diretriz-display').style.display = 'block';
-            document.getElementById('diretriz-edit-wrapper').style.display = 'none';
-            document.getElementById('btn-toggle-diretriz').style.display = 'inline-block';
+            const display = document.getElementById('diretriz-display');
+            const wrapper = document.getElementById('diretriz-edit-wrapper');
+            const btn = document.getElementById('btn-toggle-diretriz');
+            if (display) display.style.display = 'block';
+            if (wrapper) wrapper.style.display = 'none';
+            if (btn) btn.style.display = 'inline-block';
         }
 
         function salvarDiretriz() {
-            const novoTexto = document.getElementById('diretriz-input').value.trim();
-            if (novoTexto) {
+            const input = document.getElementById('diretriz-input');
+            const display = document.getElementById('diretriz-display');
+            if (input && display) {
+                const novoTexto = input.value.trim();
                 localStorage.setItem(storageKey, novoTexto);
-                document.getElementById('diretriz-display').innerText = novoTexto;
+                display.innerText = novoTexto;
             }
             cancelarEdicaoDiretriz();
-        }
-
-        
-        // GESTÃO DOS ITENS DO PREGÃO COM MARCA E VALOR TOTAL
-        let modoEdicaoAtivo = false;
-        
-        // Dados base padrão caso não existam no localStorage
-        const itensPadraoPE90107 = [
-            { item: '01', desc: 'Amoxicilina + Clavulanato 500/125mg', sub: 'Comprimido Revestido • Caixa c/ 30', marca: 'EMS', qtd: 12000, custo: 2.50, piso: 3.10, ref: 4.20, status: 'Apto' },
-            { item: '02', desc: 'Dipirona Sódica 500mg/mL', sub: 'Solução Injetável 2mL • Ampola', marca: 'Eurofarma', qtd: 45000, custo: 0.95, piso: 1.15, ref: 1.60, status: 'Apto' },
-            { item: '03', desc: 'Omeprazol Sódico 40mg Pó Liofilizado', sub: 'Frasco-ampola + Diluente', marca: 'Cristália', qtd: 8500, custo: 7.90, piso: 9.80, ref: 13.50, status: 'Apto' },
-            { item: '04', desc: 'Ceftriaxona Dissódica 1g IV', sub: 'Frasco-ampola c/ diluente', marca: 'Blau Farmacêutica', qtd: 6200, custo: 11.80, piso: 13.40, ref: 16.80, status: 'Apto' }
-        ];
-
-        const itensPadraoPE040 = [
-            { item: '01', desc: 'Paracetamol 500mg', sub: 'Comprimido simples • Caixa c/ 500', marca: 'Medley', qtd: 20000, custo: 0.18, piso: 0.25, ref: 0.38, status: 'Apto' },
-            { item: '02', desc: 'Ibuprofeno 600mg', sub: 'Comprimido revestido • Caixa c/ 200', marca: 'Neo Química', qtd: 15000, custo: 0.35, piso: 0.48, ref: 0.65, status: 'Apto' }
-        ];
-
-        const storageItensKey = 'itens_' + (pregaoId || 'PE90107-2026');
-        let itensData = [];
-
-        function inicializarItens() {
-            const salvo = localStorage.getItem(storageItensKey);
-            if (salvo) {
-                try {
-                    itensData = JSON.parse(salvo);
-                } catch(e) {
-                    itensData = (pregaoId === 'PE040-2026' || pregaoId === 'PE 040/2026') ? [...itensPadraoPE040] : [...itensPadraoPE90107];
-                }
-            } else {
-                itensData = (pregaoId === 'PE040-2026' || pregaoId === 'PE 040/2026') ? [...itensPadraoPE040] : [...itensPadraoPE90107];
-            }
-            renderizarTabelaItens();
-        }
-
-        function formatarMoeda(v) {
-            return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
         function renderizarTabelaItens() {
             const tbody = document.getElementById('lista-itens-tbody');
             if (!tbody) return;
-            tbody.innerHTML = '';
-            let somaTotalGeral = 0;
 
-            itensData.forEach((it, idx) => {
-                const totalItem = it.qtd * it.ref;
-                somaTotalGeral += totalItem;
+            if (!itensData || itensData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#64748B;">Nenhum item registrado para este edital.</td></tr>';
+                return;
+            }
 
-                const tr = document.createElement('tr');
+            tbody.innerHTML = itensData.map((it, idx) => `
+                <tr style="border-bottom: 1px solid #E2E8F0; font-size: 12px;">
+                    <td style="padding: 12px; font-weight: 700; color: #0F172A;">${it.item}</td>
+                    <td style="padding: 12px;">
+                        <strong style="color: #0F172A; display: block;">${it.desc}</strong>
+                        <span style="color: #64748B; font-size: 11px;">${it.sub}</span>
+                    </td>
+                    <td style="padding: 12px; color: #334155;">${it.marca || 'A definir'}</td>
+                    <td style="padding: 12px; text-align: center; font-weight: 600;">${Number(it.qtd).toLocaleString('pt-BR')}</td>
+                    <td style="padding: 12px; text-align: right; color: #64748B;">${formatarMoeda(it.custo)}</td>
+                    <td style="padding: 12px; text-align: right; font-weight: 700; color: #059669;">${formatarMoeda(it.ref)}</td>
+                    <td style="padding: 12px; text-align: center;">
+                        <span style="background: #DCFCE7; color: #166534; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">${it.status || 'Apto'}</span>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-                if (!modoEdicaoAtivo) {
-                    tr.innerHTML = `
-                        <td><strong>#${it.item}</strong></td>
-                        <td>
-                            <strong style="color: #0F172A;">${it.desc}</strong>
-                            <div style="color: #64748B; font-size: 11px;">${it.sub || ''}</div>
-                        </td>
-                        <td><span style="font-weight: 600; color: #0F172A; background: #F1F5F9; border: 1px solid #CBD5E1; padding: 2px 8px; border-radius: 4px; font-size: 11px;">${it.marca || 'Não inf.'}</span></td>
-                        <td><strong>${it.qtd.toLocaleString('pt-BR')}</strong></td>
-                        <td>${formatarMoeda(it.custo)}</td>
-                        <td style="color: #15803D; font-weight: 700;">${formatarMoeda(it.piso)}</td>
-                        <td>${formatarMoeda(it.ref)}</td>
-                        <td class="val-total-destaque">${formatarMoeda(totalItem)}</td>
-                        <td style="text-align: center;"><span class="badge-hab-ok">${it.status || 'Apto'}</span></td>
-                    `;
-                } else {
-                    tr.innerHTML = `
-                        <td><strong>#${it.item}</strong></td>
-                        <td>
-                            <input type="text" class="input-item-edit" value="${it.desc}" id="edit-desc-${idx}">
-                            <input type="text" class="input-item-edit" value="${it.sub || ''}" id="edit-sub-${idx}" style="margin-top: 4px; font-size: 11px; color: #64748B;" placeholder="Detalhes / embalagem">
-                        </td>
-                        <td>
-                            <input type="text" class="input-item-edit" value="${it.marca || ''}" id="edit-marca-${idx}" placeholder="Ex: EMS">
-                        </td>
-                        <td>
-                            <input type="number" class="input-item-edit" value="${it.qtd}" id="edit-qtd-${idx}" oninput="recalcularTotalLinha(${idx})">
-                        </td>
-                        <td>
-                            <input type="number" step="0.01" class="input-item-edit" value="${it.custo}" id="edit-custo-${idx}">
-                        </td>
-                        <td>
-                            <input type="number" step="0.01" class="input-item-edit" value="${it.piso}" id="edit-piso-${idx}">
-                        </td>
-                        <td>
-                            <input type="number" step="0.01" class="input-item-edit" value="${it.ref}" id="edit-ref-${idx}" oninput="recalcularTotalLinha(${idx})">
-                        </td>
-                        <td class="val-total-destaque" id="total-linha-${idx}">
-                            ${formatarMoeda(totalItem)}
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="text" class="input-item-edit" style="text-align:center; padding: 4px;" value="${it.status || 'Apto'}" id="edit-status-${idx}">
-                        </td>
-                    `;
+        async function inicializarPaginaDetalhes() {
+            if (!processoId) {
+                console.warn("Nenhum processo_id especificado na URL.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/mesa/processos/${processoId}`);
+                if (!res.ok) throw new Error("Erro HTTP ao carregar processo: " + res.status);
+                const proc = await res.json();
+
+                // Cabeçalho Principal
+                const elPregao = document.getElementById('det-pregao');
+                if (elPregao) elPregao.innerText = proc.numero_edital || `Processo #${proc.id}`;
+
+                const elStatus = document.getElementById('det-status');
+                if (elStatus) {
+                    elStatus.innerText = proc.status || 'Ativa';
+                    elStatus.className = proc.status === 'ATIVA' ? 'badge-status-disputa' : 'badge-status-analise';
                 }
-                tbody.appendChild(tr);
-            });
 
-            document.getElementById('valor-total-geral').innerText = formatarMoeda(somaTotalGeral);
-            const abaBtn = document.getElementById('tab-btn-itens');
-            if (abaBtn) abaBtn.innerText = `Itens do Pregão (${itensData.length < 10 ? '0' + itensData.length : itensData.length})`;
-        }
+                const elOrgao = document.getElementById('det-orgao');
+                if (elOrgao) {
+                    elOrgao.innerText = `${proc.orgao_nome || 'Órgão Licitante'} • ${proc.uf || 'BR'}`;
+                }
 
-        function recalcularTotalLinha(idx) {
-            const qtd = parseFloat(document.getElementById(`edit-qtd-${idx}`).value) || 0;
-            const ref = parseFloat(document.getElementById(`edit-ref-${idx}`).value) || 0;
-            const elTotal = document.getElementById(`total-linha-${idx}`);
-            if (elTotal) elTotal.innerText = formatarMoeda(qtd * ref);
-        }
+                const elLinkPortal = document.getElementById('det-link-portal');
+                if (elLinkPortal) {
+                    if (proc.link_edital && proc.link_edital !== '#') {
+                        elLinkPortal.href = proc.link_edital;
+                        elLinkPortal.style.display = 'inline-flex';
+                    } else {
+                        elLinkPortal.style.display = 'none';
+                    }
+                }
 
-        function alternarModoEdicaoItens() {
-            const btnEditar = document.getElementById('btn-editar-itens');
-            const btnCancelar = document.getElementById('btn-cancelar-itens');
+                // Caixas de Informações no Topo
+                const elProcesso = document.getElementById('det-processo');
+                if (elProcesso) {
+                    elProcesso.innerText = proc.codigo_interno ? `Cód: ${proc.codigo_interno}` : `Proc. #${proc.id}`;
+                }
 
-            if (!modoEdicaoAtivo) {
-                modoEdicaoAtivo = true;
-                btnEditar.innerText = 'Salvar Alterações';
-                btnEditar.style.background = '#15803D';
-                btnEditar.style.borderColor = '#15803D';
-                btnCancelar.style.display = 'inline-block';
+                const elPortal = document.getElementById('det-portal');
+                if (elPortal) {
+                    elPortal.innerText = proc.origem || 'MANUAL';
+                }
+
+                const elDataHora = document.getElementById('det-datahora');
+                if (elDataHora) {
+                    elDataHora.innerText = proc.data_abertura ? proc.data_abertura.replace('T', ' às ') : 'A definir';
+                }
+
+                // Diretriz Estratégica / Objeto
+                const elDiretriz = document.getElementById('diretriz-display');
+                if (elDiretriz) {
+                    const salva = localStorage.getItem(storageKey);
+                    elDiretriz.innerText = salva || proc.objeto || 'Sem diretriz informada.';
+                }
+
+                // Parser dos Itens
+                itensData = [];
+                if (proc.itens_json) {
+                    try {
+                        const parsed = typeof proc.itens_json === 'string' ? JSON.parse(proc.itens_json) : proc.itens_json;
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            itensData = parsed.map((it, idx) => ({
+                                item: String(idx + 1).padStart(2, '0'),
+                                desc: it.nome || it.descricao || 'Item Licitado',
+                                sub: it.unidade ? `Unidade: ${it.unidade}` : (it.codigo_cmed ? `CMED: ${it.codigo_cmed}` : 'Especificação técnica conforme edital'),
+                                marca: it.marca || 'A definir',
+                                qtd: it.quantidade || 1,
+                                custo: it.custo_unitario || (it.preco_proposta_unitario ? it.preco_proposta_unitario * 0.75 : 0),
+                                piso: it.lance_minimo || (it.custo_unitario ? it.custo_unitario * 1.1 : 0),
+                                ref: it.preco_proposta_unitario || it.valor_referencia || proc.valor_estimado || 0,
+                                status: 'Apto'
+                            }));
+                        }
+                    } catch(e) {
+                        console.error("Falha ao analisar itens_json:", e);
+                    }
+                }
+
+                // Caso ainda não haja itens discriminados, exibe o lote baseado no edital
+                if (itensData.length === 0) {
+                    itensData = [{
+                        item: '01',
+                        desc: proc.objeto || 'Lote Único da Licitação',
+                        sub: `Segmento: ${proc.segmento || 'GERAL'} • Origem: ${proc.origem || 'MANUAL'}`,
+                        marca: 'Conforme Edital',
+                        qtd: 1,
+                        custo: proc.valor_estimado ? proc.valor_estimado * 0.70 : 0,
+                        piso: proc.valor_estimado ? proc.valor_estimado * 0.85 : 0,
+                        ref: proc.valor_estimado || 0,
+                        status: 'Apto'
+                    }];
+                }
+
+                const tabBtnItens = document.getElementById('tab-btn-itens');
+                if (tabBtnItens) {
+                    tabBtnItens.innerText = `Itens do Pregão (${String(itensData.length).padStart(2, '0')})`;
+                }
+
                 renderizarTabelaItens();
-            } else {
-                // Salvar dados editados
-                itensData.forEach((it, idx) => {
-                    it.desc = document.getElementById(`edit-desc-${idx}`).value;
-                    it.sub = document.getElementById(`edit-sub-${idx}`).value;
-                    it.marca = document.getElementById(`edit-marca-${idx}`).value;
-                    it.qtd = parseFloat(document.getElementById(`edit-qtd-${idx}`).value) || 0;
-                    it.custo = parseFloat(document.getElementById(`edit-custo-${idx}`).value) || 0;
-                    it.piso = parseFloat(document.getElementById(`edit-piso-${idx}`).value) || 0;
-                    it.ref = parseFloat(document.getElementById(`edit-ref-${idx}`).value) || 0;
-                    it.status = document.getElementById(`edit-status-${idx}`).value;
-                });
 
-                localStorage.setItem(storageItensKey, JSON.stringify(itensData));
-                modoEdicaoAtivo = false;
-                btnEditar.innerText = 'Editar Itens';
-                btnEditar.style.background = '#0F172A';
-                btnEditar.style.borderColor = '#0F172A';
-                btnCancelar.style.display = 'none';
-                renderizarTabelaItens();
+            } catch (err) {
+                console.error("Erro ao carregar detalhes do processo:", err);
             }
         }
 
-        function cancelarEdicaoItens() {
-            modoEdicaoAtivo = false;
-            const btnEditar = document.getElementById('btn-editar-itens');
-            const btnCancelar = document.getElementById('btn-cancelar-itens');
-            btnEditar.innerText = 'Editar Itens';
-            btnEditar.style.background = '#0F172A';
-            btnEditar.style.borderColor = '#0F172A';
-            btnCancelar.style.display = 'none';
-            inicializarItens();
-        }
-
-        window.addEventListener('DOMContentLoaded', inicializarItens);
-
-        // CARREGAMENTO SE FOR O PREGÃO 040/2026
-        if (pregaoId === 'PE040-2026' || pregaoId === 'PE 040/2026') {
-            document.getElementById('det-pregao').innerText = 'PE 040/2026';
-            document.getElementById('det-status').innerText = 'Em Análise';
-            document.getElementById('det-status').className = 'badge-status-analise';
-            document.getElementById('det-orgao').innerText = 'Prefeitura Municipal de Santo Antônio do Monte • Minas Gerais - MG';
-            document.getElementById('det-processo').innerText = 'Processo nº 118/2026';
-            document.getElementById('det-portal').innerText = 'BBMNet';
-            document.getElementById('det-datahora').innerText = '28/09/2026 às 10:00';
-            document.getElementById('det-link-portal').href = 'https://www.novobbmnet.com.br';
-            document.getElementById('tab-btn-itens').innerText = 'Itens do Pregão (02)';
-
-            // gerenciado dinamicamente por inicializarItens()
+        // Dispara o carregamento imediatamente
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', inicializarPaginaDetalhes);
+        } else {
+            inicializarPaginaDetalhes();
         }
     </script>
-<script>
-    // Controle da Sidebar com persistência de estado (não reabre sozinho)
-    function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
-        const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
-        if (!sidebar) return;
 
-        const estaColapsado = sidebar.classList.toggle('collapsed');
-        if (container) {
-            container.classList.toggle('sidebar-collapsed', estaColapsado);
-        }
-        localStorage.setItem('strike_sidebar_collapsed', estaColapsado ? 'true' : 'false');
-    }
+    <script>
+        // CONTROLE DA SIDEBAR (ABRIR / FECHAR)
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
+            const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
+            if (!sidebar) return;
 
-    // Aplica o estado salvo imediatamente no carregamento
-    (function aplicarEstadoSidebar() {
-        const salvo = localStorage.getItem('strike_sidebar_collapsed');
-        if (salvo === 'true') {
-            document.addEventListener('DOMContentLoaded', () => {
-                const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
-                const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
-                if (sidebar) sidebar.classList.add('collapsed');
-                if (container) container.classList.add('sidebar-collapsed');
-            });
+            const estaColapsado = sidebar.classList.toggle('collapsed');
+            if (container) {
+                container.classList.toggle('sidebar-collapsed', estaColapsado);
+            }
+            localStorage.setItem('strike_sidebar_collapsed', estaColapsado ? 'true' : 'false');
         }
-    })();
-    </script>
-<script>
-    // Fechar menu automaticamente ao mudar de aba ou clicar em qualquer item do menu
-    document.addEventListener('DOMContentLoaded', () => {
-        const itensMenu = document.querySelectorAll('.sidebar-item, .subtab-btn, [data-tab]');
-        itensMenu.forEach(item => {
-            item.addEventListener('click', () => {
-                const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
-                const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
-                if (sidebar) {
-                    sidebar.classList.add('collapsed');
-                }
-                if (container) {
-                    container.classList.add('sidebar-collapsed');
-                }
-                localStorage.setItem('strike_sidebar_collapsed', 'true');
-            });
+
+        // Aplica o estado persistido ao carregar
+        (function() {
+            const salvo = localStorage.getItem('strike_sidebar_collapsed');
+            if (salvo === 'true') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    const sidebar = document.querySelector('.sidebar') || document.querySelector('aside');
+                    const container = document.querySelector('.app-container') || document.querySelector('.detalhes-layout-container') || document.body;
+                    if (sidebar) sidebar.classList.add('collapsed');
+                    if (container) container.classList.add('sidebar-collapsed');
+                });
+            }
+        })();
+
+        // Vincula o clique do botão hambúrguer (☰) se existir no topo
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnMenu = document.querySelector('.menu-toggle') || 
+                            document.querySelector('.btn-menu') || 
+                            document.querySelector('[onclick*="toggleSidebar"]');
+            if (btnMenu && !btnMenu.getAttribute('onclick')) {
+                btnMenu.addEventListener('click', toggleSidebar);
+            }
         });
-    });
     </script>
 </body>
 </html>
+
